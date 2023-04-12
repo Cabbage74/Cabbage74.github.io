@@ -301,14 +301,13 @@
 
       
         
-          <h1 id="博弈论"><a href="#博弈论" class="headerlink" title="博弈论"></a>博弈论</h1><h2 id="组合游戏概念"><a href="#组合游戏概念" class="headerlink" title="组合游戏概念"></a>组合游戏概念</h2><h5 id="1-两个玩家"><a href="#1-两个玩家" class="headerlink" title="$1$.两个玩家"></a>$1$.两个玩家</h5><h5 id="2-一个状态集合"><a href="#2-一个状态集合" class="headerlink" title="$2$.一个状态集合"></a>$2$.一个状态集合</h5><h5 id="3-游戏规则是指明玩家在一个状态下可以移动到哪些其他状态"><a href="#3-游戏规则是指明玩家在一个状态下可以移动到哪些其他状态" class="headerlink" title="$3$.游戏规则是指明玩家在一个状态下可以移动到哪些其他状态"></a>$3$.游戏规则是指明玩家在一个状态下可以移动到哪些其他状态</h5><h5 id="4-玩家轮流进行移动"><a href="#4-玩家轮流进行移动" class="headerlink" title="$4$.玩家轮流进行移动"></a>$4$.玩家轮流进行移动</h5><h5 id="5-若当前处于某个状态，玩家根据规则无法移动，则游戏结束"><a href="#5-若当前处于某个状态，玩家根据规则无法移动，则游戏结束" class="headerlink" title="$5$.若当前处于某个状态，玩家根据规则无法移动，则游戏结束"></a>$5$.若当前处于某个状态，玩家根据规则无法移动，则游戏结束</h5><h5 id="6-游戏会在有限步以内结束-有向无环-DAG"><a href="#6-游戏会在有限步以内结束-有向无环-DAG" class="headerlink" title="$6$.游戏会在有限步以内结束(有向无环$DAG$)"></a>$6$.游戏会在有限步以内结束(有向无环$DAG$)</h5>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2023/04/11/game-theory-blog/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
+            <span id="more"></span>
+<h2 id="组合游戏概念"><a href="#组合游戏概念" class="headerlink" title="组合游戏概念"></a>组合游戏概念</h2><p>$1$.两个玩家<br>$2$.一个状态集合<br>$3$.游戏规则是指明玩家在一个状态下可以移动到哪些其他状态<br>$4$.玩家轮流进行移动<br>$5$.若当前处于某个状态，玩家根据规则无法移动，则游戏结束<br>$6$.游戏会在有限步以内结束(有向无环$DAG$)</p>
+<h2 id="P-态和-N-态"><a href="#P-态和-N-态" class="headerlink" title="$P$态和$N$态"></a>$P$态和$N$态</h2><p>$P$态：走到这个状态的玩家赢的状态<br>$N$态：从这个状态走的玩家赢的状态<br>至少能走到一个$P$态的状态是$N$态<br>只能走到$N$态的状态是$P$态<br>正常规则：终态是$P$态(无法走的人输)<br>反常规则：终态是$N$态(无法走的人赢)</p>
+<h2 id="例题：-Digital-Deletions"><a href="#例题：-Digital-Deletions" class="headerlink" title="例题：$Digital\ Deletions$"></a>例题：$Digital\ Deletions$</h2><h3 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h3><p>有一个只含数字$0$到$9$的串$s$，两个人玩游戏，每次当前玩家可以把某一位改为比当前位更小的数字，或者删除一个$0$以及它的右边全部的数字。删除最后一个数字的人赢。求最优策略下，先手必胜还是后手必胜</p>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><h3 id="具体代码"><a href="#具体代码" class="headerlink" title="具体代码"></a>具体代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+          
         
       
     </div>
