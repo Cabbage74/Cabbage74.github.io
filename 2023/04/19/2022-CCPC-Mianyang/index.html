@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="XCPC," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="2022 CCPC Mianyang OnsiteA. Ban or Pick, What’s the Trick题目大意两个队伍分别有$n$个英雄可以选择，价值分别为$a_1, \cdots, a_n$和$b_1, \cdots, b_n$两队轮流操作，每次可以选己方英雄池内$1$个英雄或者禁用对方英雄池内$1$个英雄最终每方得分为选取英雄价值前$k$大的价值和，对于一方来说，得分差越大方案越优">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2022 CCPC Mianyang">
+<meta property="og:url" content="https://cabbage74.github.io/2023/04/19/2022-CCPC-Mianyang/index.html">
+<meta property="og:site_name" content="Cabbage74">
+<meta property="og:description" content="2022 CCPC Mianyang OnsiteA. Ban or Pick, What’s the Trick题目大意两个队伍分别有$n$个英雄可以选择，价值分别为$a_1, \cdots, a_n$和$b_1, \cdots, b_n$两队轮流操作，每次可以选己方英雄池内$1$个英雄或者禁用对方英雄池内$1$个英雄最终每方得分为选取英雄价值前$k$大的价值和，对于一方来说，得分差越大方案越优">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-04-19T05:09:22.000Z">
+<meta property="article:modified_time" content="2023-04-19T12:53:40.652Z">
+<meta property="article:author" content="Cabbage">
+<meta property="article:tag" content="XCPC">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://Cabbage74.github.io/2023/04/19/2022-CCPC-Mianyang/"/>
+
+
+
+
+
+  <title>2022 CCPC Mianyang | Cabbage74</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Cabbage74</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Cabbage74.github.io/2023/04/19/2022-CCPC-Mianyang/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cabbage74">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">2022 CCPC Mianyang</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-04-19T13:09:22+08:00">
+                2023-04-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="2022-CCPC-Mianyang-Onsite"><a href="#2022-CCPC-Mianyang-Onsite" class="headerlink" title="2022 CCPC Mianyang Onsite"></a><a target="_blank" rel="noopener" href="https://codeforces.com/gym/104065">2022 CCPC Mianyang Onsite</a></h1><h2 id="A-Ban-or-Pick-What’s-the-Trick"><a href="#A-Ban-or-Pick-What’s-the-Trick" class="headerlink" title="A. Ban or Pick, What’s the Trick"></a>A. Ban or Pick, What’s the Trick</h2><h3 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h3><p>两个队伍分别有$n$个英雄可以选择，价值分别为$a_1, \cdots, a_n$和$b_1, \cdots, b_n$<br>两队轮流操作，每次可以选己方英雄池内$1$个英雄或者禁用对方英雄池内$1$个英雄<br>最终每方得分为选取英雄价值前$k$大的价值和，对于一方来说，得分差越大方案越优，求双方在最优策略下，两队得分差</p>
+<span id="more"></span>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>两个显然的贪心：<br>$1.$选英雄一定选己方英雄池价值最大的，禁英雄一定禁对方英雄池价值最大的<br>$2.$当一方选满$k$个英雄后肯定不会再选英雄，只会禁英雄<br>由贪心性质可知状态数只有$O(nk^2)$个，所以可以记忆化搜索$dp(x,i,j)$表示当前双方共操作$x$轮，分别已选取$i$，$j$个英雄时的答案<br>一个重要的点是确定$(x,i,j)$后，双方已经被选&#x2F;禁的英雄个数$p$，$q$是可以确定的<br>$p&#x3D;\lfloor\frac{x}{2}\rfloor+i-j$<br>$q&#x3D;\lfloor\frac{x+1}{2}\rfloor-i+j$</p>
+<h3 id="具体代码"><a href="#具体代码" class="headerlink" title="具体代码"></a>具体代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> ll = <span class="type">long</span> <span class="type">long</span>;</span><br><span class="line"><span class="keyword">using</span> PII = std::pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">2e5</span> + <span class="number">10</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> M = <span class="number">15</span>;</span><br><span class="line"><span class="type">const</span> ll INF = <span class="number">0x7f7f7f7f7f7f7f7f</span>;</span><br><span class="line">ll a[N], b[N];</span><br><span class="line">ll dp[N][M][M];</span><br><span class="line">ll n, k;</span><br><span class="line"><span class="function">ll <span class="title">dfs</span><span class="params">(<span class="type">int</span> round, <span class="type">int</span> cura, <span class="type">int</span> curb)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (round == <span class="number">2</span> * n)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (dp[round][cura][curb] != <span class="number">-1</span>)</span><br><span class="line">        <span class="keyword">return</span> dp[round][cura][curb];</span><br><span class="line">    <span class="type">int</span> nowa = round / <span class="number">2</span> - curb + cura; </span><br><span class="line">    <span class="type">int</span> nowb = (round + <span class="number">1</span>) / <span class="number">2</span> - cura + curb;</span><br><span class="line">    <span class="keyword">if</span> (round % <span class="number">2</span> == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        ll ans = -INF;</span><br><span class="line">        <span class="keyword">if</span> (cura != k &amp;&amp; nowa != n)</span><br><span class="line">            ans = std::<span class="built_in">max</span>(ans, <span class="built_in">dfs</span>(round + <span class="number">1</span>, cura + <span class="number">1</span>, curb) + a[nowa + <span class="number">1</span>]);</span><br><span class="line">        ans = std::<span class="built_in">max</span>(ans, <span class="built_in">dfs</span>(round + <span class="number">1</span>, cura, curb));</span><br><span class="line">        <span class="keyword">return</span> dp[round][cura][curb] = ans;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        ll ans = INF;</span><br><span class="line">        <span class="keyword">if</span> (curb != k &amp;&amp; nowb != n)</span><br><span class="line">            ans = std::<span class="built_in">min</span>(ans, <span class="built_in">dfs</span>(round + <span class="number">1</span>, cura, curb + <span class="number">1</span>) - b[nowb + <span class="number">1</span>]);</span><br><span class="line">        ans = std::<span class="built_in">min</span>(ans, <span class="built_in">dfs</span>(round + <span class="number">1</span>, cura, curb));</span><br><span class="line">        <span class="keyword">return</span> dp[round][cura][curb] = ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(dp, <span class="number">-1</span>, <span class="keyword">sizeof</span> dp);</span><br><span class="line">    std::cin &gt;&gt; n &gt;&gt; k;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++i)</span><br><span class="line">        std::cin &gt;&gt; a[i];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++i)</span><br><span class="line">        std::cin &gt;&gt; b[i];</span><br><span class="line">    std::<span class="built_in">sort</span>(a + <span class="number">1</span>, a + n + <span class="number">1</span>, std::<span class="built_in">greater</span>&lt;ll&gt;());</span><br><span class="line">    std::<span class="built_in">sort</span>(b + <span class="number">1</span>, b + n + <span class="number">1</span>, std::<span class="built_in">greater</span>&lt;ll&gt;());</span><br><span class="line">    ll ans = <span class="built_in">dfs</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    std::cout &lt;&lt; ans &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">    std::cin.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    std::cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="type">int</span> T = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// std::cin &gt;&gt; T;</span></span><br><span class="line">    <span class="keyword">while</span> (T--)</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="C-Catch-You-Catch-Me"><a href="#C-Catch-You-Catch-Me" class="headerlink" title="C. Catch You Catch Me"></a>C. Catch You Catch Me</h2><h3 id="题目大意-1"><a href="#题目大意-1" class="headerlink" title="题目大意"></a>题目大意</h3><p>一颗树，根节点是$1$号，除了根节点以外每个节点上初始都有一个蝴蝶，根节点是出口，每一秒所有蝴蝶都会朝着根节点逃跑(跑到父亲节点)，问拦截所有蝴蝶的最少操作次数，每次操作可以瞬移到一个节点，抓住该节点上的所有蝴蝶</p>
+<h3 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h3><p>容易注意到答案是$1$号节点的所有孩子的子树深度之和</p>
+<h3 id="具体代码-1"><a href="#具体代码-1" class="headerlink" title="具体代码"></a>具体代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> ll = <span class="type">long</span> <span class="type">long</span>;</span><br><span class="line"><span class="keyword">using</span> PII = std::pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">2e5</span> + <span class="number">10</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> M = <span class="number">10</span>;</span><br><span class="line"><span class="type">const</span> ll INF = <span class="number">0x7f7f7f7f7f7f7f7f</span>;</span><br><span class="line"><span class="type">int</span> n;</span><br><span class="line">std::vector&lt;<span class="type">int</span>&gt; e[N];</span><br><span class="line"><span class="function">ll <span class="title">dfs</span><span class="params">(<span class="type">int</span> u, <span class="type">int</span> fa, <span class="type">int</span> d)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (e[u].<span class="built_in">size</span>() == <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> d;</span><br><span class="line">    ll res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> v : e[u])</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (v == fa)</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        res = std::<span class="built_in">max</span>(<span class="built_in">dfs</span>(v, u, d + <span class="number">1</span>), res);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::cin &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n - <span class="number">1</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> u, v;</span><br><span class="line">        std::cin &gt;&gt; u &gt;&gt; v;</span><br><span class="line">        e[u].<span class="built_in">push_back</span>(v);</span><br><span class="line">        e[v].<span class="built_in">push_back</span>(u);</span><br><span class="line">    &#125;</span><br><span class="line">    ll ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> v : e[<span class="number">1</span>])</span><br><span class="line">        ans += <span class="built_in">dfs</span>(v, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">    std::cout &lt;&lt; ans &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">    std::cin.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    std::cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="type">int</span> T = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// std::cin &gt;&gt; T;</span></span><br><span class="line">    <span class="keyword">while</span> (T--)</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="D-Gambler’s-Ruin"><a href="#D-Gambler’s-Ruin" class="headerlink" title="D. Gambler’s Ruin"></a>D. Gambler’s Ruin</h2><h3 id="题目大意-2"><a href="#题目大意-2" class="headerlink" title="题目大意"></a>题目大意</h3><p>曼联和曼城比赛，你作为开盘手要给两个队设置赔率<br>有$n$个赌怪，第$i$个赌怪对曼联的胜率预测是$p_i$<br>若你设曼联的赔率为$x$，曼城的赔率为$y$，那么对于第$i$个赌怪：<br>若$p_i\cdot x\gt 1$，这个人会押$c_i$的钱在曼联<br>否则，若$(1-p_i)\cdot y\gt 1$，这个人会押$c_i$的钱在曼城<br>记赌怪们在曼联上的下注总和是$s_x$，在曼城上的下注总和是$s_y$，如果曼联赢了，博彩公司要付$s_x\cdot x$这么多钱，如果曼城赢了要付$s_y\cdot y$这么多钱<br>最坏情况下，博彩公司的利润是$s_x+s_y-max(s_x\cdot x, s_y\cdot y)$<br>现在你要设置$x$，$y$最大化最坏情况下博彩公司的利润</p>
+<h3 id="解题思路-2"><a href="#解题思路-2" class="headerlink" title="解题思路"></a>解题思路</h3><p>以$p_i$为关键字从大到小对赌怪排序，那么所有$p_i\geq \frac{1}{x}$的赌怪都会下注曼联，那么$s_x$是一个前缀和形式<br>同理，$s_y$会是一个后缀和形式<br>记排序后$c_i$的前缀和为$pre_i$，后缀和为$suf_i$<br>有一个贪心性质：<br>假设前缀与后缀已经固定，$i$为下注曼联的前缀的最后一个人的指针，$j$为下注曼城的后缀的第一个人的指针，也就是固定了$s_x$和$s_y$，同时有$\frac{1}{p_i}\leq x\lt \frac{1}{p_{i+1}}$，$\frac{1}{1-p_j}\leq y\lt \frac{1}{1-p_{j-1}}$<br>那么为了最大化$res&#x3D;s_x+s_y-max(s_x\cdot x, s_y\cdot y)$，令$x&#x3D;\frac{1}{p_i}$，$y&#x3D;\frac{1}{1-p_j}$显然最优<br>此时，$res$可改写为$res&#x3D;pre_i+suf_j-max(\frac{pre_i}{p_i},\frac{suf_j}{1-p_j})$<br>注意$max$中的两个值，前者随着$i$增大在增大，后者随着$j$增大在减小<br>若固定$i$，一定存在$p$，使得$j\leq p$时有$\frac{pre_i}{p_i}\leq\frac{suf_j}{1-p_j}$，且$res&#x3D;pre_i+suf_j-\frac{suf_j}{1-p_j}$此时随$j$增大而增大<br>同时$j\geq p+1$时有$\frac{pre_i}{p_i}\gt\frac{suf_j}{1-p_j}$，且$res&#x3D;pre_i+suf_j-\frac{pre_i}{p_i}$此时随$j$增大而减小<br>因此固定$i$时，最大的$res$出现在$j&#x3D;p$或$j&#x3D;p+1$处<br>因为随着$i$的增大，$p$的值会不断减小，所以可以双指针维护$p$<br>还有另外两个点<br>一个点是，对于$p_i$相同的人，可以去重当作一个人<br>另一个点是，前缀与后缀不应有重叠部分，否则重叠的赌怪两边都押，他赌赢钱的期望是正的，也就是要求$\frac{1}{x}+\frac{1}{y}\leq 1$，虽然这个不等式和代码没关系，但是不应重叠和代码有关系</p>
+<h3 id="具体代码-2"><a href="#具体代码-2" class="headerlink" title="具体代码"></a>具体代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> ll = <span class="type">long</span> <span class="type">long</span>;</span><br><span class="line"><span class="keyword">using</span> PLL = std::pair&lt;ll, ll&gt;;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">1e6</span> + <span class="number">10</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">double</span> eps = <span class="number">1e-10</span>;</span><br><span class="line"><span class="type">int</span> n;</span><br><span class="line">std::pair&lt;<span class="type">double</span>, ll&gt; g[N];</span><br><span class="line">ll pre[N], suf[N];</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::cin &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++i)</span><br><span class="line">        std::cin &gt;&gt; g[i].first &gt;&gt; g[i].second;</span><br><span class="line">    std::<span class="built_in">sort</span>(g + <span class="number">1</span>, g + n + <span class="number">1</span>, std::greater&lt;std::pair&lt;<span class="type">double</span>, ll&gt;&gt;());</span><br><span class="line">    <span class="type">int</span> m = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++i)</span><br><span class="line">        <span class="keyword">if</span> (i == <span class="number">1</span> || <span class="built_in">fabs</span>(g[i].first - g[i - <span class="number">1</span>].first) &gt; eps)</span><br><span class="line">            ++m, g[m] = g[i];</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            g[m].second += g[i].second;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= m; ++i)</span><br><span class="line">        pre[i] = pre[i - <span class="number">1</span>] + g[i].second;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = m; i &gt;= <span class="number">1</span>; --i)</span><br><span class="line">        suf[i] = suf[i + <span class="number">1</span>] + g[i].second;</span><br><span class="line">    <span class="type">double</span> ans = <span class="number">0.0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>, p = m; i &lt;= m; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (p &gt; i &amp;&amp; pre[i] / g[i].first &gt; suf[p] / (<span class="number">1</span> - g[p].first))</span><br><span class="line">            --p;</span><br><span class="line">        ans = std::<span class="built_in">max</span>(ans, pre[i] + suf[p + <span class="number">1</span>] - pre[i] / g[i].first);</span><br><span class="line">        <span class="keyword">if</span> (i &gt;= p)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        ans = std::<span class="built_in">max</span>(ans, pre[i] + suf[p] - suf[p] / (<span class="number">1</span> - g[p].first));</span><br><span class="line">    &#125;</span><br><span class="line">    std::cout &lt;&lt; std::fixed &lt;&lt; std::<span class="built_in">setprecision</span>(<span class="number">10</span>) &lt;&lt; ans &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">    std::cin.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    std::cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="type">int</span> T = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// std::cin &gt;&gt; T;</span></span><br><span class="line">    <span class="keyword">while</span> (T--)</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="E-Hammer-to-Fall"><a href="#E-Hammer-to-Fall" class="headerlink" title="E. Hammer to Fall"></a>E. Hammer to Fall</h2><h3 id="题目大意-3"><a href="#题目大意-3" class="headerlink" title="题目大意"></a>题目大意</h3><h3 id="解题思路-3"><a href="#解题思路-3" class="headerlink" title="解题思路"></a>解题思路</h3><h3 id="具体代码-3"><a href="#具体代码-3" class="headerlink" title="具体代码"></a>具体代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line">## G. Let Them Eat Cake</span><br><span class="line">### 题目大意</span><br><span class="line">$Bobo$给站成一排的$n$个人发蛋糕，第$i$个人有标签$a_i$，每个标签都两两不同，且值都在$<span class="number">1</span>\sim n$间，现在按下列规则发蛋糕，问发蛋糕的轮数</span><br><span class="line">规则$<span class="number">1</span>$：只剩一个人时，给这个人蛋糕，到此结束(这不记作一轮)</span><br><span class="line">规则$<span class="number">2</span>$：找到每一个标签值比左边或右边的人小的人，让他们拿到蛋糕，然后同时退出队伍，然后队伍自动紧缩。这记作一轮</span><br><span class="line">### 解题思路</span><br><span class="line">因为标记值两两不同，所以每一轮队伍里都会少掉一半的人，所以最多进行$log$轮，所以每一轮内部直接$<span class="built_in">O</span>(n)$模拟</span><br><span class="line">### 具体代码</span><br><span class="line">``` cpp</span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> ll = <span class="type">long</span> <span class="type">long</span>;</span><br><span class="line"><span class="keyword">using</span> PLL = std::pair&lt;ll, ll&gt;;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">2e5</span> + <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span> n;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::cin &gt;&gt; n;</span><br><span class="line">    std::vector&lt;<span class="type">int</span>&gt; a;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> x;</span><br><span class="line">        std::cin &gt;&gt; x;</span><br><span class="line">        a.<span class="built_in">push_back</span>(x);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> round = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (a.<span class="built_in">size</span>() &lt;= <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        ++round;</span><br><span class="line">        std::vector&lt;<span class="type">int</span>&gt; b;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; a.<span class="built_in">size</span>(); ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">bool</span> get_cake = <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">if</span> (i - <span class="number">1</span> &gt;= <span class="number">0</span> &amp;&amp; a[i] &lt; a[i - <span class="number">1</span>])</span><br><span class="line">                get_cake = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span> (i + <span class="number">1</span> &lt; a.<span class="built_in">size</span>() &amp;&amp; a[i] &lt; a[i + <span class="number">1</span>])</span><br><span class="line">                get_cake = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span> (!get_cake)</span><br><span class="line">                b.<span class="built_in">push_back</span>(a[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">        a.<span class="built_in">swap</span>(b);</span><br><span class="line">    &#125;</span><br><span class="line">    std::cout &lt;&lt; round &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">    std::cin.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    std::cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="type">int</span> T = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// std::cin &gt;&gt; T;</span></span><br><span class="line">    <span class="keyword">while</span> (T--)</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="H-Life-is-Hard-and-Undecidable-but…"><a href="#H-Life-is-Hard-and-Undecidable-but…" class="headerlink" title="H. Life is Hard and Undecidable, but…"></a>H. Life is Hard and Undecidable, but…</h2><h3 id="题目大意-4"><a href="#题目大意-4" class="headerlink" title="题目大意"></a>题目大意</h3><p>给定$k$，构造一个$Life\ Game$的初始状态(视作第$0$代)，使得恰好在第$k$代没有存活的细胞<br>$Life\ Game$规则：<br>$1.$如果一个离世状态的点周围八格范围内恰好有$3$个存活的点，那么这个点在下一秒就会变成一个存活的点<br>$2.$如果一个存活状态的点周围八格内恰好有$2$或$3$个存活的点，那么这个点在下一秒仍然是存活的点，否则会变成离世的点</p>
+<h3 id="解题思路-4"><a href="#解题思路-4" class="headerlink" title="解题思路"></a>解题思路</h3><p>对角线，每一代只有对角线两个端点死掉</p>
+<h3 id="具体代码-4"><a href="#具体代码-4" class="headerlink" title="具体代码"></a>具体代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> ll = <span class="type">long</span> <span class="type">long</span>;</span><br><span class="line"><span class="keyword">using</span> PLL = std::pair&lt;ll, ll&gt;;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">2e5</span> + <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span> k;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::cin &gt;&gt; k;</span><br><span class="line">    std::cout &lt;&lt; <span class="number">2</span> * k - <span class="number">1</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">    <span class="type">int</span> posx = <span class="number">300</span>, posy = <span class="number">300</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">2</span> * k - <span class="number">1</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; posx &lt;&lt; <span class="string">&#x27; &#x27;</span> &lt;&lt; posy &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">        --posx, --posy;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">    std::cin.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    std::cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="type">int</span> T = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// std::cin &gt;&gt; T;</span></span><br><span class="line">    <span class="keyword">while</span> (T--)</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="J-Middle-Race"><a href="#J-Middle-Race" class="headerlink" title="J. Middle Race"></a>J. Middle Race</h2><h3 id="题目大意-5"><a href="#题目大意-5" class="headerlink" title="题目大意"></a>题目大意</h3><h3 id="解题思路-5"><a href="#解题思路-5" class="headerlink" title="解题思路"></a>解题思路</h3><h3 id="具体代码-5"><a href="#具体代码-5" class="headerlink" title="具体代码"></a>具体代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line">## M. Rock-Paper-Scissors Pyramid</span><br><span class="line">### 题目大意</span><br><span class="line"></span><br><span class="line">### 解题思路</span><br><span class="line"></span><br><span class="line">### 具体代码</span><br><span class="line">``` cpp</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/XCPC/" rel="tag"># XCPC</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/04/17/230417record/" rel="next" title="2023.04.17">
+                <i class="fa fa-chevron-left"></i> 2023.04.17
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#2022-CCPC-Mianyang-Onsite"><span class="nav-number">1.</span> <span class="nav-text">2022 CCPC Mianyang Onsite</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#A-Ban-or-Pick-What%E2%80%99s-the-Trick"><span class="nav-number">1.1.</span> <span class="nav-text">A. Ban or Pick, What’s the Trick</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E5%A4%A7%E6%84%8F"><span class="nav-number">1.1.1.</span> <span class="nav-text">题目大意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="nav-number">1.1.2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E4%BB%A3%E7%A0%81"><span class="nav-number">1.1.3.</span> <span class="nav-text">具体代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-Catch-You-Catch-Me"><span class="nav-number">1.2.</span> <span class="nav-text">C. Catch You Catch Me</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E5%A4%A7%E6%84%8F-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">题目大意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E4%BB%A3%E7%A0%81-1"><span class="nav-number">1.2.3.</span> <span class="nav-text">具体代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#D-Gambler%E2%80%99s-Ruin"><span class="nav-number">1.3.</span> <span class="nav-text">D. Gambler’s Ruin</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E5%A4%A7%E6%84%8F-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">题目大意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF-2"><span class="nav-number">1.3.2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E4%BB%A3%E7%A0%81-2"><span class="nav-number">1.3.3.</span> <span class="nav-text">具体代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#E-Hammer-to-Fall"><span class="nav-number">1.4.</span> <span class="nav-text">E. Hammer to Fall</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E5%A4%A7%E6%84%8F-3"><span class="nav-number">1.4.1.</span> <span class="nav-text">题目大意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF-3"><span class="nav-number">1.4.2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E4%BB%A3%E7%A0%81-3"><span class="nav-number">1.4.3.</span> <span class="nav-text">具体代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#H-Life-is-Hard-and-Undecidable-but%E2%80%A6"><span class="nav-number">1.5.</span> <span class="nav-text">H. Life is Hard and Undecidable, but…</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E5%A4%A7%E6%84%8F-4"><span class="nav-number">1.5.1.</span> <span class="nav-text">题目大意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF-4"><span class="nav-number">1.5.2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E4%BB%A3%E7%A0%81-4"><span class="nav-number">1.5.3.</span> <span class="nav-text">具体代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#J-Middle-Race"><span class="nav-number">1.6.</span> <span class="nav-text">J. Middle Race</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E5%A4%A7%E6%84%8F-5"><span class="nav-number">1.6.1.</span> <span class="nav-text">题目大意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF-5"><span class="nav-number">1.6.2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E4%BB%A3%E7%A0%81-5"><span class="nav-number">1.6.3.</span> <span class="nav-text">具体代码</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cabbage</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
