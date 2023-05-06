@@ -252,4 +252,18 @@
         <tag>XCPC</tag>
       </tags>
   </entry>
+  <entry>
+    <title>数据库范式知识点</title>
+    <url>/2023/05/06/database-paradigm/</url>
+    <content><![CDATA[<h2 id="求属性集闭包"><a href="#求属性集闭包" class="headerlink" title="求属性集闭包"></a>求属性集闭包</h2><figure class="highlight text"><table><tr><td class="code"><pre><span class="line">result := α;</span><br><span class="line">repeat</span><br><span class="line">for each β → γ in F do</span><br><span class="line">    begin</span><br><span class="line">        if β ⊆ result then result := result ∪ γ;</span><br><span class="line">    end</span><br><span class="line">until(result不再改变)</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<h2 id="求函数依赖集的闭包"><a href="#求函数依赖集的闭包" class="headerlink" title="求函数依赖集的闭包"></a>求函数依赖集的闭包</h2><p>对于任意的$\gamma \in R$，找出闭包$\gamma ^+$，并且对于任意的$S\subseteq \gamma ^+$，输出一个函数依赖$\gamma \to S$</p>
+<h2 id="求候选键"><a href="#求候选键" class="headerlink" title="求候选键"></a>求候选键</h2><p>给定关系模式$R(U,F)$，将$R$的所有属性分为$L,B,N$三类<br>$L$表示只在函数依赖左边出现<br>$B$表示在函数依赖两边都有出现<br>$N$表示未在函数依赖中出现<br>令$X&#x3D;L\cup N$，若$X^+$包含$U$，则$X$是唯一候选键<br>否则，从$B$中任取一个属性$A$，若$XA^+$包含$U$，则$XA$是一个候选键，然后调换$B$中属性反复尝试<br>如果已经找到全部候选键，结束<br>否则，从$B$中任取两个属性，三个属性$\cdots$，反复尝试</p>
+<h2 id="求正则覆盖-F-c"><a href="#求正则覆盖-F-c" class="headerlink" title="求正则覆盖$F_c$"></a>求正则覆盖$F_c$</h2><p>小$tips:$正则覆盖至少存在一个但不唯一<br>$(1)$右部最小化：用分解法则使$F$中的任何一个函数依赖的右边仅含一个属性<br>$(2)$除本求包：从第一个函数依赖$X\to Y$开始，先将其从$F$中去除，然后在剩下的函数依赖中求$X^+$，若$X^+$包含$Y$，就说明$X\to Y$确实冗余，否则保留$X\to Y$<br>$(3)$左部最小化：尝试去掉左侧无关属性，如$XY\to A$，若要判断$Y$是冗余属性，则计算$X^+$，若$X^+$包含$A$，说明$Y$是无关属性，去掉它<br>$(4)$如果第三步有修改，那要退回到第二步重新做</p>
+]]></content>
+      <tags>
+        <tag>数据库</tag>
+      </tags>
+  </entry>
 </search>
