@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="求属性集闭包1234567result :&#x3D; α;repeatfor each β → γ in F do    begin        if β ⊆ result then result :&#x3D; result ∪ γ;    enduntil(result不再改变)">
+<meta name="description" content="求属性集闭包12345result &#x3D; αrepeatfor each β → γ in F         if β ⊆ result then result :&#x3D; result ∪ γuntil(result不再改变)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据库范式知识点">
 <meta property="og:url" content="https://cabbage74.github.io/2023/05/06/database-paradigm/index.html">
 <meta property="og:site_name" content="Cabbage74">
-<meta property="og:description" content="求属性集闭包1234567result :&#x3D; α;repeatfor each β → γ in F do    begin        if β ⊆ result then result :&#x3D; result ∪ γ;    enduntil(result不再改变)">
+<meta property="og:description" content="求属性集闭包12345result &#x3D; αrepeatfor each β → γ in F         if β ⊆ result then result :&#x3D; result ∪ γuntil(result不再改变)">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-05-06T08:49:33.000Z">
-<meta property="article:modified_time" content="2023-05-06T09:46:24.597Z">
+<meta property="article:modified_time" content="2023-05-06T15:16:02.027Z">
 <meta property="article:author" content="Cabbage">
 <meta property="article:tag" content="数据库">
 <meta name="twitter:card" content="summary">
@@ -343,7 +343,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  412
+                  819
                 </span>
               
 
@@ -359,7 +359,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  3
                 </span>
               
             </div>
@@ -380,12 +380,19 @@
       
 
       
-        <h2 id="求属性集闭包"><a href="#求属性集闭包" class="headerlink" title="求属性集闭包"></a>求属性集闭包</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">result := α;</span><br><span class="line">repeat</span><br><span class="line">for each β → γ in F do</span><br><span class="line">    begin</span><br><span class="line">        if β ⊆ result then result := result ∪ γ;</span><br><span class="line">    end</span><br><span class="line">until(result不再改变)</span><br></pre></td></tr></table></figure>
+        <h2 id="求属性集闭包"><a href="#求属性集闭包" class="headerlink" title="求属性集闭包"></a>求属性集闭包</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">result = α</span><br><span class="line">repeat</span><br><span class="line">for each β → γ in F </span><br><span class="line">        if β ⊆ result then result := result ∪ γ</span><br><span class="line">until(result不再改变)</span><br></pre></td></tr></table></figure>
 <span id="more"></span>
 
 <h2 id="求函数依赖集的闭包"><a href="#求函数依赖集的闭包" class="headerlink" title="求函数依赖集的闭包"></a>求函数依赖集的闭包</h2><p>对于任意的$\gamma \in R$，找出闭包$\gamma ^+$，并且对于任意的$S\subseteq \gamma ^+$，输出一个函数依赖$\gamma \to S$</p>
 <h2 id="求候选键"><a href="#求候选键" class="headerlink" title="求候选键"></a>求候选键</h2><p>给定关系模式$R(U,F)$，将$R$的所有属性分为$L,B,N$三类<br>$L$表示只在函数依赖左边出现<br>$B$表示在函数依赖两边都有出现<br>$N$表示未在函数依赖中出现<br>令$X&#x3D;L\cup N$，若$X^+$包含$U$，则$X$是唯一候选键<br>否则，从$B$中任取一个属性$A$，若$XA^+$包含$U$，则$XA$是一个候选键，然后调换$B$中属性反复尝试<br>如果已经找到全部候选键，结束<br>否则，从$B$中任取两个属性，三个属性$\cdots$，反复尝试</p>
-<h2 id="求正则覆盖-F-c"><a href="#求正则覆盖-F-c" class="headerlink" title="求正则覆盖$F_c$"></a>求正则覆盖$F_c$</h2><p>小$tips:$正则覆盖至少存在一个但不唯一<br>$(1)$右部最小化：用分解法则使$F$中的任何一个函数依赖的右边仅含一个属性<br>$(2)$除本求包：从第一个函数依赖$X\to Y$开始，先将其从$F$中去除，然后在剩下的函数依赖中求$X^+$，若$X^+$包含$Y$，就说明$X\to Y$确实冗余，否则保留$X\to Y$<br>$(3)$左部最小化：尝试去掉左侧无关属性，如$XY\to A$，若要判断$Y$是冗余属性，则计算$X^+$，若$X^+$包含$A$，说明$Y$是无关属性，去掉它<br>$(4)$如果第三步有修改，那要退回到第二步重新做</p>
+<h2 id="求正则覆盖-F-c"><a href="#求正则覆盖-F-c" class="headerlink" title="求正则覆盖$F_c$"></a>求正则覆盖$F_c$</h2><p>小$tips:$正则覆盖至少存在一个但不唯一<br>$(1)$右部最小化：用分解法则使$F$中的任何一个函数依赖的右边仅含一个属性<br>$(2)$除本求包：从第一个函数依赖$X\to Y$开始，先将其从$F$中去除，然后在剩下的函数依赖中求$X^+$，若$X^+$包含$Y$，就说明$X\to Y$确实冗余，否则保留$X\to Y$<br>$(3)$左部最小化：尝试去掉左侧无关属性，如$XY\to A$，若要判断$Y$是冗余属性，则计算$X^+$，若$X^+$包含$A$，说明$Y$是无关属性，去掉它<br>$(4)$如果第三步有修改，那要退回到第二步重新做<br>$(5)$把左部相同的函数依赖合并</p>
+<h2 id="3NF-分解"><a href="#3NF-分解" class="headerlink" title="$3NF$分解"></a>$3NF$分解</h2><p>$(1)$求出$F_c$<br>$(2)$$F_c$中每个$X\to Y$构成一个模式$XY$<br>$(3)$如果每个模式都不包含$R$的候选键，那么把候选键作为一个模式放入模式集中<br>$(4)$如果分解完后，存在某个$R_i\subseteq R_j$，舍掉$R_i$</p>
+<h2 id="判断分解是否保持函数依赖"><a href="#判断分解是否保持函数依赖" class="headerlink" title="判断分解是否保持函数依赖"></a>判断分解是否保持函数依赖</h2><p>对$F$中每个$\alpha \to \beta$做以下过程：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">result = α</span><br><span class="line">repeat</span><br><span class="line">for each 分解后的 Ri</span><br><span class="line">    t = (result ∩ Ri)的闭包 ∩ Ri</span><br><span class="line">    result = result ∪ t</span><br><span class="line">until(result不再改变)</span><br></pre></td></tr></table></figure>
+
+<p>若$result$包含$\beta$所有属性，则该依赖被保持</p>
+<h2 id="求函数依赖-F-在某个属性子集上的投影"><a href="#求函数依赖-F-在某个属性子集上的投影" class="headerlink" title="求函数依赖$F$在某个属性子集上的投影"></a>求函数依赖$F$在某个属性子集上的投影</h2><p>列出属性子集(设属性子集里有$n$个属性)里单属性、任意组合双属性、任意组合三属性、$\cdots $、$直到任意组合(n-1)属性$在原$F$上的所有闭包<br>把右部的平凡属性、不在属性子集内的属性去掉<br>例：关系模型$R(A,B,C,D),F&#x3D;\lbrace AB\to C, D\to B\rbrace$，那么$F$在模式$(ACD)$上的投影$\pi_{ACD}(F)$是什么<br>$A^+&#x3D;A$<br>$C^+&#x3D;C$<br>$D^+&#x3D;DB$<br>$AC^+&#x3D;AC$<br>$AD^+&#x3D;ABCD$<br>$CD^+&#x3D;BCD$<br>在草稿上先把$B$划掉<br>再把平凡属性划掉<br>最后划的只剩$AD^+&#x3D;C$<br>那么投影$\pi_{ACD}(F)&#x3D;\lbrace AD\to C\rbrace$</p>
+<h2 id="BCNF-分解"><a href="#BCNF-分解" class="headerlink" title="$BCNF$分解"></a>$BCNF$分解</h2><p>如果某个$R_i$(原$F$在$R_i$上的投影)中存在一个非平凡函数依赖$\alpha \to \beta$的左部$\alpha$不是超键，则将$R_i$分解成$(\alpha \beta)$和$(R_i-\beta)$<br>一直这样找不符合的函数依赖，再分解<br>直到分解符合$BCNF$要求</p>
 
       
     </div>
