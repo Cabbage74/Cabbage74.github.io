@@ -338,7 +338,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  161
+                  1.1k
                 </span>
               
 
@@ -354,7 +354,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  5
                 </span>
               
             </div>
@@ -376,10 +376,14 @@
 
       
         
-          
-            <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> KMP</span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> N = <span class="number">1e6</span> + <span class="number">10</span>;</span><br><span class="line">    <span class="type">int</span> nxt[N];</span><br><span class="line">    std::string s, t;</span><br><span class="line">    <span class="type">int</span> n, m;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">(std::string a, std::string b)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        s = <span class="string">&quot;?&quot;</span> + a, t = <span class="string">&quot;?&quot;</span> + b;</span><br><span class="line">        n = s.<span class="built_in">length</span>() - <span class="number">1</span>, m = t.<span class="built_in">length</span>() - <span class="number">1</span>;</span><br><span class="line">        std::<span class="built_in">fill</span>(nxt + <span class="number">1</span>, nxt + m + <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">get_nxt</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        nxt[<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">2</span>; i &lt;= m; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">int</span> j = i - <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">while</span> (j != <span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (t[i] == t[nxt[j] + <span class="number">1</span>])</span><br><span class="line">                &#123;</span><br><span class="line">                    nxt[i] = nxt[j] + <span class="number">1</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                j = nxt[j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">std::vector&lt;<span class="type">int</span>&gt; <span class="title">get_start_pos</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::vector&lt;<span class="type">int</span>&gt; res;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>, j = <span class="number">1</span>; i &lt;= n; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">while</span> (j != <span class="number">1</span> &amp;&amp; s[i] != t[j])</span><br><span class="line">                j = nxt[j - <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (s[i] == t[j])</span><br><span class="line">                ++j;</span><br><span class="line">            <span class="keyword">if</span> (j == m + <span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                res.<span class="built_in">push_back</span>(i - (j - <span class="number">1</span>) + <span class="number">1</span>);</span><br><span class="line">                j = nxt[m] + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
+          <h2 id="前置概念"><a href="#前置概念" class="headerlink" title="前置概念"></a>前置概念</h2><p>$Border$：如果字符串同长度的前缀与后缀相同，称该前缀(后缀)是一个$Border$(可以指这个前缀也可以指这个前缀的长度)<br>循环周期：对于字符串$S$和正整数$p$，如果有$S_i&#x3D;S_{i-p}$，对于$p\lt i\leq |S|$成立，称$p$是$S$的一个循环周期<br>循环节：若字符串$S$的周期$p$满足$p\mid |S|$，称$p$是$S$的一个循环节</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2023/06/17/kmp-blog/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
