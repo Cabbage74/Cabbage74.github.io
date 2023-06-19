@@ -252,7 +252,7 @@
       </tags>
   </entry>
   <entry>
-    <title>数据库范式知识点</title>
+    <title>范式理论</title>
     <url>/2023/05/06/database-paradigm/</url>
     <content><![CDATA[<h2 id="求属性集闭包"><a href="#求属性集闭包" class="headerlink" title="求属性集闭包"></a>求属性集闭包</h2><figure class="highlight text"><table><tr><td class="code"><pre><span class="line">result = α</span><br><span class="line">repeat</span><br><span class="line">for each β → γ in F </span><br><span class="line">        if β ⊆ result then result = result ∪ γ</span><br><span class="line">until(result不再改变)</span><br></pre></td></tr></table></figure>
 <span id="more"></span>
@@ -269,7 +269,7 @@
 <h2 id="BCNF-分解"><a href="#BCNF-分解" class="headerlink" title="$BCNF$分解"></a>$BCNF$分解</h2><p>如果某个$R_i$(原$F$在$R_i$上的投影)中存在一个非平凡函数依赖$\alpha \to \beta$的左部$\alpha$不是超键，则将$R_i$分解成$(\alpha \beta)$和$(R_i-\beta)$<br>一直这样找不符合的函数依赖，再分解<br>直到分解符合$BCNF$要求</p>
 ]]></content>
       <tags>
-        <tag>数据库</tag>
+        <tag>Database</tag>
       </tags>
   </entry>
   <entry>
@@ -367,6 +367,14 @@
 ]]></content>
       <tags>
         <tag>XCPC</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>事务管理</title>
+    <url>/2023/06/19/database-transaction/</url>
+    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title="?"></a>?</h2><span id="more"></span>]]></content>
+      <tags>
+        <tag>Database</tag>
       </tags>
   </entry>
 </search>
