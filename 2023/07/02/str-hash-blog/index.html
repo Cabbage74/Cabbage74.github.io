@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="XCPC," />
 
 
 
@@ -79,14 +79,17 @@
 
 
 
-<meta name="description" content="人类的赞歌就是勇气的赞歌">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Cabbage74">
-<meta property="og:url" content="https://cabbage74.github.io/archives/2023/index.html">
+<meta name="description" content="多项式Hash思想将字符串看作是某个进制($Base$)下的数字串">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字符串Hash的三种姿势">
+<meta property="og:url" content="https://cabbage74.github.io/2023/07/02/str-hash-blog/index.html">
 <meta property="og:site_name" content="Cabbage74">
-<meta property="og:description" content="人类的赞歌就是勇气的赞歌">
+<meta property="og:description" content="多项式Hash思想将字符串看作是某个进制($Base$)下的数字串">
 <meta property="og:locale">
+<meta property="article:published_time" content="2023-07-02T05:52:03.000Z">
+<meta property="article:modified_time" content="2023-07-02T10:41:36.718Z">
 <meta property="article:author" content="Cabbage">
+<meta property="article:tag" content="XCPC">
 <meta name="twitter:card" content="summary">
 
 
@@ -117,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://Cabbage74.github.io/archives/2023/"/>
+  <link rel="canonical" href="https://Cabbage74.github.io/2023/07/02/str-hash-blog/"/>
 
 
 
 
 
-  <title>归档 | Cabbage74</title>
+  <title>字符串Hash的三种姿势 | Cabbage74</title>
   
 
 
@@ -142,7 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -260,411 +263,192 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-      <span class="archive-page-counter">
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Cabbage74.github.io/2023/07/02/str-hash-blog/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cabbage74">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">字符串Hash的三种姿势</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-07-02T13:52:03+08:00">
+                2023-07-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 20 篇日志。 继续努力。
-      </span>
 
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2023">2023</h1>
-          </div>
-        
-        
+            
+          
 
-        
+          
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2023/07/02/str-hash-blog/" itemprop="url">
+          
+            <div class="post-wordcount">
               
-                <span itemprop="name">字符串Hash的三种姿势</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  957
+                </span>
               
-            </a>
-        
-      </h2>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2023-07-02T13:52:03+08:00"
-              content="2023-07-02" >
-          07-02
-        </time>
-      </div>
+              
+                <span class="post-meta-divider">|</span>
+              
 
-    </header>
-  </article>
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  4
+                </span>
+              
+            </div>
+          
 
+          
 
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2023/07/01/230701record/" itemprop="url">
-              
-                <span itemprop="name">2023.07.01</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2023-07-01T23:06:33+08:00"
-              content="2023-07-01" >
-          07-01
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2023/06/17/kmp-blog/" itemprop="url">
-              
-                <span itemprop="name">KMP</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2023-06-17T23:39:23+08:00"
-              content="2023-06-17" >
-          06-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <h2 id="多项式Hash"><a href="#多项式Hash" class="headerlink" title="多项式Hash"></a>多项式Hash</h2><h3 id="思想"><a href="#思想" class="headerlink" title="思想"></a>思想</h3><p>将字符串看作是某个进制($Base$)下的数字串</p>
+<span id="more"></span>
+<p>$H(S)&#x3D;H(S[1,|S|-1])\times Base+S[|S|]$<br>$&#x3D;S[1]\times Base^{|S|-1}+S[2]\times Base^{|S|-2}+\cdots +S[|S|]\times Base^{0}$<br>例：字符集$\sum &#x3D;\lbrace a,b,\cdots,o\rbrace$,字符串就可看作$16$进制数字串<br>其中$a$对应$1$，$b$对应$2$，$\cdots$，$o$对应$15$<br>若$|S|&#x3D;adenoo$，有$H(S)&#x3D;145EFF_{(16)}&#x3D;1335039_{(10)}$</p>
+<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><p>优点：不考虑计算机对整形变量的值域限制，在数学上，对于多项式哈希，字符串和$Hash$值一一对应，一定不会发生$Hash$冲突<br>缺点：产生的数字很可能过大爆$i64$</p>
+<h2 id="多项式取模Hash-模哈"><a href="#多项式取模Hash-模哈" class="headerlink" title="多项式取模Hash(模哈)"></a>多项式取模Hash(模哈)</h2><h3 id="思想-1"><a href="#思想-1" class="headerlink" title="思想"></a>思想</h3><p>选择一个模数$MOD$，解决多项式$Hash$的缺点，增加冲突率，减小值域<br>$H(S)&#x3D;(S[1]\times Base^{|S|-1}+S[2]\times Base^{|S|-2}+\cdots +S[|S|]\times Base^{0})% MOD$</p>
+<h3 id="优缺点-1"><a href="#优缺点-1" class="headerlink" title="优缺点"></a>优缺点</h3><p>优点：值域缩小，方便了计算机的存储<br>缺点：增加$Hash$冲突可能性</p>
+<h3 id="模哈的冲突概率"><a href="#模哈的冲突概率" class="headerlink" title="模哈的冲突概率"></a>模哈的冲突概率</h3><p>当$H(S)\neq H(T)$但$H(S)% MOD&#x3D;H(T)% MOD$时我们称发生了模哈冲突<br>模运算可以看作是一个均匀随机散列，即每个$H(S)$会被随机映射成$[0,MOD-1]$内的整数<br>原来无限的值域被压缩成了一个有限值域，根据鸽巢原理，冲突一定存在<br>不妨先回顾一下生日问题：<br>$n$个人，一年$365$天，存在有人同天生日的概率<br>若$n\gt 365$，根据鸽巢原理，一定有人生日相同<br>若$n\leq 365$，则没有人生日相同的概率为$\frac{A(365,n)}{365^n}$<br>当$n&#x3D;23$时，上述结果为$0.5$，即有$50%$的概率有人生日相同<br>将$365$看作$MOD$，$n$看作随机检验次数<br>可以认为随机检验次数超过$\sqrt{Mod}$时，就会有较大概率发生错误<br><strong>因此模哈中使用的$MOD$最好超过$Hash$检验次数的平方</strong></p>
+<h3 id="Hash模数"><a href="#Hash模数" class="headerlink" title="Hash模数"></a>Hash模数</h3><p>根据前面对冲突概率的分析，<strong>优秀的$Hash$模数应该尽量大</strong><br>因此一个策略是用$ULL$保存$Hash$值，使$Hash$值自然溢出，相当于对$2^{64}$取模，但这很容易构造$Hash$冲突($BZOJ3097$)<br><strong>优秀的$Hash$模数还应该是一个质数</strong>，因为选一个大合数作模数相当于选了很多小模数<br>回顾$Hash$冲突的定义，当$H(S)% MOD&#x3D;H(T)% MOD$而$H(S)\neq H(T)$时称哈希发生冲突<br>其中$H(S)% MOD&#x3D;H(T)% MOD$又可以写成$(H(S)-H(T))% MOD&#x3D;0$<br>若$MOD&#x3D;6$，$(H(S)-H(T))% 6&#x3D;0$蕴含了$(H(S)-H(T))% 2&#x3D;0$和$(H(S)-H(T))% 3&#x3D;0$<br>因此，如果选了一个因子很多的合数，$Hash$冲突的概率会翻非常多倍</p>
+<h3 id="实际策略"><a href="#实际策略" class="headerlink" title="实际策略"></a>实际策略</h3><p>单模：选取$10^9$到$10^{10}$范围的大质数作为$Hash$模数。但也有广为人知的方法构造冲突<br>双模(甚至多模)：进行多次不同质数的单模哈希，有效降低冲突概率。在不泄露模数的前提下，没有已知方法可以构造冲突</p>
+<h3 id="快速计算子串-Hash"><a href="#快速计算子串-Hash" class="headerlink" title="快速计算子串$Hash$"></a>快速计算子串$Hash$</h3><p>$H(S[l,r])&#x3D;(S[l]\times Base^{r-l}+S[l+1]\times Base^{r-l-1}+\cdots +S[r]\times Base^{0})% MOD$<br>令$F(i)&#x3D;H(Prefix(i))$<br>$F(l-1)&#x3D;(S[1]\times Base^{l-2}+S[2]\times Base^{l-3}+\cdots +S[l-1]\times Base^{0})% MOD$<br>$F(r)&#x3D;(S[1]\times Base^{r-1}+S[2]\times Base^{r-2}+\cdots +S[r]\times Base^{0})% MOD$<br>有$H(S[l,r])&#x3D;(F(r)-(F(l-1)\times Base^{r-l+1}%MOD)+MOD)%MOD$<br>直观上可以这样想，有一个数字串$12345$，我要提取出子串$345$，是通过$12345-12\times 1000$做到的<br>因此我们预处理出每一个前缀的$Hash$即可</p>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2023/05/29/parallel-homework2/" itemprop="url">
-              
-                <span itemprop="name">MPI实现奇偶排序</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2023-05-29T19:05:17+08:00"
-              content="2023-05-29" >
-          05-29
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2023/05/15/23XianInvitationrecord/" itemprop="url">
-              
-                <span itemprop="name">记2023ICPC西安邀请赛</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2023-05-15T09:55:54+08:00"
-              content="2023-05-15" >
-          05-15
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2023/05/13/230513record/" itemprop="url">
-              
-                <span itemprop="name">2023.05.13</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2023-05-13T19:01:45+08:00"
-              content="2023-05-13" >
-          05-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2023/05/08/230508record/" itemprop="url">
-              
-                <span itemprop="name">2023.05.08</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2023-05-08T15:42:21+08:00"
-              content="2023-05-08" >
-          05-08
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2023/05/06/parallel-homework1/" itemprop="url">
-              
-                <span itemprop="name">OpenMP实现生产者消费者问题</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2023-05-06T20:13:57+08:00"
-              content="2023-05-06" >
-          05-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2023/05/06/database-paradigm/" itemprop="url">
-              
-                <span itemprop="name">范式理论</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2023-05-06T16:49:33+08:00"
-              content="2023-05-06" >
-          05-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2023/05/01/Codeforces-div2-821/" itemprop="url">
-              
-                <span itemprop="name">Codeforces Div2 821</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2023-05-01T18:01:59+08:00"
-              content="2023-05-01" >
-          05-01
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/XCPC/" rel="tag"><i class="fa fa-tag"></i> XCPC</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/07/01/230701record/" rel="next" title="2023.07.01">
+                <i class="fa fa-chevron-left"></i> 2023.07.01
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/2023/page/2/">2</a><a class="extend next" rel="next" href="/archives/2023/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -672,6 +456,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -893,6 +681,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
