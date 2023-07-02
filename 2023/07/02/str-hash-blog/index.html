@@ -81,13 +81,13 @@
 
 <meta name="description" content="多项式Hash思想将字符串看作是某个进制($Base$)下的数字串">
 <meta property="og:type" content="article">
-<meta property="og:title" content="字符串Hash的三种姿势">
+<meta property="og:title" content="字符串Hash">
 <meta property="og:url" content="https://cabbage74.github.io/2023/07/02/str-hash-blog/index.html">
 <meta property="og:site_name" content="Cabbage74">
 <meta property="og:description" content="多项式Hash思想将字符串看作是某个进制($Base$)下的数字串">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-07-02T05:52:03.000Z">
-<meta property="article:modified_time" content="2023-07-02T10:41:36.718Z">
+<meta property="article:modified_time" content="2023-07-02T13:23:46.355Z">
 <meta property="article:author" content="Cabbage">
 <meta property="article:tag" content="XCPC">
 <meta name="twitter:card" content="summary">
@@ -126,7 +126,7 @@
 
 
 
-  <title>字符串Hash的三种姿势 | Cabbage74</title>
+  <title>字符串Hash | Cabbage74</title>
   
 
 
@@ -294,7 +294,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">字符串Hash的三种姿势</h1>
+          <h1 class="post-title" itemprop="name headline">字符串Hash</h1>
         
 
         <div class="post-meta">
@@ -343,7 +343,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  957
+                  1.1k
                 </span>
               
 
@@ -390,6 +390,7 @@
 <h3 id="Hash模数"><a href="#Hash模数" class="headerlink" title="Hash模数"></a>Hash模数</h3><p>根据前面对冲突概率的分析，<strong>优秀的$Hash$模数应该尽量大</strong><br>因此一个策略是用$ULL$保存$Hash$值，使$Hash$值自然溢出，相当于对$2^{64}$取模，但这很容易构造$Hash$冲突($BZOJ3097$)<br><strong>优秀的$Hash$模数还应该是一个质数</strong>，因为选一个大合数作模数相当于选了很多小模数<br>回顾$Hash$冲突的定义，当$H(S)% MOD&#x3D;H(T)% MOD$而$H(S)\neq H(T)$时称哈希发生冲突<br>其中$H(S)% MOD&#x3D;H(T)% MOD$又可以写成$(H(S)-H(T))% MOD&#x3D;0$<br>若$MOD&#x3D;6$，$(H(S)-H(T))% 6&#x3D;0$蕴含了$(H(S)-H(T))% 2&#x3D;0$和$(H(S)-H(T))% 3&#x3D;0$<br>因此，如果选了一个因子很多的合数，$Hash$冲突的概率会翻非常多倍</p>
 <h3 id="实际策略"><a href="#实际策略" class="headerlink" title="实际策略"></a>实际策略</h3><p>单模：选取$10^9$到$10^{10}$范围的大质数作为$Hash$模数。但也有广为人知的方法构造冲突<br>双模(甚至多模)：进行多次不同质数的单模哈希，有效降低冲突概率。在不泄露模数的前提下，没有已知方法可以构造冲突</p>
 <h3 id="快速计算子串-Hash"><a href="#快速计算子串-Hash" class="headerlink" title="快速计算子串$Hash$"></a>快速计算子串$Hash$</h3><p>$H(S[l,r])&#x3D;(S[l]\times Base^{r-l}+S[l+1]\times Base^{r-l-1}+\cdots +S[r]\times Base^{0})% MOD$<br>令$F(i)&#x3D;H(Prefix(i))$<br>$F(l-1)&#x3D;(S[1]\times Base^{l-2}+S[2]\times Base^{l-3}+\cdots +S[l-1]\times Base^{0})% MOD$<br>$F(r)&#x3D;(S[1]\times Base^{r-1}+S[2]\times Base^{r-2}+\cdots +S[r]\times Base^{0})% MOD$<br>有$H(S[l,r])&#x3D;(F(r)-(F(l-1)\times Base^{r-l+1}%MOD)+MOD)%MOD$<br>直观上可以这样想，有一个数字串$12345$，我要提取出子串$345$，是通过$12345-12\times 1000$做到的<br>因此我们预处理出每一个前缀的$Hash$即可</p>
+<h2 id="单模哈模板"><a href="#单模哈模板" class="headerlink" title="单模哈模板"></a>单模哈模板</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> ULL = <span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">1e6</span> + <span class="number">10</span>;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Hash</span></span><br><span class="line">&#123;</span><br><span class="line">    ULL Base, Mod;</span><br><span class="line">    ULL pow[N];</span><br><span class="line">    ULL f[N];</span><br><span class="line">    std::string str;</span><br><span class="line">    <span class="built_in">Hash</span>(ULL Base, ULL Mod, std::string s) : <span class="built_in">Base</span>(Base), <span class="built_in">Mod</span>(Mod), <span class="built_in">str</span>(<span class="string">&quot;?&quot;</span> + s)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> n = str.<span class="built_in">size</span>() - <span class="number">1</span>;</span><br><span class="line">        pow[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++i)</span><br><span class="line">            pow[i] = pow[i - <span class="number">1</span>] * Base % Mod;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++i)</span><br><span class="line">            f[i] = (f[i - <span class="number">1</span>] * Base % Mod + str[i]) % Mod; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">ULL <span class="title">getHash</span><span class="params">(<span class="type">int</span> l, <span class="type">int</span> r)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (f[r] - f[l - <span class="number">1</span>] * pow[r - l + <span class="number">1</span>] % Mod + Mod) % Mod;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
       
     </div>
