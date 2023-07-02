@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="多项式Hash思想将字符串看作是某个进制($Base$)下的数字串">
+<meta name="description" content="多项式Hash思想将字符串看作是某个进制($Base$)下的数字串$H(S)&#x3D;H(S[1,|S|-1])\times Base+S[|S|]$$&#x3D;S[1]\times Base^{|S|-1}+S[2]\times Base^{|S|-2}+\cdots +S[|S|]\times Base^{0}$例：字符集$\sum &#x3D;\lbrace a,b,\cdots,o\r">
 <meta property="og:type" content="article">
 <meta property="og:title" content="字符串Hash">
 <meta property="og:url" content="https://cabbage74.github.io/2023/07/02/str-hash-blog/index.html">
 <meta property="og:site_name" content="Cabbage74">
-<meta property="og:description" content="多项式Hash思想将字符串看作是某个进制($Base$)下的数字串">
+<meta property="og:description" content="多项式Hash思想将字符串看作是某个进制($Base$)下的数字串$H(S)&#x3D;H(S[1,|S|-1])\times Base+S[|S|]$$&#x3D;S[1]\times Base^{|S|-1}+S[2]\times Base^{|S|-2}+\cdots +S[|S|]\times Base^{0}$例：字符集$\sum &#x3D;\lbrace a,b,\cdots,o\r">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-07-02T05:52:03.000Z">
-<meta property="article:modified_time" content="2023-07-02T13:23:46.355Z">
+<meta property="article:modified_time" content="2023-07-02T13:37:04.667Z">
 <meta property="article:author" content="Cabbage">
 <meta property="article:tag" content="XCPC">
 <meta name="twitter:card" content="summary">
@@ -380,9 +380,9 @@
       
 
       
-        <h2 id="多项式Hash"><a href="#多项式Hash" class="headerlink" title="多项式Hash"></a>多项式Hash</h2><h3 id="思想"><a href="#思想" class="headerlink" title="思想"></a>思想</h3><p>将字符串看作是某个进制($Base$)下的数字串</p>
+        <h2 id="多项式Hash"><a href="#多项式Hash" class="headerlink" title="多项式Hash"></a>多项式Hash</h2><h3 id="思想"><a href="#思想" class="headerlink" title="思想"></a>思想</h3><p>将字符串看作是某个进制($Base$)下的数字串<br>$H(S)&#x3D;H(S[1,|S|-1])\times Base+S[|S|]$<br>$&#x3D;S[1]\times Base^{|S|-1}+S[2]\times Base^{|S|-2}+\cdots +S[|S|]\times Base^{0}$<br>例：字符集$\sum &#x3D;\lbrace a,b,\cdots,o\rbrace$,字符串就可看作$16$进制数字串<br>其中$a$对应$1$，$b$对应$2$，$\cdots$，$o$对应$15$<br>若$|S|&#x3D;adenoo$，有$H(S)&#x3D;145EFF_{(16)}&#x3D;1335039_{(10)}$</p>
 <span id="more"></span>
-<p>$H(S)&#x3D;H(S[1,|S|-1])\times Base+S[|S|]$<br>$&#x3D;S[1]\times Base^{|S|-1}+S[2]\times Base^{|S|-2}+\cdots +S[|S|]\times Base^{0}$<br>例：字符集$\sum &#x3D;\lbrace a,b,\cdots,o\rbrace$,字符串就可看作$16$进制数字串<br>其中$a$对应$1$，$b$对应$2$，$\cdots$，$o$对应$15$<br>若$|S|&#x3D;adenoo$，有$H(S)&#x3D;145EFF_{(16)}&#x3D;1335039_{(10)}$</p>
+
 <h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><p>优点：不考虑计算机对整形变量的值域限制，在数学上，对于多项式哈希，字符串和$Hash$值一一对应，一定不会发生$Hash$冲突<br>缺点：产生的数字很可能过大爆$i64$</p>
 <h2 id="多项式取模Hash-模哈"><a href="#多项式取模Hash-模哈" class="headerlink" title="多项式取模Hash(模哈)"></a>多项式取模Hash(模哈)</h2><h3 id="思想-1"><a href="#思想-1" class="headerlink" title="思想"></a>思想</h3><p>选择一个模数$MOD$，解决多项式$Hash$的缺点，增加冲突率，减小值域<br>$H(S)&#x3D;(S[1]\times Base^{|S|-1}+S[2]\times Base^{|S|-2}+\cdots +S[|S|]\times Base^{0})% MOD$</p>
 <h3 id="优缺点-1"><a href="#优缺点-1" class="headerlink" title="优缺点"></a>优缺点</h3><p>优点：值域缩小，方便了计算机的存储<br>缺点：增加$Hash$冲突可能性</p>

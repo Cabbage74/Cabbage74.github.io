@@ -376,7 +376,7 @@
 
       
         
-          <h2 id="多项式Hash"><a href="#多项式Hash" class="headerlink" title="多项式Hash"></a>多项式Hash</h2><h3 id="思想"><a href="#思想" class="headerlink" title="思想"></a>思想</h3><p>将字符串看作是某个进制($Base$)下的数字串</p>
+          <h2 id="多项式Hash"><a href="#多项式Hash" class="headerlink" title="多项式Hash"></a>多项式Hash</h2><h3 id="思想"><a href="#思想" class="headerlink" title="思想"></a>思想</h3><p>将字符串看作是某个进制($Base$)下的数字串<br>$H(S)&#x3D;H(S[1,|S|-1])\times Base+S[|S|]$<br>$&#x3D;S[1]\times Base^{|S|-1}+S[2]\times Base^{|S|-2}+\cdots +S[|S|]\times Base^{0}$<br>例：字符集$\sum &#x3D;\lbrace a,b,\cdots,o\rbrace$,字符串就可看作$16$进制数字串<br>其中$a$对应$1$，$b$对应$2$，$\cdots$，$o$对应$15$<br>若$|S|&#x3D;adenoo$，有$H(S)&#x3D;145EFF_{(16)}&#x3D;1335039_{(10)}$</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2023/07/02/str-hash-blog/#more" rel="contents">
