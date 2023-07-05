@@ -2624,14 +2624,3 @@ header.header {
     padding: 10px 12px;
   }
 }
-body {
-  background: url("/images/Background.jpeg");
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: 50% 50%;
-  background-size: cover;
-  -webkit-background-size: cover;
-  -o-background-size: cover;
-  -moz-background-size: cover;
-  -ms-background-size: cover;
-}
