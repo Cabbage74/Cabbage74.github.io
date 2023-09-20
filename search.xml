@@ -389,10 +389,28 @@
     <title>西方教育史</title>
     <url>/2023/09/11/western-education/</url>
     <content><![CDATA[<h2 id="记录一些西方教育史的奇怪知识"><a href="#记录一些西方教育史的奇怪知识" class="headerlink" title="记录一些西方教育史的奇怪知识"></a>记录一些西方教育史的奇怪知识</h2><span id="more"></span>
-<p>吴献书 首次翻译 《理想国》书名<br>《理想国》：对话录， 柏拉图记载的苏格拉底说出来的话<br>古希腊三杰：柏拉图，苏格拉底，亚里士多德<br>柏拉图三启蒙老师：文法奥尼西亚斯，葛老孔，亚里斯敦<br>苏格拉底的教育目的：造就治国人才<br>柏拉图的教育目的：培养哲学王<br>雅典民主弊端：苏格拉底审判<br>影响成长的因素：遗传、环境(可能性)、教育(主导)、主观能动性(动力)</p>
+<h3 id="《理想国》"><a href="#《理想国》" class="headerlink" title="《理想国》"></a>《理想国》</h3><p>吴献书 首次翻译 《理想国》书名<br>《理想国》：对话录， 柏拉图记载的苏格拉底说出来的话<br>古希腊三杰：柏拉图，苏格拉底，亚里士多德<br>柏拉图三启蒙老师：文法奥尼西亚斯，葛老孔，亚里斯敦<br>苏格拉底的教育目的：造就治国人才<br>柏拉图的教育目的：培养哲学王<br>雅典民主弊端：苏格拉底审判<br>影响成长的因素：遗传、环境(可能性)、教育(主导)、主观能动性(动力)</p>
 ]]></content>
       <tags>
         <tag>通识</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机逻辑基础</title>
+    <url>/2023/09/20/cs-logic-foundation/</url>
+    <content><![CDATA[<h2 id="记录计算机逻辑基础的小知识"><a href="#记录计算机逻辑基础的小知识" class="headerlink" title="记录计算机逻辑基础的小知识"></a>记录计算机逻辑基础的小知识</h2><span id="more"></span>
+<h3 id="Lecture1"><a href="#Lecture1" class="headerlink" title="$Lecture1$"></a>$Lecture1$</h3><p>Declarative sentence: 声明式句子(可判断真假性的陈述句)<br>Non-declarative sentence: 非声明式句子(无法判断真假)<br>We want to turn declarative sentences into formulas and create a formalism to manipulate such formulas.</p>
+<p>connective priority: $\lnot, \land, \lor, \to$</p>
+<h4 id="Natural-Deduction"><a href="#Natural-Deduction" class="headerlink" title="$Natural\ Deduction$"></a>$Natural\ Deduction$</h4><p>Collection of proof rules, which allow to infer new formulas from existing formulas.<br>Given the formulas $\phi_1,\cdots,\phi_n$, we intend to infer a conclusion $\psi$. We denote this by $\phi_1,\cdots,\phi_n\vdash \psi$.<br>This construct is called a $sequent$.</p>
+<h4 id="Natural-Duction-Rules-Conjuction"><a href="#Natural-Duction-Rules-Conjuction" class="headerlink" title="$Natural\ Duction\ Rules: Conjuction$"></a>$Natural\ Duction\ Rules: Conjuction$</h4><p>and-intoduction: $\frac{\phi\  \psi}{\phi \land \psi}$<br>and-elimination: $\frac{\phi \land \psi}{\phi}$, $\frac{\phi \land \psi}{\psi}$</p>
+<h4 id="Natural-Duction-Rules-Implication"><a href="#Natural-Duction-Rules-Implication" class="headerlink" title="$Natural\ Duction\ Rules: Implication$"></a>$Natural\ Duction\ Rules: Implication$</h4><p>implication elimination: $\frac{\phi\ \phi\to\psi}{\psi}$</p>
+<p>implication introdution: In order to prove $\phi\to\psi$, we make the temporary assumption of $\phi$, and then prove $\psi$.</p>
+<p>Remark: We may transform any proof of $\phi_1,\cdots,\phi_n\vdash \psi$ into a proof of $\vdash \phi_1\to(\phi_2\to(\cdots(\phi_n\to\psi)\cdots))$</p>
+<h4 id="Natural-Duction-Rules-Negation"><a href="#Natural-Duction-Rules-Negation" class="headerlink" title="$Natural\ Duction\ Rules: Negation$"></a>$Natural\ Duction\ Rules: Negation$</h4><p>Remark: If we wanna prove $\lnot \phi$, we can take $\phi$ as assumption and prove $\bot$</p>
+<h4 id="Natural-Duction-Rules-Derived-Rules"><a href="#Natural-Duction-Rules-Derived-Rules" class="headerlink" title="$Natural\ Duction\ Rules: Derived Rules$"></a>$Natural\ Duction\ Rules: Derived Rules$</h4><p>MT: $\frac{\phi\to\psi\ \ \lnot\psi}{\lnot \phi}$</p>
+]]></content>
+      <tags>
+        <tag>选修</tag>
       </tags>
   </entry>
 </search>
