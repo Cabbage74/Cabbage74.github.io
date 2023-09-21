@@ -8,7 +8,7 @@
       <link href="/2023/09/21/algorithm-design/"/>
       <url>/2023/09/21/algorithm-design/</url>
       
-        <content type="html"><![CDATA[<h2 id="记录算法设计与分析的小知识"><a href="#记录算法设计与分析的小知识" class="headerlink" title="记录算法设计与分析的小知识"></a>记录算法设计与分析的小知识</h2><span id="more"></span><h3 id="Lecture1"><a href="#Lecture1" class="headerlink" title="$Lecture1$"></a>$Lecture1$</h3><p>$O(f(n))$关注上界，$\Omega(f(n))$关注下界<br>$\Theta(f(n))$关注紧界<br>We say $T(n)$ is $\Theta(f(n))$ if and only if both $T(n)=O(f(n))$ and $T(n)=\Omega(f(n))$</p><h3 id="Lecture2"><a href="#Lecture2" class="headerlink" title="$Lecture2$"></a>$Lecture2$</h3><p>Suppose that $a\geq 1, b\geq 1$ and $d$ are constants<br>Suppose $T(n)=a\times T(\frac{n}{b}) + O(n^d)$<br>$The\ Master\ Theorem$ states:<br>If $a=b^d$, $T(n) = O(n^dlogn)$<br>If $a<b^d$, $T(n) = O(n^d)$If $a>b^d$, $T(n) = O(n^{log_b(a)})$</p>]]></content>
+        <content type="html"><![CDATA[<h2 id="记录算法设计与分析的小知识"><a href="#记录算法设计与分析的小知识" class="headerlink" title="记录算法设计与分析的小知识"></a>记录算法设计与分析的小知识</h2><span id="more"></span><h3 id="Lecture1"><a href="#Lecture1" class="headerlink" title="$Lecture1$"></a>$Lecture1$</h3><p>$O(f(n))$关注上界，$\Omega(f(n))$关注下界<br>$\Theta(f(n))$关注紧界<br>We say $T(n)$ is $\Theta(f(n))$ if and only if both $T(n)=O(f(n))$ and $T(n)=\Omega(f(n))$</p><h3 id="Lecture2"><a href="#Lecture2" class="headerlink" title="$Lecture2$"></a>$Lecture2$</h3><p>Suppose that $a\geq 1, b\geq 1$ and $d$ are constants<br>Suppose $T(n)=a\times T(\frac{n}{b}) + O(n^d)$<br>$The\ Master\ Theorem$ states:<br>If $a=b^d$, $T(n) = O(n^dlogn)$<br>If $a\lt b^d$, $T(n) = O(n^d)$<br>If $a\gt b^d$, $T(n) = O(n^{log_b(a)})$</p>]]></content>
       
       
       
