@@ -243,6 +243,8 @@
 <p>Remark: We may transform any proof of $\phi_1,\cdots,\phi_n\vdash \psi$ into a proof of $\vdash \phi_1\to(\phi_2\to(\cdots(\phi_n\to\psi)\cdots))$</p>
 <h4 id="Natural-Duction-Rules-Negation"><a href="#Natural-Duction-Rules-Negation" class="headerlink" title="$Natural\ Duction\ Rules: Negation$"></a>$Natural\ Duction\ Rules: Negation$</h4><p>Remark: If we wanna prove $\lnot \phi$, we can take $\phi$ as assumption and prove $\bot$</p>
 <h4 id="Natural-Duction-Rules-Derived-Rules"><a href="#Natural-Duction-Rules-Derived-Rules" class="headerlink" title="$Natural\ Duction\ Rules: Derived Rules$"></a>$Natural\ Duction\ Rules: Derived Rules$</h4><p>MT: $\frac{\phi\to\psi\ \ \lnot\psi}{\lnot \phi}$</p>
+<h3 id="Lecture2"><a href="#Lecture2" class="headerlink" title="$Lecture2$"></a>$Lecture2$</h3><h4 id="semantic-entailment"><a href="#semantic-entailment" class="headerlink" title="semantic entailment"></a>semantic entailment</h4><p>use truth table as proof<br>denoted by $\phi_1, \phi_2,\cdots,\phi_n \vDash \psi$</p>
+<p>$Soundness$:if $\phi_1,\cdots,\phi_n\vdash \psi$, then $\phi_1, \phi_2,\cdots,\phi_n \vDash \psi$<br>$Completeness$: if $\phi_1, \phi_2,\cdots,\phi_n \vDash \psi$, then $\phi_1,\cdots,\phi_n\vdash \psi$</p>
 ]]></content>
       <tags>
         <tag>选修</tag>
@@ -427,6 +429,17 @@
 ]]></content>
       <tags>
         <tag>XCPC</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>非关系型数据库</title>
+    <url>/2023/09/26/non-relational-database/</url>
+    <content><![CDATA[<h2 id="记录非关系型数据库-Nosql-的小知识"><a href="#记录非关系型数据库-Nosql-的小知识" class="headerlink" title="记录非关系型数据库($Nosql$)的小知识"></a>记录非关系型数据库($Nosql$)的小知识</h2><span id="more"></span>
+<h3 id="Lecture1"><a href="#Lecture1" class="headerlink" title="$Lecture1$"></a>$Lecture1$</h3><p>一致性哈希，分片与复制</p>
+<h3 id="Lecture2"><a href="#Lecture2" class="headerlink" title="$Lecture2$"></a>$Lecture2$</h3><p>分布式数据库：一组分布在计算机网络上，逻辑上相互关联的数据库<br>分布式数据库系统：管理分布式数据库并向用户提供透明访问机制的软件系统<br>透明的含义：系统的高级语义与低级实现问题的分离<br>$CAP$是分布式环境中设计和部署系统要考虑的三个重要的系统需求<br>$Consistency$(强一致性)：更新操作成功后，所有用户应访问到最新值<br>$Availability$(可用性)：每一个操作总能在一定的时间返回结果，不会发生错误和映射<br>$Partition\ Tolerance$(分区容忍性)：当网络发生故障时，系统仍能保持响应用户的请求<br>$CAP$是$Nosql$的基础<br>$CAP$定理：分布式系统只能保证$CAP$中的两个特性</p>
+]]></content>
+      <tags>
+        <tag>Database</tag>
       </tags>
   </entry>
 </search>
