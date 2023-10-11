@@ -201,9 +201,11 @@
     <title>算法设计与分析</title>
     <url>/2023/09/21/algorithm-design/</url>
     <content><![CDATA[<h2 id="记录算法设计与分析的小知识"><a href="#记录算法设计与分析的小知识" class="headerlink" title="记录算法设计与分析的小知识"></a>记录算法设计与分析的小知识</h2><span id="more"></span>
-<h3 id="Lecture1"><a href="#Lecture1" class="headerlink" title="$Lecture1$"></a>$Lecture1$</h3><p>$O(f(n))$关注上界，$\Omega(f(n))$关注下界<br>$\Theta(f(n))$关注紧界<br>We say $T(n)$ is $\Theta(f(n))$ if and only if both $T(n)=O(f(n))$ and $T(n)=\Omega(f(n))$</p>
+<h3 id="Lecture1"><a href="#Lecture1" class="headerlink" title="$Lecture1$"></a>$Lecture1$</h3><p>$O(f(n))$关注上界，$\Omega(f(n))$关注下界</p>
+<p>$\Theta(f(n))$关注紧界</p>
+<p>We say $T(n)$ is $\Theta(f(n))$ if and only if both $T(n)=O(f(n))$ and $T(n)=\Omega(f(n))$</p>
 <h3 id="Lecture2"><a href="#Lecture2" class="headerlink" title="$Lecture2$"></a>$Lecture2$</h3><p>Suppose that $a\geq 1, b\geq 1$ and $d$ are constants<br>Suppose $T(n)=a\times T(\frac{n}{b}) + O(n^d)$<br>$The\ Master\ Theorem$ states:<br>If $a=b^d$, $T(n) = O(n^dlogn)$<br>If $a\lt b^d$, $T(n) = O(n^d)$<br>If $a\gt b^d$, $T(n) = O(n^{log_b(a)})$</p>
-]]></content>
+<h3 id="Lecture3"><a href="#Lecture3" class="headerlink" title="$Lecture3$"></a>$Lecture3$</h3>]]></content>
       <tags>
         <tag>选修</tag>
       </tags>
@@ -234,10 +236,15 @@
     <title>计算机逻辑基础</title>
     <url>/2023/09/20/cs-logic-foundation/</url>
     <content><![CDATA[<h2 id="记录计算机逻辑基础的小知识"><a href="#记录计算机逻辑基础的小知识" class="headerlink" title="记录计算机逻辑基础的小知识"></a>记录计算机逻辑基础的小知识</h2><span id="more"></span>
-<h3 id="Lecture1"><a href="#Lecture1" class="headerlink" title="$Lecture1$"></a>$Lecture1$</h3><p>Declarative sentence: 声明式句子(可判断真假性的陈述句)<br>Non-declarative sentence: 非声明式句子(无法判断真假)<br>We want to turn declarative sentences into formulas and create a formalism to manipulate such formulas.</p>
+<h3 id="Lecture1"><a href="#Lecture1" class="headerlink" title="$Lecture1$"></a>$Lecture1$</h3><p>Declarative sentence: 声明式句子(可判断真假性的陈述句)</p>
+<p>Non-declarative sentence: 非声明式句子(无法判断真假)</p>
+<p>We want to turn declarative sentences into formulas and create a formalism to manipulate such formulas.</p>
 <p>connective priority: $\lnot, \land, \lor, \to$</p>
-<h4 id="Natural-Deduction"><a href="#Natural-Deduction" class="headerlink" title="$Natural\ Deduction$"></a>$Natural\ Deduction$</h4><p>Collection of proof rules, which allow to infer new formulas from existing formulas.<br>Given the formulas $\phi_1,\cdots,\phi_n$, we intend to infer a conclusion $\psi$. We denote this by $\phi_1,\cdots,\phi_n\vdash \psi$.<br>This construct is called a $sequent$.</p>
-<h4 id="Natural-Duction-Rules-Conjuction"><a href="#Natural-Duction-Rules-Conjuction" class="headerlink" title="$Natural\ Duction\ Rules: Conjuction$"></a>$Natural\ Duction\ Rules: Conjuction$</h4><p>and-intoduction: $\frac{\phi\  \psi}{\phi \land \psi}$<br>and-elimination: $\frac{\phi \land \psi}{\phi}$, $\frac{\phi \land \psi}{\psi}$</p>
+<h4 id="Natural-Deduction"><a href="#Natural-Deduction" class="headerlink" title="$Natural\ Deduction$"></a>$Natural\ Deduction$</h4><p>Collection of proof rules, which allow to infer new formulas from existing formulas.</p>
+<p>Given the formulas $\phi_1,\cdots,\phi_n$, we intend to infer a conclusion $\psi$. We denote this by $\phi_1,\cdots,\phi_n\vdash \psi$.</p>
+<p>This construct is called a $sequent$.</p>
+<h4 id="Natural-Duction-Rules-Conjuction"><a href="#Natural-Duction-Rules-Conjuction" class="headerlink" title="$Natural\ Duction\ Rules: Conjuction$"></a>$Natural\ Duction\ Rules: Conjuction$</h4><p>and-intoduction: $\frac{\phi\  \psi}{\phi \land \psi}$</p>
+<p>and-elimination: $\frac{\phi \land \psi}{\phi}$, $\frac{\phi \land \psi}{\psi}$</p>
 <h4 id="Natural-Duction-Rules-Implication"><a href="#Natural-Duction-Rules-Implication" class="headerlink" title="$Natural\ Duction\ Rules: Implication$"></a>$Natural\ Duction\ Rules: Implication$</h4><p>implication elimination: $\frac{\phi\ \phi\to\psi}{\psi}$</p>
 <p>implication introdution: In order to prove $\phi\to\psi$, we make the temporary assumption of $\phi$, and then prove $\psi$.</p>
 <p>Remark: We may transform any proof of $\phi_1,\cdots,\phi_n\vdash \psi$ into a proof of $\vdash \phi_1\to(\phi_2\to(\cdots(\phi_n\to\psi)\cdots))$</p>
@@ -409,6 +416,7 @@
 <h4 id="世界教育学发展"><a href="#世界教育学发展" class="headerlink" title="世界教育学发展"></a>世界教育学发展</h4><p>萌芽：柏拉图《理想国》<br>教育学成为学科：夸美纽斯《大教学论》<br>教育学成为科学：赫尔巴特《普通教育学》</p>
 <h4 id="中国教育学发展"><a href="#中国教育学发展" class="headerlink" title="中国教育学发展"></a>中国教育学发展</h4><p>第一阶段：20世纪初，从日本学习赫尔巴特教育学<br>第二阶段：1919年至1949年，学习欧美教育学，主要学习杜威的实用主义教育思想<br>第三阶段：1949年至20世纪50年，学习苏联，凯洛夫教育学</p>
 <p>王国维《教育世界》翻译了很多赫尔巴特的著作<br>《普通教育学》发表于1806年</p>
+<p>“科学教育学”主要由儿童的管理论，教学论和道德论三个部分组成</p>
 ]]></content>
       <tags>
         <tag>通识</tag>
@@ -437,7 +445,11 @@
     <content><![CDATA[<h2 id="记录非关系型数据库-Nosql-的小知识"><a href="#记录非关系型数据库-Nosql-的小知识" class="headerlink" title="记录非关系型数据库($Nosql$)的小知识"></a>记录非关系型数据库($Nosql$)的小知识</h2><span id="more"></span>
 <h3 id="Lecture1"><a href="#Lecture1" class="headerlink" title="$Lecture1$"></a>$Lecture1$</h3><p>一致性哈希，分片与复制</p>
 <h3 id="Lecture2"><a href="#Lecture2" class="headerlink" title="$Lecture2$"></a>$Lecture2$</h3><p>分布式数据库：一组分布在计算机网络上，逻辑上相互关联的数据库<br>分布式数据库系统：管理分布式数据库并向用户提供透明访问机制的软件系统<br>透明的含义：系统的高级语义与低级实现问题的分离<br>$CAP$是分布式环境中设计和部署系统要考虑的三个重要的系统需求<br>$Consistency$(强一致性)：更新操作成功后，所有用户应访问到最新值<br>$Availability$(可用性)：每一个操作总能在一定的时间返回结果，不会发生错误和映射<br>$Partition\ Tolerance$(分区容忍性)：当网络发生故障时，系统仍能保持响应用户的请求<br>$CAP$是$Nosql$的基础<br>$CAP$定理：分布式系统只能保证$CAP$中的两个特性</p>
-]]></content>
+<h3 id="Lecture3"><a href="#Lecture3" class="headerlink" title="$Lecture3$"></a>$Lecture3$</h3><p>非关系数据模型有：$Key/Value$数据模型，$Document-oriented$数据模型，$Column\ family$数据模型，$Graph$数据模型<br><img src="https://s2.loli.net/2023/10/10/celZmKghzs8M6Ef.png" alt="主流非关系数据模型"></p>
+<h4 id="K-V-数据模型"><a href="#K-V-数据模型" class="headerlink" title="$K-V$数据模型"></a>$K-V$数据模型</h4><p>Data are managed and represented as (Key, Value) pairs stored in efficient, highly scalable, key-based lookup structures such as Distributed Hash Tables (DHTs) and Log-Structured Merge-trees.<br>Key的内容可以有实际含义，而且可以是复杂的自定义结构，但要保证Key的唯一性<br>Key不是越长越好，否则内存开销大，增加查询代价<br>Key太短也不可取，否则可能含义不清，如中国:上海:浦东比CSP要好<br>Value可以存放任何类型数据<br>Value编码为BLOB形式存储<br>Value无需预先定义数据类型<br>Namespace是由KV对构成的集合，通常一类KV对构成一个集合<br>在KV的基础上加NameSpace目的是在内存中访问该数据集时，该数据集具有唯一名称。类似表的名称</p>
+<h4 id="Column-Family-数据模型"><a href="#Column-Family-数据模型" class="headerlink" title="$Column\ Family$数据模型"></a>$Column\ Family$数据模型</h4><p>以表的形式存储数据，表有行(row)和列(column)<br>column是数据库中最小的存储单元, 它是一个带时间戳的KV对<br>每一个row也是一个KV对, 表示一个高度结构化的数据项, row key是该row数据的唯一标示, value是一个column的集合<br>column family由任意数量的column构成, 这些column在逻辑上相互关联，通常一起访问<br>Row和column确定为一个cell，每个cell存储同一份数据的多个版本，用时间戳来区分<br>时间戳：用来区分数据版本的索引<br>访问控制、磁盘和内存使用统计在column family层面, column family模式灵活，可以在运行时添加或删除其中的列</p>
+<h4 id="Document-oriented-数据模型"><a href="#Document-oriented-数据模型" class="headerlink" title="$Document-oriented$数据模型"></a>$Document-oriented$数据模型</h4><p>KV的扩展形式, value表示为Document, 以标准半结构化格式, 如XML、JSON或BSON（二进制JSON）<br>采用KV结构组织Document，Value部分即Document<br>Document：是document-oriented数据库的基本概念, 是自包含的的数据单元, 是一系列数据项的集合<br>每个数据项有名字与对应的值，值既可以是简单的数据类型，也可以是复杂的类型<br>每个document有全局唯一的ID和版本号<br>Document是半结构化数据类型的数据<br>Document具有灵活的模式, 可以在运行时添加或删除属性(属性具有名称和一个或多个值)<br>同一个Document中数据的属性数量和类型可以不同<br>已知Document的格式，支持在Key和Value上建立索引和实现查询功能</p>
+<h4 id="Graph-数据模型"><a href="#Graph-数据模型" class="headerlink" title="$Graph$数据模型"></a>$Graph$数据模型</h4>]]></content>
       <tags>
         <tag>Database</tag>
       </tags>
