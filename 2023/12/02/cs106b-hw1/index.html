@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/qingcai_apple.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/qingcai_32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/qingcai_16.png">
+  <link rel="mask-icon" href="/images/qingcai.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cabbage74.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Foreword记录2023冬CS106B的Assignment 1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS106B Assignment 1">
+<meta property="og:url" content="https://cabbage74.github.io/2023/12/02/cs106b-hw1/index.html">
+<meta property="og:site_name" content="Cabbage74">
+<meta property="og:description" content="Foreword记录2023冬CS106B的Assignment 1">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-12-01T16:43:43.000Z">
+<meta property="article:modified_time" content="2023-12-18T10:17:31.146Z">
+<meta property="article:tag" content="CS106B">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://cabbage74.github.io/2023/12/02/cs106b-hw1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cabbage74.github.io/2023/12/02/cs106b-hw1/","path":"2023/12/02/cs106b-hw1/","title":"CS106B Assignment 1"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CS106B Assignment 1 | Cabbage74</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Cabbage74</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">再见以前先说再见</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Foreword"><span class="nav-number">1.</span> <span class="nav-text">Foreword</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Perfect-numbers"><span class="nav-number">2.</span> <span class="nav-text">Perfect numbers</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Soundex-Search"><span class="nav-number">3.</span> <span class="nav-text">Soundex Search</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+ 
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt=""
+      src="/images/withbobo.jpg">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Cabbage74" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Cabbage74" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:cabbage030704@gmail.com" title="E-Mail → mailto:cabbage030704@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cabbage74.github.io/2023/12/02/cs106b-hw1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/withbobo.jpg">
+      <meta itemprop="name" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cabbage74">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="CS106B Assignment 1 | Cabbage74">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CS106B Assignment 1
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-12-02 00:43:43" itemprop="dateCreated datePublished" datetime="2023-12-02T00:43:43+08:00">2023-12-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-12-18 18:17:31" itemprop="dateModified" datetime="2023-12-18T18:17:31+08:00">2023-12-18</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>12k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>22 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="Foreword"><a href="#Foreword" class="headerlink" title="Foreword"></a>Foreword</h2><p>记录2023冬CS106B的Assignment 1</p>
+<span id="more"></span>
+<h2 id="Perfect-numbers"><a href="#Perfect-numbers" class="headerlink" title="Perfect numbers"></a>Perfect numbers</h2><p>一个算法题，主要是顺带着熟悉Stanford的SimpleTest框架</p>
+<p>定义完美数为：所有因子之和(除去自身)等于自身值的数</p>
+<p>利用筛因子的根号算法和完美数与梅森素数之间的关系</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * <span class="doctag">TODO:</span> remove and replace this file header comment</span></span><br><span class="line"><span class="comment"> * This is a .cpp file you will edit and turn in.</span></span><br><span class="line"><span class="comment"> * Remove starter comments and add your own</span></span><br><span class="line"><span class="comment"> * comments on each function and on complex code sections.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;console.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;SimpleTest.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;perfect.h&quot;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* The divisorSum function takes one argument `n` and calculates the</span></span><br><span class="line"><span class="comment"> * sum of proper divisors of `n` excluding itself. To find divisors</span></span><br><span class="line"><span class="comment"> * a loop iterates over all numbers from 1 to n-1, testing for a</span></span><br><span class="line"><span class="comment"> * zero remainder from the division using the modulus operator %</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Note: the C++ long type is a variant of int that allows for a</span></span><br><span class="line"><span class="comment"> * larger range of values. For all intents and purposes, you can</span></span><br><span class="line"><span class="comment"> * treat it like you would an int.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">long</span> <span class="title">divisorSum</span><span class="params">(<span class="type">long</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="type">long</span> total = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">long</span> divisor = <span class="number">1</span>; divisor &lt; n; divisor++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (n % divisor == <span class="number">0</span>) &#123;</span><br><span class="line">            total += divisor;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> total;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* The isPerfect function takes one argument `n` and returns a boolean</span></span><br><span class="line"><span class="comment"> * (true/false) value indicating whether or not `n` is perfect.</span></span><br><span class="line"><span class="comment"> * A perfect number is a non-zero positive number whose sum</span></span><br><span class="line"><span class="comment"> * of its proper divisors is equal to itself.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">isPerfect</span><span class="params">(<span class="type">long</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (n != <span class="number">0</span>) &amp;&amp; (n == <span class="built_in">divisorSum</span>(n));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* The findPerfects function takes one argument `stop` and performs</span></span><br><span class="line"><span class="comment"> * an exhaustive search for perfect numbers over the range 1 to `stop`.</span></span><br><span class="line"><span class="comment"> * Each perfect number found is printed to the console.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">findPerfects</span><span class="params">(<span class="type">long</span> stop)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">long</span> num = <span class="number">1</span>; num &lt; stop; num++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isPerfect</span>(num)) &#123;</span><br><span class="line">            cout &lt;&lt; <span class="string">&quot;Found perfect number: &quot;</span> &lt;&lt; num &lt;&lt; endl;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (num % <span class="number">10000</span> == <span class="number">0</span>) cout &lt;&lt; <span class="string">&quot;.&quot;</span> &lt;&lt; flush; <span class="comment">// progress bar</span></span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; <span class="string">&quot;Done searching up to &quot;</span> &lt;&lt; stop &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* <span class="doctag">TODO:</span> Replace this comment with a descriptive function</span></span><br><span class="line"><span class="comment"> * optimize divisorSum by the fact that divisors are mostly in pairs</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">long</span> <span class="title">smarterSum</span><span class="params">(<span class="type">long</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> tot = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n / i &amp;&amp; i &lt; n; ++i) &#123;</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>) &#123;</span><br><span class="line">            tot += i;</span><br><span class="line">            <span class="keyword">if</span> (i * i != n &amp;&amp; i != <span class="number">1</span>) &#123;</span><br><span class="line">                tot += n / i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> tot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* <span class="doctag">TODO:</span> Replace this comment with a descriptive function</span></span><br><span class="line"><span class="comment"> * header comment.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">isPerfectSmarter</span><span class="params">(<span class="type">long</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (n != <span class="number">0</span>) &amp;&amp; (n == <span class="built_in">smarterSum</span>(n));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* <span class="doctag">TODO:</span> Replace this comment with a descriptive function</span></span><br><span class="line"><span class="comment"> * header comment.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">findPerfectsSmarter</span><span class="params">(<span class="type">long</span> stop)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">long</span> num = <span class="number">1</span>; num &lt; stop; num++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isPerfectSmarter</span>(num)) &#123;</span><br><span class="line">            cout &lt;&lt; <span class="string">&quot;Found perfect number: &quot;</span> &lt;&lt; num &lt;&lt; endl;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (num % <span class="number">10000</span> == <span class="number">0</span>) cout &lt;&lt; <span class="string">&quot;.&quot;</span> &lt;&lt; flush; <span class="comment">// progress bar</span></span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; <span class="string">&quot;Done searching up to &quot;</span> &lt;&lt; stop &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* <span class="doctag">TODO:</span> Replace this comment with a descriptive function</span></span><br><span class="line"><span class="comment"> * header comment.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">long</span> <span class="title">findNthPerfectEuclid</span><span class="params">(<span class="type">long</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="type">long</span> k = <span class="number">0</span>;</span><br><span class="line">    <span class="type">long</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (n &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        ++k;</span><br><span class="line">        <span class="type">long</span> m = (<span class="number">1</span> &lt;&lt; k) - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (m != <span class="number">1</span> &amp;&amp; <span class="built_in">smarterSum</span>(m) == <span class="number">1</span>) &#123;</span><br><span class="line">            --n;</span><br><span class="line">            ans = (<span class="number">1</span> &lt;&lt; (k - <span class="number">1</span>)) * m;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* * * * * * Test Cases * * * * * */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// <span class="doctag">TODO:</span> add your STUDENT_TEST test cases here!</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Here is sample test demonstrating how to use a loop to set the input sizes</span></span><br><span class="line"><span class="comment"> * for a sequence of time trials.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">//STUDENT_TEST(&quot;Multiple time trials of findPerfects on increasing input sizes&quot;) &#123;</span></span><br><span class="line"><span class="comment">//    int smallest = 1000, largest = 8000;</span></span><br><span class="line"><span class="comment">//    for (int size = smallest; size &lt;= largest; size *= 2) &#123;</span></span><br><span class="line"><span class="comment">//        TIME_OPERATION(size, findPerfects(size));</span></span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// STUDENT_TEST(&quot;Multiple time trial of findPerfects on increasing input sizes&quot;) &#123;</span></span><br><span class="line"><span class="comment">//     int smallest = 5000, largest = 200000;</span></span><br><span class="line"><span class="comment">//     for (int i = smallest; i &lt;= largest; i *= 2) &#123;</span></span><br><span class="line"><span class="comment">//         TIME_OPERATION(i, findPerfects(i));</span></span><br><span class="line"><span class="comment">//     &#125;</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// STUDENT_TEST(&quot;Confirm isPerfect of negative inputs&quot;) &#123;</span></span><br><span class="line"><span class="comment">//     EXPECT(!isPerfect(-1));</span></span><br><span class="line"><span class="comment">//     EXPECT(!isPerfect(-100));</span></span><br><span class="line"><span class="comment">//     EXPECT(!isPerfect(-6));</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// STUDENT_TEST(&quot;Confirm smarterSum&quot;) &#123;</span></span><br><span class="line"><span class="comment">//     for (int i = 1; i &lt;= 100000; ++i) &#123;</span></span><br><span class="line"><span class="comment">//         EXPECT_EQUAL(smarterSum(i), divisorSum(i));</span></span><br><span class="line"><span class="comment">//     &#125;</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">STUDENT_TEST</span>(<span class="string">&quot;Confirm findNthPerfectEuclid&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(<span class="number">6</span>, <span class="built_in">findNthPerfectEuclid</span>(<span class="number">1</span>));</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(<span class="number">28</span>, <span class="built_in">findNthPerfectEuclid</span>(<span class="number">2</span>));</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(<span class="number">496</span>, <span class="built_in">findNthPerfectEuclid</span>(<span class="number">3</span>));</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(<span class="number">8128</span>, <span class="built_in">findNthPerfectEuclid</span>(<span class="number">4</span>));</span><br><span class="line">    <span class="built_in">EXPECT</span>(<span class="built_in">isPerfect</span>(<span class="built_in">findNthPerfectEuclid</span>(<span class="number">5</span>)));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Please not add/modify/remove the PROVIDED_TEST entries below.</span></span><br><span class="line"><span class="comment"> * Place your student tests cases above the provided tests.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">PROVIDED_TEST</span>(<span class="string">&quot;Confirm divisorSum of small inputs&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(<span class="built_in">divisorSum</span>(<span class="number">1</span>), <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(<span class="built_in">divisorSum</span>(<span class="number">6</span>), <span class="number">6</span>);</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(<span class="built_in">divisorSum</span>(<span class="number">12</span>), <span class="number">16</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">PROVIDED_TEST</span>(<span class="string">&quot;Confirm 6 and 28 are perfect&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">EXPECT</span>(<span class="built_in">isPerfect</span>(<span class="number">6</span>));</span><br><span class="line">    <span class="built_in">EXPECT</span>(<span class="built_in">isPerfect</span>(<span class="number">28</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">PROVIDED_TEST</span>(<span class="string">&quot;Confirm 12 and 98765 are not perfect&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">EXPECT</span>(!<span class="built_in">isPerfect</span>(<span class="number">12</span>));</span><br><span class="line">    <span class="built_in">EXPECT</span>(!<span class="built_in">isPerfect</span>(<span class="number">98765</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">PROVIDED_TEST</span>(<span class="string">&quot;Test oddballs: 0 and 1 are not perfect&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">EXPECT</span>(!<span class="built_in">isPerfect</span>(<span class="number">0</span>));</span><br><span class="line">    <span class="built_in">EXPECT</span>(!<span class="built_in">isPerfect</span>(<span class="number">1</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">PROVIDED_TEST</span>(<span class="string">&quot;Confirm 33550336 is perfect&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">EXPECT</span>(<span class="built_in">isPerfect</span>(<span class="number">33550336</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">PROVIDED_TEST</span>(<span class="string">&quot;Time trial of findPerfects on input size 1000&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">TIME_OPERATION</span>(<span class="number">1000</span>, <span class="built_in">findPerfects</span>(<span class="number">1000</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="Soundex-Search"><a href="#Soundex-Search" class="headerlink" title="Soundex Search"></a>Soundex Search</h2><p>Soundex是美国政府用来根据名字的发音而不是名字的拼写进行编码索引的算法</p>
+<p>模拟题，熟悉对C++字符串的操作和文件读写</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * <span class="doctag">TODO:</span> remove and replace this file header comment</span></span><br><span class="line"><span class="comment"> * This is a .cpp file you will edit and turn in.</span></span><br><span class="line"><span class="comment"> * Remove starter comments and add your own</span></span><br><span class="line"><span class="comment"> * comments on each function and on complex code sections.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cctype&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;console.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;strlib.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;filelib.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;simpio.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;vector.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;SimpleTest.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;soundex.h&quot;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* This function is intended to return a string which</span></span><br><span class="line"><span class="comment"> * includes only the letter characters from the original</span></span><br><span class="line"><span class="comment"> * (all non-letter characters are excluded)</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * WARNING: The provided code is buggy!</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Add student test cases to identify which inputs to this function</span></span><br><span class="line"><span class="comment"> * are incorrectly handled. Then, remove this comment and</span></span><br><span class="line"><span class="comment"> * replace it with a description of the bug you fixed.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function">string <span class="title">lettersOnly</span><span class="params">(string s)</span> </span>&#123;</span><br><span class="line">    string result = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; s.<span class="built_in">length</span>(); i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isalpha</span>(s[i])) &#123;</span><br><span class="line">            result += <span class="built_in">toupper</span>(s[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">string <span class="title">translateEachLetter</span><span class="params">(string s)</span> </span>&#123;</span><br><span class="line">    std::string t = s;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; s.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">        <span class="keyword">if</span> (s[i] == <span class="string">&#x27;R&#x27;</span>) &#123;</span><br><span class="line">            t[i] = <span class="string">&#x27;6&#x27;</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (s[i] == <span class="string">&#x27;M&#x27;</span> || s[i] == <span class="string">&#x27;N&#x27;</span>) &#123;</span><br><span class="line">            t[i] = <span class="string">&#x27;5&#x27;</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (s[i] == <span class="string">&#x27;L&#x27;</span>) &#123;</span><br><span class="line">            t[i] = <span class="string">&#x27;4&#x27;</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (s[i] == <span class="string">&#x27;D&#x27;</span> || s[i] == <span class="string">&#x27;T&#x27;</span>) &#123;</span><br><span class="line">            t[i] = <span class="string">&#x27;3&#x27;</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (s[i] == <span class="string">&#x27;C&#x27;</span> || s[i] == <span class="string">&#x27;G&#x27;</span> || s[i] == <span class="string">&#x27;J&#x27;</span> || s[i] == <span class="string">&#x27;K&#x27;</span> || s[i] == <span class="string">&#x27;Q&#x27;</span> || s[i] == <span class="string">&#x27;S&#x27;</span> || s[i] == <span class="string">&#x27;X&#x27;</span> || s[i] == <span class="string">&#x27;Z&#x27;</span>) &#123;</span><br><span class="line">            t[i] = <span class="string">&#x27;2&#x27;</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (s[i] == <span class="string">&#x27;B&#x27;</span> || s[i] == <span class="string">&#x27;F&#x27;</span> || s[i] == <span class="string">&#x27;P&#x27;</span> || s[i] == <span class="string">&#x27;V&#x27;</span>) &#123;</span><br><span class="line">            t[i] = <span class="string">&#x27;1&#x27;</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            t[i] = <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">string <span class="title">coalesce</span><span class="params">(string s)</span> </span>&#123;</span><br><span class="line">    std::string t;</span><br><span class="line">    t += s[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; s.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">        <span class="keyword">if</span> (s[i] != s[i - <span class="number">1</span>]) &#123;</span><br><span class="line">            t += s[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">string <span class="title">removeZero</span><span class="params">(string s)</span> </span>&#123;</span><br><span class="line">    std::string t;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; s.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">        <span class="keyword">if</span> (s[i] != <span class="string">&#x27;0&#x27;</span>) &#123;</span><br><span class="line">            t += s[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">string <span class="title">lengthFour</span><span class="params">(string s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (s.<span class="built_in">size</span>() &lt; <span class="number">4</span>) &#123;</span><br><span class="line">        s += <span class="string">&quot;0&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    std::string t = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    t += s[<span class="number">0</span>];</span><br><span class="line">    t += s[<span class="number">1</span>];</span><br><span class="line">    t += s[<span class="number">2</span>];</span><br><span class="line">    t += s[<span class="number">3</span>];</span><br><span class="line">    <span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* <span class="doctag">TODO:</span> Replace this comment with a descriptive function</span></span><br><span class="line"><span class="comment"> * header comment.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function">string <span class="title">soundex</span><span class="params">(string s)</span> </span>&#123;</span><br><span class="line">    s = <span class="built_in">lettersOnly</span>(s);</span><br><span class="line">    <span class="type">char</span> c = s[<span class="number">0</span>];</span><br><span class="line">    s = <span class="built_in">translateEachLetter</span>(s);</span><br><span class="line">    s = <span class="built_in">coalesce</span>(s);</span><br><span class="line">    s[<span class="number">0</span>] = <span class="built_in">toupper</span>(c);</span><br><span class="line">    s = <span class="built_in">removeZero</span>(s);</span><br><span class="line">    s = <span class="built_in">lengthFour</span>(s);</span><br><span class="line">    <span class="keyword">return</span> s;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* <span class="doctag">TODO:</span> Replace this comment with a descriptive function</span></span><br><span class="line"><span class="comment"> * header comment.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">soundexSearch</span><span class="params">(string filepath)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// This provided code opens the specified file</span></span><br><span class="line">    <span class="comment">// and reads the lines into a vector of strings</span></span><br><span class="line">    ifstream in;</span><br><span class="line">    Vector&lt;string&gt; allNames;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">openFile</span>(in, filepath)) &#123;</span><br><span class="line">        allNames = <span class="built_in">readLines</span>(in);</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Read file &quot;</span> &lt;&lt; filepath &lt;&lt; <span class="string">&quot;, &quot;</span></span><br><span class="line">         &lt;&lt; allNames.<span class="built_in">size</span>() &lt;&lt; <span class="string">&quot; names found.&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// The names read from file are now stored in Vector allNames</span></span><br><span class="line">    <span class="comment">/* <span class="doctag">TODO:</span> Fill in the remainder of this function. */</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Enter a surname (RETURN to quit): &quot;</span>;</span><br><span class="line">        std::string name;</span><br><span class="line">        <span class="built_in">getline</span>(cin, name);</span><br><span class="line">        <span class="keyword">if</span> (name == <span class="string">&quot;&quot;</span>) &#123;</span><br><span class="line">            std::cout &lt;&lt; <span class="string">&quot;All done!&quot;</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        std::string soundex_code = <span class="built_in">soundex</span>(name);</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Soundex code is &quot;</span> &lt;&lt; soundex_code &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">        Vector&lt;string&gt; res;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> Name : allNames) &#123;</span><br><span class="line">            <span class="keyword">if</span> (soundex_code == <span class="built_in">soundex</span>(Name)) &#123;</span><br><span class="line">                res.<span class="built_in">add</span>(Name);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        res.<span class="built_in">sort</span>();</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Matches from database: &quot;</span> &lt;&lt; res &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* * * * * * Test Cases * * * * * */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// <span class="doctag">TODO:</span> add your STUDENT_TEST test cases here!</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">STUDENT_TEST</span>(<span class="string">&quot;Confirm lettersOnly&quot;</span>) &#123;</span><br><span class="line">    std::string expected = <span class="string">&quot;C&quot;</span>;</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(expected, <span class="built_in">lettersOnly</span>(<span class="string">&quot;5C&quot;</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">STUDENT_TEST</span>(<span class="string">&quot;Confirm soundex&quot;</span>) &#123;</span><br><span class="line">    std::string expected = <span class="string">&quot;C600&quot;</span>;</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(expected, <span class="built_in">soundex</span>(<span class="string">&quot;Curie&quot;</span>));</span><br><span class="line">    expected = <span class="string">&quot;O256&quot;</span>;</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(expected, <span class="built_in">soundex</span>(<span class="string">&quot;O&#x27;Conner&quot;</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Please not add/modify/remove the PROVIDED_TEST entries below.</span></span><br><span class="line"><span class="comment"> * Place your student tests cases above the provided tests.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">PROVIDED_TEST</span>(<span class="string">&quot;Test exclude of punctuation, digits, and spaces&quot;</span>) &#123;</span><br><span class="line">    string s = <span class="string">&quot;O&#x27;Hara&quot;</span>;</span><br><span class="line">    string result = <span class="built_in">lettersOnly</span>(s);</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(result, <span class="string">&quot;OHara&quot;</span>);</span><br><span class="line">    s = <span class="string">&quot;Planet9&quot;</span>;</span><br><span class="line">    result = <span class="built_in">lettersOnly</span>(s);</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(result, <span class="string">&quot;Planet&quot;</span>);</span><br><span class="line">    s = <span class="string">&quot;tl dr&quot;</span>;</span><br><span class="line">    result = <span class="built_in">lettersOnly</span>(s);</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(result, <span class="string">&quot;tldr&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">PROVIDED_TEST</span>(<span class="string">&quot;Sample inputs from handout&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(<span class="built_in">soundex</span>(<span class="string">&quot;Curie&quot;</span>), <span class="string">&quot;C600&quot;</span>);</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(<span class="built_in">soundex</span>(<span class="string">&quot;O&#x27;Conner&quot;</span>), <span class="string">&quot;O256&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">PROVIDED_TEST</span>(<span class="string">&quot;hanrahan is in lowercase&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(<span class="built_in">soundex</span>(<span class="string">&quot;hanrahan&quot;</span>), <span class="string">&quot;H565&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">PROVIDED_TEST</span>(<span class="string">&quot;DRELL is in uppercase&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(<span class="built_in">soundex</span>(<span class="string">&quot;DRELL&quot;</span>), <span class="string">&quot;D640&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">PROVIDED_TEST</span>(<span class="string">&quot;Liu has to be padded with zeros&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(<span class="built_in">soundex</span>(<span class="string">&quot;Liu&quot;</span>), <span class="string">&quot;L000&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">PROVIDED_TEST</span>(<span class="string">&quot;Tessier-Lavigne has a hyphen&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(<span class="built_in">soundex</span>(<span class="string">&quot;Tessier-Lavigne&quot;</span>), <span class="string">&quot;T264&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">PROVIDED_TEST</span>(<span class="string">&quot;Au consists of only vowels&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(<span class="built_in">soundex</span>(<span class="string">&quot;Au&quot;</span>), <span class="string">&quot;A000&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">PROVIDED_TEST</span>(<span class="string">&quot;Egilsdottir is long and starts with a vowel&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(<span class="built_in">soundex</span>(<span class="string">&quot;Egilsdottir&quot;</span>), <span class="string">&quot;E242&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">PROVIDED_TEST</span>(<span class="string">&quot;Jackson has three adjcaent duplicate codes&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(<span class="built_in">soundex</span>(<span class="string">&quot;Jackson&quot;</span>), <span class="string">&quot;J250&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">PROVIDED_TEST</span>(<span class="string">&quot;Schwarz begins with a pair of duplicate codes&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(<span class="built_in">soundex</span>(<span class="string">&quot;Schwarz&quot;</span>), <span class="string">&quot;S620&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">PROVIDED_TEST</span>(<span class="string">&quot;Van Niekerk has a space between repeated n&#x27;s&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(<span class="built_in">soundex</span>(<span class="string">&quot;Van Niekerk&quot;</span>), <span class="string">&quot;V526&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">PROVIDED_TEST</span>(<span class="string">&quot;Wharton begins with Wh&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(<span class="built_in">soundex</span>(<span class="string">&quot;Wharton&quot;</span>), <span class="string">&quot;W635&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">PROVIDED_TEST</span>(<span class="string">&quot;Ashcraft is not a special case&quot;</span>) &#123;</span><br><span class="line">    <span class="comment">// Some versions of Soundex make special case for consecutive codes split by hw</span></span><br><span class="line">    <span class="comment">// We do not make this special case, just treat same as codes split by vowel</span></span><br><span class="line">    <span class="built_in">EXPECT_EQUAL</span>(<span class="built_in">soundex</span>(<span class="string">&quot;Ashcraft&quot;</span>), <span class="string">&quot;A226&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CS106B/" rel="tag"># CS106B</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/09/16/template/" rel="prev" title="XCPC Template">
+                  <i class="fa fa-chevron-left"></i> XCPC Template
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/12/15/xcpcend/" rel="next" title="记2023XCPC终章">
+                  记2023XCPC终章 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder"></span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">89k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:42</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://unpkg.com/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Cabbage74","repo":"Cabbage74.github.io","client_id":"5880294dcc8269ff3a03","client_secret":"bf429afa7f37f79c6696fabc4e51f5b60aa6471a","admin_user":"Cabbage74","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"86c62779eda041266f13b39df50a3223"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<script type="text/javascript" src="/js/love.js"></script>
