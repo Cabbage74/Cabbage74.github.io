@@ -27,10 +27,13 @@
 <meta property="og:site_name" content="Cabbage74">
 <meta property="og:description" content="Foreword记录2022 winter的CS106B Assignment1">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2023/12/26/XzGy5bhHq94aYsk.png">
+<meta property="og:image" content="https://s2.loli.net/2023/12/26/zCaemqoEv7FjYSG.png">
 <meta property="article:published_time" content="2023-12-19T02:27:48.000Z">
-<meta property="article:modified_time" content="2023-12-19T12:42:40.521Z">
+<meta property="article:modified_time" content="2023-12-26T13:25:48.714Z">
 <meta property="article:tag" content="CS106B">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2023/12/26/XzGy5bhHq94aYsk.png">
 
 
 <link rel="canonical" href="https://cabbage74.github.io/2023/12/19/cs106b-assignment1/">
@@ -140,7 +143,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Foreword"><span class="nav-number">1.</span> <span class="nav-text">Foreword</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#StackOverflow"><span class="nav-number">2.</span> <span class="nav-text">StackOverflow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Only-Connect"><span class="nav-number">3.</span> <span class="nav-text">Only Connect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Playing-Fair"><span class="nav-number">4.</span> <span class="nav-text">Playing Fair</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sandpiles"><span class="nav-number">5.</span> <span class="nav-text">Sandpiles</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Plotter"><span class="nav-number">6.</span> <span class="nav-text">Plotter</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Foreword"><span class="nav-number">1.</span> <span class="nav-text">Foreword</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#StackOverflow"><span class="nav-number">2.</span> <span class="nav-text">StackOverflow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Only-Connect"><span class="nav-number">3.</span> <span class="nav-text">Only Connect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Playing-Fair"><span class="nav-number">4.</span> <span class="nav-text">Playing Fair</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sandpiles"><span class="nav-number">5.</span> <span class="nav-text">Sandpiles</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Plotter"><span class="nav-number">6.</span> <span class="nav-text">Plotter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%88%E6%9E%9C"><span class="nav-number">7.</span> <span class="nav-text">效果</span></a></li></ol></div>
         </div>
         <!--/noindex-->
  
@@ -155,7 +158,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -224,9 +227,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2023-12-19 10:27:48 / 修改时间：20:42:40" itemprop="dateCreated datePublished" datetime="2023-12-19T10:27:48+08:00">2023-12-19</time>
+      <time title="创建时间：2023-12-19 10:27:48" itemprop="dateCreated datePublished" datetime="2023-12-19T10:27:48+08:00">2023-12-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-12-26 21:25:48" itemprop="dateModified" datetime="2023-12-26T21:25:48+08:00">2023-12-26</time>
     </span>
 
   
@@ -270,6 +279,8 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> dx[] = &#123;<span class="number">-1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>&#125;;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> dy[] = &#123;<span class="number">0</span>, <span class="number">0</span>, <span class="number">-1</span>, <span class="number">1</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">dropSandOn</span><span class="params">(Grid&lt;<span class="type">int</span>&gt;&amp; world, <span class="type">int</span> row, <span class="type">int</span> col)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!world.<span class="built_in">inBounds</span>(row, col)) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (world[row][col] &lt;= <span class="number">2</span>) &#123;</span><br><span class="line">        world[row][col] += <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        world[row][col] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; ++i) &#123;</span><br><span class="line">            <span class="type">int</span> nrow = row + dx[i], ncol = col + dy[i];</span><br><span class="line">            <span class="keyword">if</span> (!world.<span class="built_in">inBounds</span>(nrow, ncol)) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">dropSandOn</span>(world, nrow, ncol);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="Plotter"><a href="#Plotter" class="headerlink" title="Plotter"></a>Plotter</h2><p>模拟绘图仪，熟悉Stanford的库</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">runPlotterScript</span><span class="params">(istream&amp; input)</span> </span>&#123;</span><br><span class="line">    PenStyle style = &#123;<span class="number">1</span>, <span class="string">&quot;black&quot;</span>&#125;;</span><br><span class="line">    <span class="type">bool</span> is_up = <span class="literal">true</span>;</span><br><span class="line">    <span class="type">double</span> curx = <span class="number">0.0</span>, cury = <span class="number">0.0</span>;</span><br><span class="line">    <span class="keyword">for</span> (string line; <span class="built_in">getline</span>(input, line); ) &#123;</span><br><span class="line">        Vector&lt;string&gt; opt = <span class="built_in">stringSplit</span>(line, <span class="string">&quot; &quot;</span>);</span><br><span class="line">        opt[<span class="number">0</span>] = <span class="built_in">toUpperCase</span>(opt[<span class="number">0</span>]);</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">startsWith</span>(opt[<span class="number">0</span>], <span class="string">&quot;PEND&quot;</span>)) &#123;</span><br><span class="line">            is_up = <span class="literal">false</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">startsWith</span>(opt[<span class="number">0</span>], <span class="string">&quot;PENU&quot;</span>)) &#123;</span><br><span class="line">            is_up = <span class="literal">true</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">startsWith</span>(opt[<span class="number">0</span>], <span class="string">&quot;MOVEA&quot;</span>)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!is_up) &#123;</span><br><span class="line">                <span class="built_in">drawLine</span>(curx, cury, <span class="built_in">stringToReal</span>(opt[<span class="number">1</span>]), <span class="built_in">stringToReal</span>(opt[<span class="number">2</span>]), style);</span><br><span class="line">            &#125;</span><br><span class="line">            curx = <span class="built_in">stringToReal</span>(opt[<span class="number">1</span>]), cury = <span class="built_in">stringToReal</span>(opt[<span class="number">2</span>]);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">startsWith</span>(opt[<span class="number">0</span>], <span class="string">&quot;MOVER&quot;</span>)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!is_up) &#123;</span><br><span class="line">                <span class="built_in">drawLine</span>(curx, cury, curx + <span class="built_in">stringToReal</span>(opt[<span class="number">1</span>]), cury + <span class="built_in">stringToReal</span>(opt[<span class="number">2</span>]), style);</span><br><span class="line">            &#125;</span><br><span class="line">            curx = curx + <span class="built_in">stringToReal</span>(opt[<span class="number">1</span>]), cury = cury + <span class="built_in">stringToReal</span>(opt[<span class="number">2</span>]);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">startsWith</span>(opt[<span class="number">0</span>], <span class="string">&quot;PENC&quot;</span>)) &#123;</span><br><span class="line">            style.color = opt[<span class="number">1</span>];</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            style.width = <span class="built_in">stringToReal</span>(opt[<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h2><p><img src="https://s2.loli.net/2023/12/26/XzGy5bhHq94aYsk.png" alt="丢沙子"></p>
+<p><img src="https://s2.loli.net/2023/12/26/zCaemqoEv7FjYSG.png" alt="绘图仪"></p>
 
     </div>
 
@@ -325,13 +336,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">83k</span>
+    <span title="站点总字数">86k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:32</span>
+    <span title="站点阅读时长">2:37</span>
   </span>
 </div>
 <div class="busuanzi-count">
