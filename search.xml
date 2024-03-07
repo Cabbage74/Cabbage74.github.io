@@ -617,7 +617,7 @@
   <entry>
     <title>MapReduce</title>
     <url>/2024/03/06/mapreduce/</url>
-    <content><![CDATA[<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>MapReduce旨在提供抽象，让没有并行编程基础的人也能利用分布式系统的资源</p>
+    <content><![CDATA[<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p><a href="http://nil.csail.mit.edu/6.824/2020/papers/mapreduce.pdf">MapReduce</a>旨在提供抽象，让没有并行编程基础的人也能利用分布式系统的资源</p>
 <span id="more"></span>
 <h2 id="Programming-Model"><a href="#Programming-Model" class="headerlink" title="Programming Model"></a>Programming Model</h2><p>map    (k1, v1)       -&gt; list(k2, v2)</p>
 <p>reduce (k2, list(v2)) -&gt; list(v2)</p>
@@ -628,6 +628,8 @@
 <p>将一组输入的数据应用map函数返回一个k/v对的结构作为中间数据集,并将具有相同key的数据输入到一个reduce函数中执行,最终返回处理后的结果</p>
 <p>这个计算模型抽象出来就是MapReduce，而且由于map的过程可在多台机器上互无依赖地并行执行，有利于并行化，reduce过程同理</p>
 <p>reduce过程要在map过程全部结束后开始执行</p>
+<p><img src="https://s2.loli.net/2024/03/07/aYgd4TPZtpRofDy.png" alt="来自油管上感觉很清晰的图"></p>
+<p><img src="https://s2.loli.net/2024/03/07/EtA9JGWXqV4DuLm.png" alt="倒排索引的MapReduce过程"></p>
 <h2 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h2><h3 id="OverView"><a href="#OverView" class="headerlink" title="OverView"></a>OverView</h3><ol>
 <li><p>输入文件会被分成M份，每份大小可由user调参</p>
 </li>
