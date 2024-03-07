@@ -109,7 +109,7 @@
     <url>/2023/07/14/230717record/</url>
     <content><![CDATA[<h3 id="Game-with-Game-King-BoBo"><a href="#Game-with-Game-King-BoBo" class="headerlink" title="Game with Game King BoBo"></a>Game with Game King BoBo</h3><span id="more"></span>
 <p><img src="https://s2.loli.net/2023/07/14/umOYlHLsZxaTKAr.jpg" ><br><img src="https://s2.loli.net/2023/07/14/gZnKbHY1LpMe6jP.jpg" ></p>
-<h3 id="均绩3-88，开心"><a href="#均绩3-88，开心" class="headerlink" title="均绩3.88，开心"></a>均绩3.88，开心</h3><p><img src="https://s2.loli.net/2023/07/14/tMBz6XIL9EK1vJP.jpg" ></p>
+<h3 id="逆天"><a href="#逆天" class="headerlink" title="逆天"></a>逆天</h3><p><img src="https://s2.loli.net/2023/07/14/tMBz6XIL9EK1vJP.jpg" ></p>
 ]]></content>
       <tags>
         <tag>生活</tag>
@@ -552,7 +552,8 @@
 <h3 id="3-1"><a href="#3-1" class="headerlink" title="3.1"></a>3.1</h3><p><img src="https://s2.loli.net/2024/03/01/xpKDfvkeMW4I3a7.jpg" alt="忘记拿衣服回家了，冷死，1+1+1.5km"></p>
 <h3 id="3-2"><a href="#3-2" class="headerlink" title="3.2"></a>3.2</h3><p><img src="https://s2.loli.net/2024/03/02/wS7CO8KUdfulRbc.jpg" alt="1.25+1.25+1.5km"></p>
 <h3 id="3-3"><a href="#3-3" class="headerlink" title="3.3"></a>3.3</h3><p><img src="https://s2.loli.net/2024/03/04/zxmGVOepsT4E2L9.jpg" alt="有点疲软，中间跑岔气了"></p>
-<h3 id="3-4"><a href="#3-4" class="headerlink" title="3.4"></a>3.4</h3><p>下雨，休息</p>
+<h3 id="3-4-3-5"><a href="#3-4-3-5" class="headerlink" title="3.4 / 3.5"></a>3.4 / 3.5</h3><p>下雨，休息</p>
+<h3 id="3-6"><a href="#3-6" class="headerlink" title="3.6"></a>3.6</h3><p><img src="https://s2.loli.net/2024/03/06/folTa2ZkU6xsDGK.jpg" alt="休息两天脚感相当好，1+1.5+2.5km"></p>
 ]]></content>
       <tags>
         <tag>生活</tag>
@@ -611,6 +612,72 @@
 ]]></content>
       <tags>
         <tag>CS106B</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MapReduce</title>
+    <url>/2024/03/06/mapreduce/</url>
+    <content><![CDATA[<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>MapReduce旨在提供抽象，让没有并行编程基础的人也能利用分布式系统的资源</p>
+<span id="more"></span>
+<h2 id="Programming-Model"><a href="#Programming-Model" class="headerlink" title="Programming Model"></a>Programming Model</h2><p>map    (k1, v1)       -&gt; list(k2, v2)</p>
+<p>reduce (k2, list(v2)) -&gt; list(v2)</p>
+<p>e.g. 单词记数</p>
+<p>map    (文档名，文档内容)      -&gt; list(单词， 出现次数)</p>
+<p>reduce (单词， list(出现次数)) -&gt; list(出现次数)</p>
+<p>思想核心是经过谷歌大量重复的编写数据处理类的程序,发现所有数据处理的程序都有类似的过程:</p>
+<p>将一组输入的数据应用map函数返回一个k/v对的结构作为中间数据集,并将具有相同key的数据输入到一个reduce函数中执行,最终返回处理后的结果</p>
+<p>这个计算模型抽象出来就是MapReduce，而且由于map的过程可在多台机器上互无依赖地并行执行，有利于并行化，reduce过程同理</p>
+<p>reduce过程要在map过程全部结束后开始执行</p>
+<h2 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h2><h3 id="OverView"><a href="#OverView" class="headerlink" title="OverView"></a>OverView</h3><ol>
+<li><p>输入文件会被分成M份，每份大小可由user调参</p>
+</li>
+<li><p>是主从式并行，主节点给工作节点分配任务，有M个map任务和R个reduce任务</p>
+</li>
+<li><p>分配到map任务的工作节点会把输入数据里的KV对解析出来，传入Map函数，得到的中间数据集在内存中缓存</p>
+</li>
+<li><p>周期性地，缓存中的KV对会被写入本地磁盘，在磁盘上被分成R块(根据partition函数，每个map工作节点都输出R个文件，每个对应一个reduce任务)，这些KV对的地址会被传回给主节点</p>
+</li>
+<li><p>当一个reduce工作节点被主节点告知了KV对的地址，会通过RPC去读这些数据，然后读完以后，按key给这些KV排序，这样相同key的数据就挨着了；如果中间数据集量太大，不能全部放入内存，会用外部排序</p>
+</li>
+<li><p>reduce工作节点遍历排序好的数据，每遇到一个key就将这组传给Reduce函数，输出会写到该reduce分区最终文件末尾(最后会有R个输出文件)</p>
+</li>
+<li><p>所有工作节点结束工作以后，主节点唤醒用户程序，MapReduce调用返回值给用户程序</p>
+</li>
+</ol>
+<p>关于5中要用RPC来读数据的原因(from gpt 4.0)：Map阶段处理的数据被存储在map工作节点的本地磁盘上。当Reduce阶段开始时，reduce工作节点需要从多个map工作节点读取这些数据以进行进一步处理。这里涉及的是跨网络的数据访问，即reduce工作节点需要远程访问map工作节点的数据。RPC在这个场景中被用作一种高效(抽象了底部细节)、可靠(RPC有自动重试机制等)的远程数据访问机制</p>
+<h3 id="Master-Data-Structures"><a href="#Master-Data-Structures" class="headerlink" title="Master Data Structures"></a>Master Data Structures</h3><p>主节点要维护每个map和reduce任务的状态(空闲，进行中，完成)，正在工作的机器的ID，map任务完成产生的R个中间文件的位置和大小</p>
+<h3 id="Fault-Tolerance"><a href="#Fault-Tolerance" class="headerlink" title="Fault Tolerance"></a>Fault Tolerance</h3><h4 id="Worker-Failure"><a href="#Worker-Failure" class="headerlink" title="Worker Failure"></a>Worker Failure</h4><p>主节点会周期性地ping工作节点，如果其没有及时应答就视作失效</p>
+<p>然后以下任务会重新执行：这个坏掉的工作的节点正在进行的map/reduce任务，已经完成的map任务</p>
+<p>需要重做已完成的map任务是因为map任务的输出在该工作节点的本地磁盘上，现在这个节点坏了，之前的输出也拿不到了，而已完成的reduce任务不用重新做因为输出文件在全局文件系统里</p>
+<h4 id="Master-Failure"><a href="#Master-Failure" class="headerlink" title="Master Failure"></a>Master Failure</h4><p>直接结束MapReduce，让客户端决定要不要重试</p>
+<h4 id="Semantics-in-the-Presence-of-Failures"><a href="#Semantics-in-the-Presence-of-Failures" class="headerlink" title="Semantics in the Presence of Failures"></a>Semantics in the Presence of Failures</h4><p>MapReduce对确定性操作提供强语义保证</p>
+<h3 id="Locality"><a href="#Locality" class="headerlink" title="Locality"></a>Locality</h3><p>网络带宽很珍贵，所以一些局部性措施会用来减少网络带宽的使用</p>
+<p>如主节点会尽量把map任务分配给本来就有一份输入文件的节点上</p>
+<p>一个map任务结束通知主节点后，主节点可以立即通知一个reduce任务拉取文件，不必等所有map任务结束</p>
+<h3 id="Task-Granularity"><a href="#Task-Granularity" class="headerlink" title="Task Granularity"></a>Task Granularity</h3><p>M和R应远大于工作节点数</p>
+<h3 id="Backup-Tasks"><a href="#Backup-Tasks" class="headerlink" title="Backup Tasks"></a>Backup Tasks</h3><p>为了避免某些工作节点拉跨，在所有任务快结束时，会为还在进行中的任务启动备份任务，两者中谁先完成都算该任务完成</p>
+<h2 id="Refinement"><a href="#Refinement" class="headerlink" title="Refinement"></a>Refinement</h2><h3 id="Partitioning-Function"><a href="#Partitioning-Function" class="headerlink" title="Partitioning Function"></a>Partitioning Function</h3><p>默认划分函数为 hash(key) mod R</p>
+<p>如果中间数据集的key是URLs，用hash(Hostname(urlkey)) mod R</p>
+<h3 id="Ordering-Guarantees"><a href="#Ordering-Guarantees" class="headerlink" title="Ordering Guarantees"></a>Ordering Guarantees</h3><p>为了减少reduce任务的负担，输出的每个map任务的中间文件都是保证按key递增有序的</p>
+<h3 id="Combiner-Function"><a href="#Combiner-Function" class="headerlink" title="Combiner Function"></a>Combiner Function</h3><p>Combiner函数是运行在map节点上的，功能和Reduce函数一样</p>
+<p>是为了防止出现如单词记数中the这个单词过多导致(the, 1)过多，很占网络带宽</p>
+<p>所以Combiner会先预处理成如(the, 10000)</p>
+<h3 id="Input-and-Output-Types"><a href="#Input-and-Output-Types" class="headerlink" title="Input and Output Types"></a>Input and Output Types</h3><p>有预制的输入模式，用户也可以自定义reader接口</p>
+<h3 id="Skipping-Bad-Records"><a href="#Skipping-Bad-Records" class="headerlink" title="Skipping Bad Records"></a>Skipping Bad Records</h3><p>对于某些会导致MapReduce崩溃的坏记录，一个option是直接跳过</p>
+<h3 id="Local-Execution"><a href="#Local-Execution" class="headerlink" title="Local Execution"></a>Local Execution</h3><p>为了方便debug，MapReduce也可以在单个机器上运行</p>
+<h3 id="Status-Information"><a href="#Status-Information" class="headerlink" title="Status Information"></a>Status Information</h3><p>主节点会运行一个内置HTTP服务器，展示MapReduce任务的一系列状态信息</p>
+<h3 id="Counters"><a href="#Counters" class="headerlink" title="Counters"></a>Counters</h3><p>如果用户想记录某些事件的出现次数，可以用Counter对象</p>
+<h2 id="顺便记忆"><a href="#顺便记忆" class="headerlink" title="顺便记忆"></a>顺便记忆</h2><p>derived data 派生数据</p>
+<p>inverted index 倒排索引</p>
+<p>conspire to obscure A with B 图谋用B掩盖A</p>
+<p>conduit 管道，渠道</p>
+<p>resilient 有弹性的</p>
+<p>straggler 掉队者</p>
+<p>a whole host of 一大堆</p>
+<p>idempotent 幂等的</p>
+]]></content>
+      <tags>
+        <tag>MIT6.824</tag>
       </tags>
   </entry>
 </search>
