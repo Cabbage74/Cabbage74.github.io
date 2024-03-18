@@ -544,7 +544,9 @@
   <entry>
     <title>跑步</title>
     <url>/2024/02/27/runlife/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在4.21上海半马前，将持续记录跑步情况</p>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><del>在4.21上海半马前，将持续记录跑步情况</del></p>
+<p>很好，错过了报名</p>
+<p>就当没有中签，那就先记录到能一口气$10km$</p>
 <span id="more"></span>
 <h3 id="2-26"><a href="#2-26" class="headerlink" title="2.26"></a>2.26</h3><p><img src="https://s2.loli.net/2024/03/01/Slm5cyQqBkJKjTG.jpg" alt="过完年首跑，拉中拉"></p>
 <h3 id="2-27"><a href="#2-27" class="headerlink" title="2.27"></a>2.27</h3><p><img src="https://s2.loli.net/2024/03/01/Uc5oJgiGTQKneyX.jpg" alt="康复还挺快，一口气三公里了"></p>
@@ -558,6 +560,7 @@
 <h3 id="3-8"><a href="#3-8" class="headerlink" title="3.8"></a>3.8</h3><p><img src="https://s2.loli.net/2024/03/09/pIcPBrFNfMODUtG.jpg" alt="五组间歇，现在的目标是稳住跑量提速度"></p>
 <h3 id="3-9"><a href="#3-9" class="headerlink" title="3.9"></a>3.9</h3><p>打篮球把脚崴了，完犊子了</p>
 <h3 id="3-10-3-17"><a href="#3-10-3-17" class="headerlink" title="3.10 - 3.17"></a>3.10 - 3.17</h3><p>预计起码休息一周再慢慢开始康复训练</p>
+<h3 id="3-18"><a href="#3-18" class="headerlink" title="3.18"></a>3.18</h3><p>走路基本正常，脚上淤青还没消完，但是好想跑，看情况再休几天</p>
 ]]></content>
       <tags>
         <tag>生活</tag>
@@ -684,6 +687,95 @@
 ]]></content>
       <tags>
         <tag>MIT6.824</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Lab1 MapReduce</title>
+    <url>/2024/03/11/Lab1-MapReduce/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>记录2020 spring的MIT6.824 Lab1</p>
+<p>实现一个简化的MapReduce框架<br><span id="more"></span></p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>看懂wc.go和mrsequential.go</p>
+<h3 id="wc-go"><a href="#wc-go" class="headerlink" title="wc.go"></a>wc.go</h3><p>实现了WordCount需要用到的Map和Reduce函数</p>
+<p>作为Go Plugin编译为wc.so后其他Go程序就可加载使用</p>
+<h3 id="mrsequential-go"><a href="#mrsequential-go" class="headerlink" title="mrsequential.go"></a>mrsequential.go</h3><p>实现了一个串行的MapReduce</p>
+<p>先加载wc.go的Map和Reduce函数，然后读取输入，执行Map，对于中间数据集，按Key排序，最后Reduce</p>
+<p>初学Go值得注意的点：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Interface <span class="keyword">interface</span> &#123;</span><br><span class="line">	<span class="comment">// Len is the number of elements in the collection.</span></span><br><span class="line">	Len() <span class="type">int</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// Less reports whether the element with index i</span></span><br><span class="line">	<span class="comment">// must sort before the element with index j.</span></span><br><span class="line">	<span class="comment">//</span></span><br><span class="line">	<span class="comment">// If both Less(i, j) and Less(j, i) are false,</span></span><br><span class="line">	<span class="comment">// then the elements at index i and j are considered equal.</span></span><br><span class="line">	<span class="comment">// Sort may place equal elements in any order in the final result,</span></span><br><span class="line">	<span class="comment">// while Stable preserves the original input order of equal elements.</span></span><br><span class="line">	<span class="comment">//</span></span><br><span class="line">	<span class="comment">// Less must describe a transitive ordering:</span></span><br><span class="line">	<span class="comment">//  - if both Less(i, j) and Less(j, k) are true, then Less(i, k) must be true as well.</span></span><br><span class="line">	<span class="comment">//  - if both Less(i, j) and Less(j, k) are false, then Less(i, k) must be false as well.</span></span><br><span class="line">	<span class="comment">//</span></span><br><span class="line">	<span class="comment">// Note that floating-point comparison (the &lt; operator on float32 or float64 values)</span></span><br><span class="line">	<span class="comment">// is not a transitive ordering when not-a-number (NaN) values are involved.</span></span><br><span class="line">	<span class="comment">// See Float64Slice.Less for a correct implementation for floating-point values.</span></span><br><span class="line">	Less(i, j <span class="type">int</span>) <span class="type">bool</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// Swap swaps the elements with indexes i and j.</span></span><br><span class="line">	Swap(i, j <span class="type">int</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Sort sorts data in ascending order as determined by the Less method.</span></span><br><span class="line"><span class="comment">// It makes one call to data.Len to determine n and O(n*log(n)) calls to</span></span><br><span class="line"><span class="comment">// data.Less and data.Swap. The sort is not guaranteed to be stable.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Note: in many situations, the newer [slices.SortFunc] function is more</span></span><br><span class="line"><span class="comment">// ergonomic and runs faster.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Sort</span><span class="params">(data Interface)</span></span> &#123;</span><br><span class="line">	n := data.Len()</span><br><span class="line">	<span class="keyword">if</span> n &lt;= <span class="number">1</span> &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	limit := bits.Len(<span class="type">uint</span>(n))</span><br><span class="line">	pdqsort(data, <span class="number">0</span>, n, limit)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如上为Go的sort包源码</p>
+<p>调用sort.Sort需要实现sort.Interface的三个方法，所以mrsequential.go定义了ByKey</p>
+<p>加载插件函数中的xmapf和xreducef是通过Lookup方法返回的interface{}类型</p>
+<p>为了使用这些函数，需要将它们断言为正确的函数签名</p>
+<p>对xmapf的断言是(func(string, string)[]mr.KeyValue)，对xreducef的断言是(func(string, []string)string)</p>
+<h3 id="RPC入门"><a href="#RPC入门" class="headerlink" title="RPC入门"></a>RPC入门</h3><p>照B站上一个<a href="https://www.bilibili.com/video/BV1ov4y1p75S/?spm_id_from=333.999.0.0&amp;vd_source=b10e499f380347a5fd56c178a294e0fd">视频</a>跟着敲了一下，熟悉Go语言的RPC</p>
+<h4 id="server-go"><a href="#server-go" class="headerlink" title="server.go"></a>server.go</h4><p>服务器可以登记几个对象</p>
+<p>登记了以后这些对象的外部方法就能被远程调用</p>
+<p>因为要求外部所以这些方法名首字母要大写，一开始没注意肉眼查了很久</p>
+<p>基本上外部函数签名都要长这样</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *T)</span></span> MethodName(argType T1, replyType *T2) <span class="type">error</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;log&quot;</span></span><br><span class="line">	<span class="string">&quot;net&quot;</span></span><br><span class="line">	<span class="string">&quot;net/http&quot;</span></span><br><span class="line">	<span class="string">&quot;net/rpc&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Args <span class="keyword">struct</span> &#123;</span><br><span class="line">	A <span class="type">int</span></span><br><span class="line">	B <span class="type">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> AddService <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(a *AddService)</span></span> Add(args Args, reply *<span class="type">int</span>) <span class="type">error</span> &#123;</span><br><span class="line">	*reply = args.A + args.B</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> SubService <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *SubService)</span></span> Sub(args Args, reply *<span class="type">int</span>) <span class="type">error</span> &#123;</span><br><span class="line">	*reply = args.A - args.B</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	addService := <span class="built_in">new</span>(AddService)</span><br><span class="line">	subService := <span class="built_in">new</span>(SubService)</span><br><span class="line">	rpc.Register(addService)</span><br><span class="line">	rpc.Register(subService)</span><br><span class="line">	rpc.HandleHTTP()</span><br><span class="line">	listener, err := net.Listen(<span class="string">&quot;tcp&quot;</span>, <span class="string">&quot;:1234&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(<span class="string">&quot;listen error: &quot;</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	http.Serve(listener, <span class="literal">nil</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="client-go"><a href="#client-go" class="headerlink" title="client.go"></a>client.go</h4><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;log&quot;</span></span><br><span class="line">	<span class="string">&quot;net/rpc&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Args <span class="keyword">struct</span> &#123;</span><br><span class="line">	A <span class="type">int</span></span><br><span class="line">	B <span class="type">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	client, err := rpc.DialHTTP(<span class="string">&quot;tcp&quot;</span>, <span class="string">&quot;localhost:1234&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(<span class="string">&quot;dialing:&quot;</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> client.Close()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Synchronous call</span></span><br><span class="line">	args := Args&#123;<span class="number">7</span>, <span class="number">4</span>&#125;</span><br><span class="line">	<span class="keyword">var</span> reply1 <span class="type">int</span></span><br><span class="line">	err = client.Call(<span class="string">&quot;AddService.Add&quot;</span>, args, &amp;reply1)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(<span class="string">&quot;AddService error:&quot;</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;AddService: %d + %d = %d\n&quot;</span>, args.A, args.B, reply1)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Asynchronous call</span></span><br><span class="line">	<span class="keyword">var</span> reply2 <span class="type">int</span></span><br><span class="line">	divCall := client.Go(<span class="string">&quot;SubService.Sub&quot;</span>, args, &amp;reply2, <span class="literal">nil</span>)</span><br><span class="line">	replyCall := &lt;-divCall.Done</span><br><span class="line">	fmt.Printf(<span class="string">&quot;SubService.sub error: %v\n&quot;</span>, replyCall.Error)</span><br><span class="line">	fmt.Printf(<span class="string">&quot;SubService: %d - %d = %d\n&quot;</span>, args.A, args.B, reply2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><h3 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h3><p>To be continued..</p>
+]]></content>
+      <tags>
+        <tag>MIT6.824</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Cambridge IELTS Listening</title>
+    <url>/2024/03/18/ielts-listening/</url>
+    <content><![CDATA[<h2 id="C18T1"><a href="#C18T1" class="headerlink" title="C18T1"></a>C18T1</h2><p>It was a bit harsh, though! 不过，这有些苛刻</p>
+<p>have to differ on that issue 不得不对该事产生分歧</p>
+<span id="more"></span>
+<p>be realistic about 对..保持现实态度</p>
+<p>somebody’s account of something 某人对某事的叙述</p>
+<p>pick oneself up 振作起来</p>
+<p>garment 衣服</p>
+<p>poacher 偷猎者</p>
+<p>ivory 象牙</p>
+<p>look further afield 寻找更多选择或机会</p>
+<p>park ranger 公园管理员</p>
+<p>dart 飞镖</p>
+<p>immobilize 使固定不动</p>
+<p>manoeuvre 策略</p>
+<p>select the right dose of tranquiliser 选择合适剂量的镇定剂</p>
+<p>suffocation 窒息</p>
+<p>matriarch 女族长</p>
+<p>tusk 长牙</p>
+<h2 id="C18T2"><a href="#C18T2" class="headerlink" title="C18T2"></a>C18T2</h2><p>provide references 提供推荐信</p>
+<p>etc(读作et cetera) 等等</p>
+<p>housing development 住宅开发</p>
+<p>blend in well with the natural features of the landscape 和自然景观特征融合得好</p>
+<p>blend 混合(v.)/混合物(n.)</p>
+<p>provision 提供，条款(n.)</p>
+<p>It’s bounded on the south side by the main road. 它在南边被主路包围</p>
+<p>at the corner of the second turning to the left 在第二个向左拐弯处</p>
+<p>the road that branches off from London Road 从伦敦路分叉出来的路</p>
+<p>adjoin 毗邻</p>
+<p>terminology 术语</p>
+<p>give a pretty consistent account of what happened 对发生的事情给出相当一致的描述</p>
+<p>haze 雾霾</p>
+<p>pre-industrial times 前工业时代</p>
+<p>sulphur-smelling fog 硫磺味的烟</p>
+<p>this wasn’t the sort of fog they were used to 这不是他们习惯的那种雾</p>
+<p>reports from the period 这一时期的报告</p>
+<p>respiratory issues 呼吸系统疾病</p>
+<p>asthma attacks 哮喘发作</p>
+<p>be credited with 被认为对..有功</p>
+<p>beat him to it 先他一步</p>
+<p>drift 漂流</p>
+<p>swiftly 敏捷地</p>
+<p>be contaminated with fluorine 被氟污染</p>
+<p>the mortality rate 死亡率</p>
+<p>snowbound 被雪困住的</p>
+<p>briefcase 公文包</p>
+<p>plainer 更朴素的</p>
+<p>medical instruments 医疗器械</p>
+<p>pickpocket 扒手</p>
+<p>embroidery 刺绣技法</p>
+<p>bulky 笨重的，大块的</p>
+]]></content>
+      <tags>
+        <tag>IELTS</tag>
       </tags>
   </entry>
 </search>
