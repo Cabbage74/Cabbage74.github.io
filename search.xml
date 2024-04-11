@@ -848,6 +848,8 @@
 <h3 id="4-5"><a href="#4-5" class="headerlink" title="4.5"></a>4.5</h3><p>只跑了2km，还是好累</p>
 <h3 id="4-6-4-7"><a href="#4-6-4-7" class="headerlink" title="4.6 - 4.7"></a>4.6 - 4.7</h3><p>下雨，休息，好累</p>
 <h3 id="4-8"><a href="#4-8" class="headerlink" title="4.8"></a>4.8</h3><p><img src="https://s2.loli.net/2024/04/09/5DMKa4BzCONqZHL.jpg" alt="最后一公里拉了"></p>
+<h3 id="4-9"><a href="#4-9" class="headerlink" title="4.9"></a>4.9</h3><p>忘记为什么休息了</p>
+<h3 id="4-10"><a href="#4-10" class="headerlink" title="4.10"></a>4.10</h3><p><img src="https://s2.loli.net/2024/04/11/lazFh2otUSBpNHn.jpg" alt="跑到一半下雨了"></p>
 ]]></content>
       <tags>
         <tag>生活</tag>
@@ -934,6 +936,24 @@
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// config.h</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> CONFIG_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CONFIG_H</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> AppConfig &#123;</span><br><span class="line">    <span class="comment">// 在namespace中声明变量</span></span><br><span class="line">    <span class="keyword">extern</span> <span class="type">int</span> screenWidth; <span class="comment">// 声明，实际定义在另一个文件中</span></span><br><span class="line">    <span class="keyword">extern</span> <span class="type">int</span> screenHeight;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// config.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;config.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> AppConfig &#123;</span><br><span class="line">    <span class="comment">// 在namespace中定义变量</span></span><br><span class="line">    <span class="type">int</span> screenWidth = <span class="number">800</span>;</span><br><span class="line">    <span class="type">int</span> screenHeight = <span class="number">600</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;config.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 使用namespace中的变量</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Screen Width: &quot;</span> &lt;&lt; AppConfig::screenWidth &lt;&lt; std::endl;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Screen Height: &quot;</span> &lt;&lt; AppConfig::screenHeight &lt;&lt; std::endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Primer Plus 对象和类</title>
+    <url>/2024/04/11/primerplus10/</url>
+    <content><![CDATA[<p>结构的默认访问类型是public，类的默认访问类型是private</p>
+<span id="more"></span>
+<p>不同对象各自有数据，但共享一组成员函数</p>
+<h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h2><p>定义了构造函数就一定要定义默认构造函数</p>
+<h2 id="析构函数"><a href="#析构函数" class="headerlink" title="析构函数"></a>析构函数</h2><p>如果构造函数里有用new，一定要提供使用delete的析构函数</p>
+<p>类对象过期时，析构函数自动被调用</p>
+<h2 id="const成员函数"><a href="#const成员函数" class="headerlink" title="const成员函数"></a>const成员函数</h2><p>表示成员函数不会修改类的任何成员变量(除了mutable声明的)</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">show</span><span class="params">()</span> <span class="type">const</span></span>; <span class="comment">// 酱紫声明</span></span><br></pre></td></tr></table></figure>
+<h2 id="this指针"><a href="#this指针" class="headerlink" title="this指针"></a>this指针</h2><p>this指针指向用来调用成员函数的对象</p>
+<h2 id="作用域为类的常量"><a href="#作用域为类的常量" class="headerlink" title="作用域为类的常量"></a>作用域为类的常量</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">// 错误的，因为类声明没有创建对象，没有空间存储Months，也就不能成功声明costs</span></span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> Months = <span class="number">12</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 正确的，该常量和其他静态变量存储在一起，而不是对象中</span></span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> Months = <span class="number">12</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 正确的，该枚举的作用域为整个类</span></span><br><span class="line">    <span class="keyword">enum</span> &#123;Months = <span class="number">12</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="type">double</span> costs[Months];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
         <tag>C++</tag>
