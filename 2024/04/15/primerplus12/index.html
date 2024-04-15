@@ -20,27 +20,27 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"cabbage74.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="$Next$集成的$Mathjax$似乎有以下$Bug$ 公式过长导致屏幕偏移 有时公式会渲染不全，需要刷新一次页面">
-<meta property="og:type" content="website">
-<meta property="og:title" content="关于">
-<meta property="og:url" content="https://cabbage74.github.io/about/index.html">
+    <meta name="description" content="StringBad的问题特殊成员函数当按值传递和返回对象时，都将调用复制构造函数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Primer Plus 类和动态内存分配">
+<meta property="og:url" content="https://cabbage74.github.io/2024/04/15/primerplus12/index.html">
 <meta property="og:site_name" content="Cabbage74">
-<meta property="og:description" content="$Next$集成的$Mathjax$似乎有以下$Bug$ 公式过长导致屏幕偏移 有时公式会渲染不全，需要刷新一次页面">
+<meta property="og:description" content="StringBad的问题特殊成员函数当按值传递和返回对象时，都将调用复制构造函数">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-05-01T11:03:08.000Z">
-<meta property="article:modified_time" content="2023-12-08T12:16:35.428Z">
+<meta property="article:published_time" content="2024-04-15T06:50:04.000Z">
+<meta property="article:modified_time" content="2024-04-15T10:48:21.414Z">
+<meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://cabbage74.github.io/about/">
+<link rel="canonical" href="https://cabbage74.github.io/2024/04/15/primerplus12/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":true,"permalink":"https://cabbage74.github.io/about/index.html","path":"about/index.html","title":"关于"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cabbage74.github.io/2024/04/15/primerplus12/","path":"2024/04/15/primerplus12/","title":"Primer Plus 类和动态内存分配"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>关于 | Cabbage74
-</title>
+<title>Primer Plus 类和动态内存分配 | Cabbage74</title>
   
 
 
@@ -127,7 +127,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -140,6 +140,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#StringBad%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">StringBad的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text">特殊成员函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.2.</span> <span class="nav-text">赋值运算符</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
  
@@ -184,37 +185,127 @@
 
     </div>
 
-    <div class="main-inner page posts-expand">
+    <div class="main-inner post posts-expand">
 
 
-    
-    
-    
-    <div class="post-block" lang="zh-CN"><header class="post-header">
+  
 
-<h1 class="post-title" itemprop="name headline">关于
-</h1>
 
-<div class="post-meta-container">
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cabbage74.github.io/2024/04/15/primerplus12/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/withbobo.jpg">
+      <meta itemprop="name" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cabbage74">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Primer Plus 类和动态内存分配 | Cabbage74">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Primer Plus 类和动态内存分配
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2024-04-15 14:50:04 / 修改时间：18:48:21" itemprop="dateCreated datePublished" datetime="2024-04-15T14:50:04+08:00">2024-04-15</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>882</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
 </div>
 
-</header>
+        </div>
+      </header>
 
-      
-      
-      <div class="post-body">
-          <p>$Next$集成的$Mathjax$似乎有以下$Bug$</p>
-<p>公式过长导致屏幕偏移</p>
-<p>有时公式会渲染不全，需要刷新一次页面</p>
-
-      </div>
-      
-      
-      
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="StringBad的问题"><a href="#StringBad的问题" class="headerlink" title="StringBad的问题"></a>StringBad的问题</h2><h3 id="特殊成员函数"><a href="#特殊成员函数" class="headerlink" title="特殊成员函数"></a>特殊成员函数</h3><p>当按值传递和返回对象时，都将调用复制构造函数</p>
+<span id="more"></span>
+<p>如果类中包含用来计数当前有多少个对象的静态变量，应该提供一个显式的复制构造函数用来处理静态变量</p>
+<p>因为编译器提供的复制构造函数不改变静态变量的值，所以如果析构函数里减小了静态变量</p>
+<p>而程序里又有哪里调用了默认复制构造函数，将造成计数偏小</p>
+<p>因为隐式复制构造函数是浅拷贝，还可能不小心delete浅拷贝的指针指向的地方，导致原本的数据没了</p>
+<p>解决方法是提供一个能深拷贝的显式复制构造函数</p>
+<h3 id="赋值运算符"><a href="#赋值运算符" class="headerlink" title="赋值运算符"></a>赋值运算符</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 假设有=的重载StringBad &amp; StringBad::operator=(const StringBad &amp;);</span></span><br><span class="line"><span class="function">StringBad <span class="title">a</span><span class="params">(<span class="string">&quot;hello&quot;</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">String b;</span><br><span class="line">b = a; <span class="comment">// 调用了重载的=</span></span><br><span class="line"></span><br><span class="line">String c = a; <span class="comment">// 初始化对象时，可能调用的是复制构造函数，也可能是重载的=</span></span><br></pre></td></tr></table></figure>
+<p>如果重载的=内部使用浅拷贝，指针就也可能出问题，一个对象先析构，另一个对象后析构，同一个地址会被释放两次</p>
+<p>解决方法也是深拷贝，区别是要注意处理自己赋给自己的情况，以及要把原本要覆盖的的内容释放掉(如果有用new申请的)</p>
+<p>对于自己的string类，默认构造函数可能这样写，因为析构函数里是delete[]，要配套</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">String::<span class="built_in">String</span>() &#123;</span><br><span class="line">    len = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 不写成 str = new char;</span></span><br><span class="line">    str = <span class="keyword">new</span> <span class="type">char</span>[<span class="number">1</span>];</span><br><span class="line">    str[<span class="number">0</span>] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>比较函数写成友元函数的好处是运算符左侧是c_str时，编译器会转换</p>
+<p>[]是二元运算符，对于a[x]，a是第一个操作数，b是第二个</p>
+<p>重载operator[]时，要提供一个仅供const String对象使用的版本</p>
+<p>const变量只能初始化不能赋值，所以涉及const变量的构造函数必须这样写</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Queue::<span class="built_in">Queue</span>(<span class="type">int</span> qs) : <span class="built_in">qsize</span>(qs) &#123;</span><br><span class="line">    front = rear = <span class="literal">nullptr</span>; <span class="comment">// 这几个变量也可以像qsize那样写，但qsize必须那样写</span></span><br><span class="line">    items = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
 
     
     
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C++</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/04/14/primerplus11/" rel="prev" title="Primer Plus 使用类">
+                  <i class="fa fa-chevron-left"></i> Primer Plus 使用类
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
 
 
     <div class="comments gitalk-container"></div>
@@ -333,7 +424,7 @@ darkmode.showWidget();
 </script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Cabbage74","repo":"Cabbage74.github.io","client_id":"5880294dcc8269ff3a03","client_secret":"bf429afa7f37f79c6696fabc4e51f5b60aa6471a","admin_user":"Cabbage74","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"3be7aa98d992907175cbd79c194399f2"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Cabbage74","repo":"Cabbage74.github.io","client_id":"5880294dcc8269ff3a03","client_secret":"bf429afa7f37f79c6696fabc4e51f5b60aa6471a","admin_user":"Cabbage74","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"7cafa131bc2ef2775d0ee4f5f065dfdd"}</script>
 <script src="/js/third-party/comments/gitalk.js"></script>
 
 <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>

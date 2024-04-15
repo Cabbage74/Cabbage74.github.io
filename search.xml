@@ -987,4 +987,28 @@
         <tag>C++</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Primer Plus 类和动态内存分配</title>
+    <url>/2024/04/15/primerplus12/</url>
+    <content><![CDATA[<h2 id="StringBad的问题"><a href="#StringBad的问题" class="headerlink" title="StringBad的问题"></a>StringBad的问题</h2><h3 id="特殊成员函数"><a href="#特殊成员函数" class="headerlink" title="特殊成员函数"></a>特殊成员函数</h3><p>当按值传递和返回对象时，都将调用复制构造函数</p>
+<span id="more"></span>
+<p>如果类中包含用来计数当前有多少个对象的静态变量，应该提供一个显式的复制构造函数用来处理静态变量</p>
+<p>因为编译器提供的复制构造函数不改变静态变量的值，所以如果析构函数里减小了静态变量</p>
+<p>而程序里又有哪里调用了默认复制构造函数，将造成计数偏小</p>
+<p>因为隐式复制构造函数是浅拷贝，还可能不小心delete浅拷贝的指针指向的地方，导致原本的数据没了</p>
+<p>解决方法是提供一个能深拷贝的显式复制构造函数</p>
+<h3 id="赋值运算符"><a href="#赋值运算符" class="headerlink" title="赋值运算符"></a>赋值运算符</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 假设有=的重载StringBad &amp; StringBad::operator=(const StringBad &amp;);</span></span><br><span class="line"><span class="function">StringBad <span class="title">a</span><span class="params">(<span class="string">&quot;hello&quot;</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">String b;</span><br><span class="line">b = a; <span class="comment">// 调用了重载的=</span></span><br><span class="line"></span><br><span class="line">String c = a; <span class="comment">// 初始化对象时，可能调用的是复制构造函数，也可能是重载的=</span></span><br></pre></td></tr></table></figure>
+<p>如果重载的=内部使用浅拷贝，指针就也可能出问题，一个对象先析构，另一个对象后析构，同一个地址会被释放两次</p>
+<p>解决方法也是深拷贝，区别是要注意处理自己赋给自己的情况，以及要把原本要覆盖的的内容释放掉(如果有用new申请的)</p>
+<p>对于自己的string类，默认构造函数可能这样写，因为析构函数里是delete[]，要配套</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">String::<span class="built_in">String</span>() &#123;</span><br><span class="line">    len = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 不写成 str = new char;</span></span><br><span class="line">    str = <span class="keyword">new</span> <span class="type">char</span>[<span class="number">1</span>];</span><br><span class="line">    str[<span class="number">0</span>] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>比较函数写成友元函数的好处是运算符左侧是c_str时，编译器会转换</p>
+<p>[]是二元运算符，对于a[x]，a是第一个操作数，b是第二个</p>
+<p>重载operator[]时，要提供一个仅供const String对象使用的版本</p>
+<p>const变量只能初始化不能赋值，所以涉及const变量的构造函数必须这样写</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">Queue::<span class="built_in">Queue</span>(<span class="type">int</span> qs) : <span class="built_in">qsize</span>(qs) &#123;</span><br><span class="line">    front = rear = <span class="literal">nullptr</span>; <span class="comment">// 这几个变量也可以像qsize那样写，但qsize必须那样写</span></span><br><span class="line">    items = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
 </search>
