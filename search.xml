@@ -852,6 +852,7 @@
 <h3 id="4-10"><a href="#4-10" class="headerlink" title="4.10"></a>4.10</h3><p><img src="https://s2.loli.net/2024/04/11/lazFh2otUSBpNHn.jpg" alt="跑到一半下雨了"></p>
 <h3 id="4-11-4-14"><a href="#4-11-4-14" class="headerlink" title="4.11 - 4.14"></a>4.11 - 4.14</h3><p>不是下雨就是只跑了两公里左右</p>
 <h2 id="4-15"><a href="#4-15" class="headerlink" title="4.15"></a>4.15</h2><p><img src="https://s2.loli.net/2024/04/14/hmYsAzdTbKHaetv.jpg" alt="慢得不像人啊"></p>
+<h2 id="4-16"><a href="#4-16" class="headerlink" title="4.16"></a>4.16</h2><p><img src="https://s2.loli.net/2024/04/16/6SlXPZsFJn8TdKY.jpg" alt="刮了个莎，快了一点点"></p>
 ]]></content>
       <tags>
         <tag>生活</tag>
@@ -1006,7 +1007,53 @@
 <p>[]是二元运算符，对于a[x]，a是第一个操作数，b是第二个</p>
 <p>重载operator[]时，要提供一个仅供const String对象使用的版本</p>
 <p>const变量只能初始化不能赋值，所以涉及const变量的构造函数必须这样写</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">Queue::<span class="built_in">Queue</span>(<span class="type">int</span> qs) : <span class="built_in">qsize</span>(qs) &#123;</span><br><span class="line">    front = rear = <span class="literal">nullptr</span>; <span class="comment">// 这几个变量也可以像qsize那样写，但qsize必须那样写</span></span><br><span class="line">    items = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">Queue::<span class="built_in">Queue</span>(<span class="type">int</span> qs) : <span class="built_in">qsize</span>(qs) &#123;</span><br><span class="line">    front = rear = <span class="literal">nullptr</span>; <span class="comment">// 这几个变量也可以像qsize那样写，但qsize必须那样写</span></span><br><span class="line">    items = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>初始化列表语法是直接调复制构造函数，相比在构造函数体里用赋值语句(左操作数先调用默认构造函数，再调用重载的=来将右操作数赋给左操作数)节省步骤</p>
+]]></content>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Primer Plus 类继承</title>
+    <url>/2024/04/16/primerplus13/</url>
+    <content><![CDATA[<h2 id="派生一个类"><a href="#派生一个类" class="headerlink" title="派生一个类"></a>派生一个类</h2><p>使用公有派生，基类的公有成员将成为派生类的公有成员，基类的私有部分也将成为派生类的一部分，但只能通过基类的公有和保护方法访问</p>
+<span id="more"></span>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">RatedPlayer</span> : <span class="keyword">public</span> TableTennisPlayer &#123;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>创建派生类时，基类先被创建，派生类过期时，先析构派生类，再析构基类</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Base</span>() &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Base&quot;</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ~<span class="built_in">Base</span>() &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;~Base&quot;</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Derived</span> : <span class="keyword">public</span> Base &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Derived</span>() &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Derived&quot;</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ~<span class="built_in">Derived</span>() &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;~Derived&quot;</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Derived derived;</span><br><span class="line">    <span class="comment">// Output:</span></span><br><span class="line">    <span class="comment">// Base</span></span><br><span class="line">    <span class="comment">// Derived</span></span><br><span class="line">    <span class="comment">// ~Derived</span></span><br><span class="line">    <span class="comment">// ~Base</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>派生类的构造函数总是调用一个基类构造函数，可以使用初始化列表语法指明要使用的基类构造函数，否则将使用默认的基类构造函数</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">derived::<span class="built_in">derived</span>(t1 x, t2 y) : <span class="built_in">base</span>(x, y) &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>基类指针可以指向派生类对象，基类引用也可以引用派生类对象，但只能用于调用基类方法</p>
+<p>继承是is-a关系</p>
+<h2 id="多态公有继承"><a href="#多态公有继承" class="headerlink" title="多态公有继承"></a>多态公有继承</h2><p>如果要在派生类中重新定义基类的方法，通常应将基类方法声明为虚的，这样，程序将根据对象类型选择方法版本，而不是根据指针或引用的类型</p>
+<p>虚析构函数同样，根据对象类型选择调用对应的虚构函数，而不是根据指针或引用的类型，确保了析构函数序列的正确</p>
+<h2 id="静态联编和动态联编"><a href="#静态联编和动态联编" class="headerlink" title="静态联编和动态联编"></a>静态联编和动态联编</h2><p>函数名联编：将源代码中的函数调用解释为执行特定的函数代码块</p>
+<p>静态(早期)联编：在编译过程中进行的联编</p>
+<p>virtual关键字导致使用哪一个函数在编译时无法确定，所以编译器必须生成能够在程序运行时选择正确的虚方法的代码，这是动态(晚期)联编</p>
+<p>编译器对非虚方法使用静态联编，对虚方法使用动态联编</p>
+<h3 id="为什么默认静态联编"><a href="#为什么默认静态联编" class="headerlink" title="为什么默认静态联编"></a>为什么默认静态联编</h3><p>效率更高，由C++的指导原则不要为不使用的特性付出代价，因此在需要虚函数时再考虑动态联编</p>
+<h3 id="虚函数的工作原理"><a href="#虚函数的工作原理" class="headerlink" title="虚函数的工作原理"></a>虚函数的工作原理</h3><p>有虚函数的类有一个虚函数表，比如基类有一个虚函数表，派生类有另一个虚函数表</p>
+<p>每个对象都有一个隐藏成员，是一个指向虚函数表的指针</p>
+<p>虚函数表里存了所有为类对象声明的虚函数的地址</p>
+<p>如果派生类重新定义了基类虚函数，虚函数表里存的是新函数的地址</p>
+<p>如果派生类没有重新定义基类虚函数，虚函数表里存的是函数原始版本的地址</p>
+<p>如果派生类新定义了一个虚函数，虚函数表里会增加这个函数的地址</p>
+<p>虚函数表存在只读数据段里</p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>构造函数不能是虚的</p>
+<p>析构函数应该是虚函数，除非类不作为基类</p>
+<p>友元不能是虚函数</p>
+<p>派生类重新定义将隐藏基类方法</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 重新定义继承的方法不是重载，无论参数列表是否相同</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">f</span><span class="params">(<span class="type">int</span> x)</span> <span class="type">const</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> : <span class="keyword">public</span> A &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">f</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">B test;</span><br><span class="line">test.<span class="built_in">f</span>(); <span class="comment">// 合法</span></span><br><span class="line">test.<span class="built_in">f</span>(<span class="number">5</span>); <span class="comment">// 不合法</span></span><br></pre></td></tr></table></figure>
+<p>如果重新定义继承的方法，且返回类型是基类引用或指针，则可以修改为指向派生类的引用或指针</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 返回类型协变</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> A &amp; <span class="title">f</span><span class="params">(<span class="type">int</span> x)</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> : <span class="keyword">public</span> A &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> B &amp; <span class="title">f</span><span class="params">(<span class="type">int</span> x)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="访问控制：protected"><a href="#访问控制：protected" class="headerlink" title="访问控制：protected"></a>访问控制：protected</h2><p>protected和private的区别只在派生类中体现，派生类的成员可以直接访问基类的保护成员</p>
+<h2 id="抽象基类-ABC"><a href="#抽象基类-ABC" class="headerlink" title="抽象基类(ABC)"></a>抽象基类(ABC)</h2><p>纯虚函数提供未实现的函数</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="type">double</span> <span class="title">Area</span><span class="params">()</span> <span class="type">const</span> </span>= <span class="number">0</span>; <span class="comment">// 纯虚函数的结尾处为 =0</span></span><br></pre></td></tr></table></figure>
+<p>当类声明中包含纯虚函数时，不能创建该类的对象</p>
+<p>ABC描述的是至少使用一个纯虚函数的接口</p>
+<p>可以把ABC看作是一种必须实施的接口</p>
+]]></content>
       <tags>
         <tag>C++</tag>
       </tags>
