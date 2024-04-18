@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/qingcai_apple.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/qingcai_32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/qingcai_16.png">
+  <link rel="mask-icon" href="/images/qingcai.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cabbage74.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Foreword写cppserver之前没遇到过这个概念，记录下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IO多路复用">
+<meta property="og:url" content="https://cabbage74.github.io/2024/04/18/iomultipleaccess/index.html">
+<meta property="og:site_name" content="Cabbage74">
+<meta property="og:description" content="Foreword写cppserver之前没遇到过这个概念，记录下">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/04/18/BFNoJLhwDpc5GA2.png">
+<meta property="og:image" content="https://s2.loli.net/2024/04/18/yQOz7A64CE1hb3R.png">
+<meta property="og:image" content="https://s2.loli.net/2024/04/18/3XBrucNHQMsAvbV.png">
+<meta property="og:image" content="https://s2.loli.net/2024/04/18/zCkNbeduSTVXvD6.png">
+<meta property="og:image" content="https://s2.loli.net/2024/04/18/OyQnkuIMJP9gF6L.png">
+<meta property="og:image" content="https://s2.loli.net/2024/04/18/rFos7xk8TMaIWVE.png">
+<meta property="og:image" content="https://s2.loli.net/2024/04/18/vxSoBzCMpVgk1Fh.png">
+<meta property="article:published_time" content="2024-04-18T13:37:43.000Z">
+<meta property="article:modified_time" content="2024-04-18T13:39:51.262Z">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="网络编程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/04/18/BFNoJLhwDpc5GA2.png">
+
+
+<link rel="canonical" href="https://cabbage74.github.io/2024/04/18/iomultipleaccess/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cabbage74.github.io/2024/04/18/iomultipleaccess/","path":"2024/04/18/iomultipleaccess/","title":"IO多路复用"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>IO多路复用 | Cabbage74</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Cabbage74</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">再见以前先说再见</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Foreword"><span class="nav-number">1.</span> <span class="nav-text">Foreword</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unix%E4%B8%8B%E7%9A%84%E4%BA%94%E7%A7%8DIO%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">Unix下的五种IO模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%BB%E5%A1%9E%E5%BC%8FI-O"><span class="nav-number">2.1.</span> <span class="nav-text">阻塞式I&#x2F;O</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%BC%8FI-O"><span class="nav-number">2.2.</span> <span class="nav-text">非阻塞式I&#x2F;O</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#I-O%E5%A4%8D%E7%94%A8"><span class="nav-number">2.3.</span> <span class="nav-text">I&#x2F;O复用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E9%A9%B1%E5%8A%A8%E5%BC%8FI-O"><span class="nav-number">2.4.</span> <span class="nav-text">信号驱动式I&#x2F;O</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5I-O"><span class="nav-number">2.5.</span> <span class="nav-text">异步I&#x2F;O</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E8%BE%83"><span class="nav-number">2.6.</span> <span class="nav-text">比较</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">IO多路复用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#select"><span class="nav-number">3.1.</span> <span class="nav-text">select</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#poll"><span class="nav-number">3.2.</span> <span class="nav-text">poll</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#epoll"><span class="nav-number">3.3.</span> <span class="nav-text">epoll</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E8%80%85%E6%AF%94%E8%BE%83"><span class="nav-number">3.4.</span> <span class="nav-text">三者比较</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+ 
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt=""
+      src="/images/withbobo.jpg">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Cabbage74" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Cabbage74" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:cabbage030704@gmail.com" title="E-Mail → mailto:cabbage030704@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cabbage74.github.io/2024/04/18/iomultipleaccess/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/withbobo.jpg">
+      <meta itemprop="name" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cabbage74">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="IO多路复用 | Cabbage74">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          IO多路复用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2024-04-18 21:37:43 / 修改时间：21:39:51" itemprop="dateCreated datePublished" datetime="2024-04-18T21:37:43+08:00">2024-04-18</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="Foreword"><a href="#Foreword" class="headerlink" title="Foreword"></a>Foreword</h2><p>写cppserver之前没遇到过这个概念，记录下</p>
+<span id="more"></span>
+<h2 id="Unix下的五种IO模型"><a href="#Unix下的五种IO模型" class="headerlink" title="Unix下的五种IO模型"></a>Unix下的五种IO模型</h2><h3 id="阻塞式I-O"><a href="#阻塞式I-O" class="headerlink" title="阻塞式I/O"></a>阻塞式I/O</h3><p><img src="https://s2.loli.net/2024/04/18/BFNoJLhwDpc5GA2.png" alt="最常见的"></p>
+<h3 id="非阻塞式I-O"><a href="#非阻塞式I-O" class="headerlink" title="非阻塞式I/O"></a>非阻塞式I/O</h3><p><img src="https://s2.loli.net/2024/04/18/yQOz7A64CE1hb3R.png" alt="轮询内核，耗费大量CPU时间"></p>
+<h3 id="I-O复用"><a href="#I-O复用" class="headerlink" title="I/O复用"></a>I/O复用</h3><p><img src="https://s2.loli.net/2024/04/18/3XBrucNHQMsAvbV.png" alt="阻塞于select直到套接字变为可读，然后调用recvfrom"></p>
+<p>与I/O复用密切相关的另一种I/O模型是在多线程中使用阻塞式I/O，每个文件描述符一个线程，每个线程里自由地调用阻塞式I/O系统调用</p>
+<h3 id="信号驱动式I-O"><a href="#信号驱动式I-O" class="headerlink" title="信号驱动式I/O"></a>信号驱动式I/O</h3><p><img src="https://s2.loli.net/2024/04/18/zCkNbeduSTVXvD6.png" alt="优势在于等待数据报达到期间进程不被阻塞"></p>
+<h3 id="异步I-O"><a href="#异步I-O" class="headerlink" title="异步I/O"></a>异步I/O</h3><p><img src="https://s2.loli.net/2024/04/18/OyQnkuIMJP9gF6L.png" alt="告诉内核启动某个操作，并让内核在整个操作完成后通知我们"></p>
+<p>与信号驱动式I/O的区别是前者由内核通知我们何时可以启动一个I/O操作，而异步I/O是由内核通知我们I/O操作何时完成</p>
+<h3 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h3><p><img src="https://s2.loli.net/2024/04/18/rFos7xk8TMaIWVE.png" alt=" "></p>
+<h2 id="IO多路复用"><a href="#IO多路复用" class="headerlink" title="IO多路复用"></a>IO多路复用</h2><p>I/O复用：内核一旦发现进程指定的一个或多个I/O条件就绪，就通知进程</p>
+<h3 id="select"><a href="#select" class="headerlink" title="select"></a>select</h3><p>该函数允许进程指示内核等待多个事件中的任何一个发生，并只在有一个或多个事件发生或经历一段指定的时间后才唤醒它</p>
+<p>作为一个例子，我们可以调用select，告知内核在下列情况的某一列发生时就返回：</p>
+<ul>
+<li><p>集合{1, 4, 5}中的任何描述符准备好读</p>
+</li>
+<li><p>集合{2, 7}中的任何描述符准备好写</p>
+</li>
+<li><p>集合{1, 4}中的任何描述符有异常条件待处理</p>
+</li>
+<li><p>已经历10.2秒</p>
+</li>
+</ul>
+<p>select原型</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/select.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"><span class="comment">// select的返回值是所有bitmap的已就绪的总位数，如果超时就返回零，出错就返回-1</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">select</span><span class="params">(<span class="type">int</span> maxfdpl, fd_set *readset, fd_set *writeset, fd_set *exceptset, <span class="type">const</span> <span class="keyword">struct</span> timeval *timeout)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>select可用于不限于套接字的描述符</p>
+<p>fd_set其实就是一个bitmap，以值域为轴，需要关心的位就置为1</p>
+<p>FD_SETSIZE这个宏常值被设为了1024，所以不修改宏的话select最多关心这么多的描述符，修改完宏还要重新编译内核</p>
+<p>select的bitmap大致是这样工作的：</p>
+<p>假如我把readset的某些位置为1</p>
+<p>select返回后，会修改readset以反映哪些文件描述符是ready的</p>
+<p>如果某个文件描述符可以读了，那么这一位仍然是1，否则就被置为0</p>
+<p>这就是为什么每次重新调用select需要把bitmap重新初始化</p>
+<h3 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h3><p>poll原型</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;poll.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">pollfd</span> &#123;</span><br><span class="line">    <span class="type">int</span> fd; <span class="comment">// 要检查的描述符</span></span><br><span class="line">    <span class="type">short</span> events; <span class="comment">// 关心的事件</span></span><br><span class="line">    <span class="type">short</span> revents; <span class="comment">// 实际发生的事件</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// poll的返回值是就绪描述符的数目，如果超时就返回零，出错就返回-1</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">poll</span><span class="params">(<span class="keyword">struct</span> pollfd *fdarray, <span class="type">unsigned</span> <span class="type">long</span> nfds, <span class="type">int</span> timeout)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>poll相比select少了最大描述符数的限制，还避免了对原始文件描述符集的修改(即fd和event字段)，每次调用poll还不用重新清空revents字段</p>
+<h3 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h3><p>epoll是linux特有的</p>
+<p>epoll使用一组函数来完成任务，而不是单个函数</p>
+<p>epoll把用户关心的文件描述符上的事件放在内核里的一个事件表中，从而无须像select和poll那样每次调用都要重复传入关心的文件描述符集</p>
+<p>但epoll需要使用一个额外的文件描述符，来唯一标识内核中的这个事件表，由epoll_create函数创建</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/epoll.h&gt;</span></span></span><br><span class="line"><span class="comment">// size是一个被历史淘汰的参数</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">epoll_create</span><span class="params">(<span class="type">int</span> size)</span></span></span><br></pre></td></tr></table></figure>
+<p>epoll_ctl操作epoll的内核事件表</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/epoll.h&gt;</span></span></span><br><span class="line"><span class="comment">// 成功时返回0，失败时返回-1</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">epoll_ctl</span><span class="params">(<span class="type">int</span> epfd,<span class="type">int</span> op,<span class="type">int</span> fd,<span class="keyword">struct</span> epoll_event*event)</span></span></span><br></pre></td></tr></table></figure>
+<p>op参数指定操作类型，fd是要操作的文件描述符</p>
+<p>EPOLL_CTL_ADD往事件表中注册fd上的事件</p>
+<p>EPOLL_CTL_MOD修改fd上的注册事件</p>
+<p>EPOLL_CTL_DEL删除fd上的注册事件</p>
+<p>event参数指定事件</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">epoll_event</span> &#123;</span><br><span class="line">    <span class="type">__uint32_t</span> events; <span class="comment">// epoll事件</span></span><br><span class="line">    <span class="type">epoll_data_t</span> data; <span class="comment">// 用户数据</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">union</span> <span class="title class_">epoll_data</span> &#123;</span><br><span class="line">    <span class="type">void</span> *ptr;</span><br><span class="line">    <span class="type">int</span> fd;</span><br><span class="line">    <span class="type">uint32_t</span> u32;</span><br><span class="line">    <span class="type">uint64_t</span> u64;</span><br><span class="line">&#125; <span class="type">epoll_data_t</span>;</span><br></pre></td></tr></table></figure>
+<p>events成员描述事件类型，如EPOLLIN为可读事件</p>
+<p>epoll_data_t是一个联合体，用的最多的成员是fd，用来指定事件所从属的目标文件描述符</p>
+<p>ptr成员可用来指定与fd相关的用户数据，因为联合体只能维护一个成员，所以要用ptr的话得把fd放在ptr指向的用户数据里</p>
+<p>epoll_wait函数在一段超时时间内等待一组文件描述符上的事件</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/epoll.h&gt;</span></span></span><br><span class="line"><span class="comment">// 成功时返回就绪描述符个数，失败时返回-1</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">epoll_wait</span><span class="params">(<span class="type">int</span> epfd, <span class="keyword">struct</span> epoll_event *events, <span class="type">int</span> maxevents, <span class="type">int</span> timeout)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>epoll_wait如果检测到事件，就将所有就绪的事件从内核事件表中复制到第二个参数events指向的数组里，大大提高了索引就绪文件描述符的效率</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// poll vs. epoll</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// poll</span></span><br><span class="line"><span class="type">int</span> ret=<span class="built_in">poll</span>(fds,MAX_EVENT_NUMBER,<span class="number">-1</span>);</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i＜MAX_EVENT_NUMBER;++i) &#123;</span><br><span class="line">    <span class="comment">/*判断第i个文件描述符是否就绪*/</span></span><br><span class="line">    <span class="keyword">if</span>(fds[i].revents＆POLLIN) &#123;</span><br><span class="line">        <span class="type">int</span> sockfd=fds[i].fd;</span><br><span class="line">        <span class="comment">/*处理sockfd*/</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// epoll</span></span><br><span class="line"><span class="type">int</span> ret=<span class="built_in">epoll_wait</span>(epollfd,events,MAX_EVENT_NUMBER,<span class="number">-1</span>);</span><br><span class="line"><span class="comment">/*仅遍历就绪的ret个文件描述符*/</span></span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i＜ret;i++) &#123;</span><br><span class="line">    <span class="type">int</span> sockfd=events[i].data.fd;</span><br><span class="line">    <span class="comment">/*sockfd肯定就绪，直接处理*/</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>epoll不仅支持Level Trigger(LT)模式，还支持Edge Trigger(ET)模式</p>
+<p>LT模式是默认模式，这种模式下可看作高效版的poll</p>
+<p>当往epoll内核事件表中注册一个文件描述符上的EPOLLET事件时，epoll将以ET模式来操作该文件描述符</p>
+<p>ET模式是epoll的高效工作模式</p>
+<p>对于采用LT工作模式的文件描述符，当epoll_wait检测到其上有事件发生并将此事件通知应用程序后，应用程序可以不立即处理该事件</p>
+<p>这样，当应用程序下一次调用epoll_wait时，epoll_wait还会再次向应用程序通告此事件，直到该事件被处理</p>
+<p>而对于采用ET工作模式的文件描述符，当epoll_wait检测到其上有事件发生并将此事件通知应用程序后，应用程序必须立即处理该事件，因为后续的epoll_wait调用将不再向应用程序通知这一事件</p>
+<p>注意：每个使用ET模式的文件描述符都应该是非阻塞的，如果文件描述符是阻塞的，那么读或写操作将会因为没有后续的事件而一直处于阻塞状态（饥渴状态）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 水平触发和边缘触发可以混用</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">epoll_event</span> event;</span><br><span class="line"><span class="type">int</span> fd1 = ...; <span class="comment">// 文件描述符1</span></span><br><span class="line"><span class="type">int</span> fd2 = ...; <span class="comment">// 文件描述符2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对fd1使用水平触发</span></span><br><span class="line">event.events = EPOLLIN; <span class="comment">// 默认为水平触发</span></span><br><span class="line">event.data.fd = fd1;</span><br><span class="line"><span class="built_in">epoll_ctl</span>(epfd, EPOLL_CTL_ADD, fd1, &amp;event);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对fd2使用边缘触发</span></span><br><span class="line">event.events = EPOLLIN | EPOLLET; <span class="comment">// 使用 EPOLLET 标志设置边缘触发</span></span><br><span class="line">event.data.fd = fd2;</span><br><span class="line"><span class="built_in">epoll_ctl</span>(epfd, EPOLL_CTL_ADD, fd2, &amp;event);</span><br></pre></td></tr></table></figure>
+<p>即使我们使用ET模式，一个socket上的某个事件还是可能被触发多次</p>
+<p>这在并发程序中就会引起一个问题，比如一个线程（或进程，下同）在读取完某个socket上的数据后开始处理这些数据，而在数据的处理过程中该socket上又有新数据可读（EPOLLIN再次被触发），此时另外一个线程被唤醒来读取这些新的数据，于是就出现了两个线程同时操作一个socket的局面，这是不被希望的</p>
+<p>对于注册了EPOLLONESHOT事件的文件描述符，操作系统最多触发其上注册的一个可读、可写或者异常事件，且只触发一次，除非我们使用epoll_ctl函数重置该文件描述符上注册的EPOLLONESHOT事<br>件</p>
+<p>这样，当一个线程在处理某个socket时，其他线程是不可能有机会操作该socket的，但反过来思考，注册了EPOLLONESHOT事件的socket一旦被某个线程处理完毕，该线程就应该立即重置这个socket上的EPOLLONESHOT事件，以确保这个socket下一次可读时，其EPOLLIN事件能被触发，进而让其他工作线程有机会继续处理这个socket</p>
+<p>有点像“锁”</p>
+<h3 id="三者比较"><a href="#三者比较" class="headerlink" title="三者比较"></a>三者比较</h3><p><img src="https://s2.loli.net/2024/04/18/vxSoBzCMpVgk1Fh.png" alt=" "></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C++</a>
+              <a href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" rel="tag"># 网络编程</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/04/16/primerplus13/" rel="prev" title="Primer Plus 类继承">
+                  <i class="fa fa-chevron-left"></i> Primer Plus 类继承
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder"></span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">120k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:38</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://unpkg.com/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Cabbage74","repo":"Cabbage74.github.io","client_id":"5880294dcc8269ff3a03","client_secret":"bf429afa7f37f79c6696fabc4e51f5b60aa6471a","admin_user":"Cabbage74","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"e6a97d589908916a4c7df33935fdb478"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<script type="text/javascript" src="/js/love.js"></script>
