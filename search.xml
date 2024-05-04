@@ -863,7 +863,9 @@
 <h3 id="4-26-4-27"><a href="#4-26-4-27" class="headerlink" title="4.26 - 4.27"></a>4.26 - 4.27</h3><p>休息</p>
 <h3 id="4-28"><a href="#4-28" class="headerlink" title="4.28"></a>4.28</h3><p><img src="https://s2.loli.net/2024/04/30/MATI7p9sqKOQ6zB.jpg" alt="一熬夜心率就爆高"></p>
 <h3 id="4-29"><a href="#4-29" class="headerlink" title="4.29"></a>4.29</h3><p><img src="https://s2.loli.net/2024/04/30/ndJKALDqPiFTO7S.jpg" alt="控心率轻松跑"></p>
-<h3 id="4-30"><a href="#4-30" class="headerlink" title="4.30"></a>4.30</h3><p>下雨休息</p>
+<h3 id="4-30-5-1"><a href="#4-30-5-1" class="headerlink" title="4.30 - 5.1"></a>4.30 - 5.1</h3><p>下雨休息</p>
+<h3 id="5-2"><a href="#5-2" class="headerlink" title="5.2"></a>5.2</h3><p><img src="https://s2.loli.net/2024/05/02/dTnSL1HBWvcbuFA.jpg" alt="控心率轻松跑"></p>
+<h3 id="5-3-5-4"><a href="#5-3-5-4" class="headerlink" title="5.3 - 5.4"></a>5.3 - 5.4</h3><p>休息</p>
 ]]></content>
       <tags>
         <tag>生活</tag>
@@ -1243,6 +1245,59 @@
 ]]></content>
       <tags>
         <tag>编译原理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Project 0</title>
+    <url>/2024/05/05/cmu15445p0/</url>
+    <content><![CDATA[<h2 id="Foreword"><a href="#Foreword" class="headerlink" title="Foreword"></a>Foreword</h2><p>做的是2023 spring的版本，只会C with STL的人有难了</p>
+<span id="more"></span>
+<h2 id="dynamic-cast"><a href="#dynamic-cast" class="headerlink" title="dynamic_cast"></a>dynamic_cast</h2><p>如果指向的对象(*pt)的类型为Type或是从Type直接或间接派生而来的类型，运算符将返回对象的地址，否则返回一个空指针</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">dynamic_cast</span>&lt;Type *&gt;(pt)</span><br></pre></td></tr></table></figure>
+<h2 id="std-shared-ptr"><a href="#std-shared-ptr" class="headerlink" title="std::shared_ptr"></a>std::shared_ptr</h2><p>能够记录多少个shared_ptr共同指向一个对象，从而消除显示的delete调用，当引用计数变为零的时候将对象自动删除</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">std::shared_ptr&lt;<span class="type">int</span>&gt; p1 = std::<span class="built_in">make_shared</span>&lt;<span class="type">int</span>&gt;(<span class="number">10</span>);</span><br><span class="line"><span class="keyword">auto</span> p2 = p1; <span class="comment">// 引用计数加1</span></span><br><span class="line"><span class="type">int</span> *p = p1.<span class="built_in">get</span>(); <span class="comment">// get方法获取原始指针</span></span><br><span class="line">std::cout &lt;&lt; p1.<span class="built_in">use_count</span>() &lt;&lt; <span class="string">&#x27;\n&#x27;</span>; <span class="comment">// 2</span></span><br><span class="line">p2.<span class="built_in">reset</span>(); <span class="comment">// 引用计数减1</span></span><br><span class="line">std::cout &lt;&lt; p1.<span class="built_in">use_count</span>() &lt;&lt; <span class="string">&#x27;\n&#x27;</span>; <span class="comment">// 1 </span></span><br></pre></td></tr></table></figure>
+<h2 id="std-unique-ptr"><a href="#std-unique-ptr" class="headerlink" title="std::unique_ptr"></a>std::unique_ptr</h2><p>独占的智能指针，禁止其他智能指针与其共享同一个对象，从而保证代码的安全</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">std::unique_ptr&lt;<span class="type">int</span>&gt; p1 = std::<span class="built_in">make_unique</span>&lt;<span class="type">int</span>&gt;(<span class="number">10</span>);</span><br><span class="line">std::unique_ptr&lt;<span class="type">int</span>&gt; p2 = p1; <span class="comment">// 非法</span></span><br><span class="line"><span class="function">std::unique_ptr&lt;<span class="type">int</span>&gt; <span class="title">p3</span> <span class="params">(std::move(p1))</span></span>; <span class="comment">// 可通过std::move获得所有权</span></span><br></pre></td></tr></table></figure>
+<h2 id="std-weak-ptr"><a href="#std-weak-ptr" class="headerlink" title="std::weak_ptr"></a>std::weak_ptr</h2><p>std::shared_ptr仍然存在着可能无法释放资源的问题</p>
+<p>比如经典的循环引用</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">A</span>;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">B</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">A</span> &#123;</span><br><span class="line">    std::shared_ptr&lt;B&gt; pointer;</span><br><span class="line">    ~<span class="built_in">A</span>() &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;A 被销毁&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">B</span> &#123;</span><br><span class="line">    std::shared_ptr&lt;A&gt; pointer;</span><br><span class="line">    ~<span class="built_in">B</span>() &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;B 被销毁&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> a = std::<span class="built_in">make_shared</span>&lt;A&gt;();</span><br><span class="line">    <span class="keyword">auto</span> b = std::<span class="built_in">make_shared</span>&lt;B&gt;();</span><br><span class="line">    a-&gt;pointer = b;</span><br><span class="line">    b-&gt;pointer = a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解决方法就是把一个std::shared_ptr改成std::weak_ptr</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">A</span>;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">B</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">A</span> &#123;</span><br><span class="line">    std::weak_ptr&lt;B&gt; pointer;  <span class="comment">// 改为 weak_ptr</span></span><br><span class="line">    ~<span class="built_in">A</span>() &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;A 被销毁&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">B</span> &#123;</span><br><span class="line">    std::shared_ptr&lt;A&gt; pointer;</span><br><span class="line">    ~<span class="built_in">B</span>() &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;B 被销毁&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>主要是用于检查std::shared_ptr是否存在</p>
+<h2 id="右值引用"><a href="#右值引用" class="headerlink" title="右值引用"></a>右值引用</h2><p>左值：表达式后依然存在的持久对象</p>
+<p>右值：表达式结束后不再存在的临时对象</p>
+<p>纯右值：不是将亡值的右值</p>
+<p>将亡值：即将被销毁，却能够被移动的值</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">std::vector&lt;<span class="type">int</span>&gt; <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::vector&lt;<span class="type">int</span>&gt; temp = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;;</span><br><span class="line">    <span class="keyword">return</span> temp;</span><br><span class="line">&#125;</span><br><span class="line">std::vector&lt;<span class="type">int</span>&gt; v = <span class="built_in">foo</span>();</span><br><span class="line"><span class="comment">// 对于传统理解，这段代码的运行过程是：v获得foo的返回值temp时，会把temp拷贝一份，然后把temp销毁，开销大</span></span><br><span class="line"><span class="comment">// 对于C++11之后，编译器会将左值temp隐式右值转换，等价于static_cast&lt;std::vector&lt;int&gt; &amp;&amp;&gt;(temp)，然后v移动foo返回的值</span></span><br></pre></td></tr></table></figure>
+<p>要拿到一个将亡值，就需要用到右值引用：T &amp;&amp;</p>
+<p>其中 T 是类型，右值引用的声明让这个临时值的生命周期得以延长</p>
+<p>只要变量还活着，那么将亡值将继续存活</p>
+<h2 id="移动语义"><a href="#移动语义" class="headerlink" title="移动语义"></a>移动语义</h2><p>std::move本身只是起到类型转换的作用，把左值转换成右值引用</p>
+<p>是移动构造函数或移动赋值符的内部实现进行移动(交换指针、重置原对象等)</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span> <span class="comment">// std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;utility&gt;</span> <span class="comment">// std::move</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span> <span class="comment">// std::vector</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span> <span class="comment">// std::string</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    std::string str = <span class="string">&quot;Hello world.&quot;</span>;</span><br><span class="line">    std::vector&lt;std::string&gt; v;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将使用 push_back(const T&amp;), 即产生拷贝行为</span></span><br><span class="line">    v.<span class="built_in">push_back</span>(str);</span><br><span class="line">    <span class="comment">// 将输出 &quot;str: Hello world.&quot;</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;str: &quot;</span> &lt;&lt; str &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将使用 push_back(const T&amp;&amp;), 不会出现拷贝行为</span></span><br><span class="line">    <span class="comment">// 而整个字符串会被移动到 vector 中，所以有时候 std::move 会用来减少拷贝出现的开销</span></span><br><span class="line">    <span class="comment">// 这步操作后, str 中的值会变为空</span></span><br><span class="line">    v.<span class="built_in">push_back</span>(std::<span class="built_in">move</span>(str));</span><br><span class="line">    <span class="comment">// 将输出 &quot;str: &quot;</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;str: &quot;</span> &lt;&lt; str &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="std-string-view"><a href="#std-string-view" class="headerlink" title="std::string_view"></a>std::string_view</h2><p>提供对std::string的只读视图，本身不持有数据，用于只读函数，性能更好</p>
+<h2 id="Task1"><a href="#Task1" class="headerlink" title="Task1"></a>Task1</h2><p>实现支持单线程操作的可持久化Trie</p>
+<h3 id="Get"><a href="#Get" class="headerlink" title="Get"></a>Get</h3><p>沿key遍历路径，利用dynamic_cast判断终点是否确实是值节点</p>
+<h3 id="Put"><a href="#Put" class="headerlink" title="Put"></a>Put</h3><p>遍历key，若当前字符的路径存在，clone一个node，否则创建一个node</p>
+<p>遍历到倒数第二个字符的时候，特殊处理最后一个字符对应的node是否存在</p>
+<p>如果不存在，新创建一个值节点，否则用已有节点的children_和value创建一个值节点</p>
+<h3 id="Remove"><a href="#Remove" class="headerlink" title="Remove"></a>Remove</h3><p>递归地删，写一个辅助函数形如dfs(root, index)</p>
+<p>当index == key.size()时，到达递归出口，如果这个节点没有孩子，直接返回nullptr说明删掉就好，否则return没有值的node，保留children_</p>
+<p>自下往上地判断要不要把每一个节点删掉就好了</p>
+<h2 id="Task2"><a href="#Task2" class="headerlink" title="Task2"></a>Task2</h2><p>实现支持并发操作的可持久化Trie</p>
+<p>并发场景是多reader单writer</p>
+<p>get照伪代码写，put和remove对于写操作开大锁就好了</p>
+<h2 id="Task3"><a href="#Task3" class="headerlink" title="Task3"></a>Task3</h2><p>debug能力测试</p>
+<p>用vscode的可视化debug就能直接看出前两个答案</p>
+<p>第三个可以先用vscode的可视化找到需要的节点地址</p>
+<p>然后在vscode的debug console里直接用类型强转命令比如</p>
+<p>-exec p <em>(TrieNodeWithValue<unsigned int></em>)0x608000000630</p>
+<p>然后再通过这个东西的value_ptr的地址得到真实值</p>
+<p>-exec print *($1.value_.get())</p>
+<h2 id="Task4"><a href="#Task4" class="headerlink" title="Task4"></a>Task4</h2><p>实现大小写转换逻辑，注册到sql层</p>
+]]></content>
+      <tags>
+        <tag>CMU15445</tag>
       </tags>
   </entry>
 </search>
