@@ -1291,9 +1291,9 @@
 <p>用vscode的可视化debug就能直接看出前两个答案</p>
 <p>第三个可以先用vscode的可视化找到需要的节点地址</p>
 <p>然后在vscode的debug console里直接用类型强转命令比如</p>
-<p>-exec p <em>(TrieNodeWithValue<unsigned int></em>)0x608000000630</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">-exec p *(TrieNodeWithValue&lt;<span class="type">unsigned</span> <span class="type">int</span>&gt;*)<span class="number">0x608000000630</span></span><br></pre></td></tr></table></figure>
 <p>然后再通过这个东西的value_ptr的地址得到真实值</p>
-<p>-exec print *($1.value_.get())</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">-exec print *($<span class="number">1.</span>value_.<span class="built_in">get</span>())</span><br></pre></td></tr></table></figure>
 <h2 id="Task4"><a href="#Task4" class="headerlink" title="Task4"></a>Task4</h2><p>实现大小写转换逻辑，注册到sql层</p>
 ]]></content>
       <tags>
