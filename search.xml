@@ -1300,4 +1300,28 @@
         <tag>CMU15445</tag>
       </tags>
   </entry>
+  <entry>
+    <title>语法分析</title>
+    <url>/2024/04/21/syntaxanalyzer/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>输出语法分析树的某种形式</p>
+<span id="more"></span>
+<h2 id="上下文无关文法"><a href="#上下文无关文法" class="headerlink" title="上下文无关文法"></a>上下文无关文法</h2><p>由终结符号、非终结符号、一个开始符号和一组产生式组成</p>
+<p>上下文无关文法的表达能力比正则表达式强</p>
+<h2 id="推导"><a href="#推导" class="headerlink" title="推导"></a>推导</h2><p>最左推导：总是选择每个句型的最左非终结符号进行推导</p>
+<p>最右推导：总是选择每个句型的最左非终结符号进行推导</p>
+<p>每一棵语法分析树都和唯一的最左推导及唯一的最右推导相关联</p>
+<h2 id="消除左递归"><a href="#消除左递归" class="headerlink" title="消除左递归"></a>消除左递归</h2><p>如果一个文法中有一个非终结符A使得对某个串$\alpha$存在一个推导$A\Rightarrow A\alpha$，那么这个文法就是左递归的</p>
+<p>自顶向下语法分析方法不能处理左递归的文法，所以要消除左递归</p>
+<p><img src="https://s2.loli.net/2024/05/05/TFkUwOlMyKgjDL5.png" alt="消除左递归"></p>
+<h2 id="提取左公因子"><a href="#提取左公因子" class="headerlink" title="提取左公因子"></a>提取左公因子</h2><p><img src="https://s2.loli.net/2024/05/05/3glhjMJT1nONCZA.png" alt="提取左公因子"></p>
+<h2 id="FIRST和FOLLOW集"><a href="#FIRST和FOLLOW集" class="headerlink" title="FIRST和FOLLOW集"></a>FIRST和FOLLOW集</h2><p>FIRST($\alpha$)被定义为可从$\alpha$推导得到的串的首符号的集合</p>
+<p>FOLLOW(A)被定义为可能在某些句型中紧跟在A右边的终结符号的集合</p>
+<p><img src="https://s2.loli.net/2024/05/05/xG3Lq8gn5HFDlfw.png" alt="FIRST"></p>
+<p><img src="https://s2.loli.net/2024/05/05/LkwZgFomsQf1Yl5.png" alt="FOLLW"></p>
+<h2 id="LL-1-文法"><a href="#LL-1-文法" class="headerlink" title="LL(1)文法"></a>LL(1)文法</h2><p><img src="https://s2.loli.net/2024/05/05/65boEJD9nZhpMwK.png" alt="LL1"></p>
+]]></content>
+      <tags>
+        <tag>编译原理</tag>
+      </tags>
+  </entry>
 </search>

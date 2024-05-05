@@ -20,22 +20,33 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"cabbage74.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Cabbage74">
-<meta property="og:url" content="https://cabbage74.github.io/tags/Database/index.html">
+    <meta name="description" content="作用输出语法分析树的某种形式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="语法分析">
+<meta property="og:url" content="https://cabbage74.github.io/2024/04/21/syntaxanalyzer/index.html">
 <meta property="og:site_name" content="Cabbage74">
+<meta property="og:description" content="作用输出语法分析树的某种形式">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/05/05/TFkUwOlMyKgjDL5.png">
+<meta property="og:image" content="https://s2.loli.net/2024/05/05/3glhjMJT1nONCZA.png">
+<meta property="og:image" content="https://s2.loli.net/2024/05/05/xG3Lq8gn5HFDlfw.png">
+<meta property="og:image" content="https://s2.loli.net/2024/05/05/LkwZgFomsQf1Yl5.png">
+<meta property="og:image" content="https://s2.loli.net/2024/05/05/65boEJD9nZhpMwK.png">
+<meta property="article:published_time" content="2024-04-21T10:50:33.000Z">
+<meta property="article:modified_time" content="2024-05-05T07:22:29.564Z">
+<meta property="article:tag" content="编译原理">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/05/05/TFkUwOlMyKgjDL5.png">
 
 
-<link rel="canonical" href="https://cabbage74.github.io/tags/Database/">
+<link rel="canonical" href="https://cabbage74.github.io/2024/04/21/syntaxanalyzer/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"tags/Database/index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cabbage74.github.io/2024/04/21/syntaxanalyzer/","path":"2024/04/21/syntaxanalyzer/","title":"语法分析"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>标签: Database | Cabbage74</title>
+<title>语法分析 | Cabbage74</title>
   
 
 
@@ -122,7 +133,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -135,6 +146,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E6%97%A0%E5%85%B3%E6%96%87%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">上下文无关文法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A8%E5%AF%BC"><span class="nav-number">3.</span> <span class="nav-text">推导</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B6%88%E9%99%A4%E5%B7%A6%E9%80%92%E5%BD%92"><span class="nav-number">4.</span> <span class="nav-text">消除左递归</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E5%8F%96%E5%B7%A6%E5%85%AC%E5%9B%A0%E5%AD%90"><span class="nav-number">5.</span> <span class="nav-text">提取左公因子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FIRST%E5%92%8CFOLLOW%E9%9B%86"><span class="nav-number">6.</span> <span class="nav-text">FIRST和FOLLOW集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LL-1-%E6%96%87%E6%B3%95"><span class="nav-number">7.</span> <span class="nav-text">LL(1)文法</span></a></li></ol></div>
         </div>
         <!--/noindex-->
  
@@ -179,51 +191,139 @@
 
     </div>
 
-    <div class="main-inner tag posts-collapse">
+    <div class="main-inner post posts-expand">
 
 
   
+
+
+<div class="post-block">
   
   
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <h1 class="collection-header">Database
-          <small>标签</small>
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cabbage74.github.io/2024/04/21/syntaxanalyzer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/withbobo.jpg">
+      <meta itemprop="name" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cabbage74">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="语法分析 | Cabbage74">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          语法分析
         </h1>
-      </div>
 
-      
-    <div class="collection-year">
-      <span class="collection-header">2023</span>
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-21 18:50:33" itemprop="dateCreated datePublished" datetime="2024-04-21T18:50:33+08:00">2024-04-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-05-05 15:22:29" itemprop="dateModified" datetime="2024-05-05T15:22:29+08:00">2024-05-05</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>352</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>输出语法分析树的某种形式</p>
+<span id="more"></span>
+<h2 id="上下文无关文法"><a href="#上下文无关文法" class="headerlink" title="上下文无关文法"></a>上下文无关文法</h2><p>由终结符号、非终结符号、一个开始符号和一组产生式组成</p>
+<p>上下文无关文法的表达能力比正则表达式强</p>
+<h2 id="推导"><a href="#推导" class="headerlink" title="推导"></a>推导</h2><p>最左推导：总是选择每个句型的最左非终结符号进行推导</p>
+<p>最右推导：总是选择每个句型的最左非终结符号进行推导</p>
+<p>每一棵语法分析树都和唯一的最左推导及唯一的最右推导相关联</p>
+<h2 id="消除左递归"><a href="#消除左递归" class="headerlink" title="消除左递归"></a>消除左递归</h2><p>如果一个文法中有一个非终结符A使得对某个串$\alpha$存在一个推导$A\Rightarrow A\alpha$，那么这个文法就是左递归的</p>
+<p>自顶向下语法分析方法不能处理左递归的文法，所以要消除左递归</p>
+<p><img src="https://s2.loli.net/2024/05/05/TFkUwOlMyKgjDL5.png" alt="消除左递归"></p>
+<h2 id="提取左公因子"><a href="#提取左公因子" class="headerlink" title="提取左公因子"></a>提取左公因子</h2><p><img src="https://s2.loli.net/2024/05/05/3glhjMJT1nONCZA.png" alt="提取左公因子"></p>
+<h2 id="FIRST和FOLLOW集"><a href="#FIRST和FOLLOW集" class="headerlink" title="FIRST和FOLLOW集"></a>FIRST和FOLLOW集</h2><p>FIRST($\alpha$)被定义为可从$\alpha$推导得到的串的首符号的集合</p>
+<p>FOLLOW(A)被定义为可能在某些句型中紧跟在A右边的终结符号的集合</p>
+<p><img src="https://s2.loli.net/2024/05/05/xG3Lq8gn5HFDlfw.png" alt="FIRST"></p>
+<p><img src="https://s2.loli.net/2024/05/05/LkwZgFomsQf1Yl5.png" alt="FOLLW"></p>
+<h2 id="LL-1-文法"><a href="#LL-1-文法" class="headerlink" title="LL(1)文法"></a>LL(1)文法</h2><p><img src="https://s2.loli.net/2024/05/05/65boEJD9nZhpMwK.png" alt="LL1"></p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2023-05-06T16:49:33+08:00"
-              content="2023-05-06">
-          05-06
-        </time>
-      </div>
+    
+    
+    
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2023/05/06/database-paradigm/" itemprop="url">
-            <span itemprop="name">范式理论</span>
-          </a>
-      </div>
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" rel="tag"># 编译原理</a>
+          </div>
 
-      
-    </header>
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/04/20/lexicalanalyzer/" rel="prev" title="词法分析">
+                  <i class="fa fa-chevron-left"></i> 词法分析
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/05/05/cmu15445p0/" rel="next" title="Project 0">
+                  Project 0 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
   </article>
+</div>
 
-    </div>
-  </div>
-  
-  
-  
 
+
+
+
+
+    <div class="comments gitalk-container"></div>
 </div>
   </main>
 
@@ -339,7 +439,7 @@ darkmode.showWidget();
 </script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Cabbage74","repo":"Cabbage74.github.io","client_id":"5880294dcc8269ff3a03","client_secret":"bf429afa7f37f79c6696fabc4e51f5b60aa6471a","admin_user":"Cabbage74","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"c74e17666e7a3ac7df3747c4ff727161"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Cabbage74","repo":"Cabbage74.github.io","client_id":"5880294dcc8269ff3a03","client_secret":"bf429afa7f37f79c6696fabc4e51f5b60aa6471a","admin_user":"Cabbage74","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"f22e617fec22996a0dc0f3e4d653b426"}</script>
 <script src="/js/third-party/comments/gitalk.js"></script>
 
 
