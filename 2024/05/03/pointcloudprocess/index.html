@@ -20,36 +20,38 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"cabbage74.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="Foreword虽然很失败，但还是想潦草地记录一下，为两年时紧凑时摆烂的训练画上句号">
+    <meta name="description" content="概要记录一下点云处理的细节、算法和坑">
 <meta property="og:type" content="article">
-<meta property="og:title" content="记XCPC END">
-<meta property="og:url" content="https://cabbage74.github.io/2023/12/15/xcpcend/index.html">
+<meta property="og:title" content="点云处理">
+<meta property="og:url" content="https://cabbage74.github.io/2024/05/03/pointcloudprocess/index.html">
 <meta property="og:site_name" content="Cabbage74">
-<meta property="og:description" content="Foreword虽然很失败，但还是想潦草地记录一下，为两年时紧凑时摆烂的训练画上句号">
+<meta property="og:description" content="概要记录一下点云处理的细节、算法和坑">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s2.loli.net/2023/12/15/jPVewszvi1UIhbt.jpg">
-<meta property="og:image" content="https://s2.loli.net/2023/12/15/HsgGbc28LzSw5oq.jpg">
-<meta property="og:image" content="https://s2.loli.net/2023/12/15/AtcTBrpMG1RKzSg.jpg">
-<meta property="og:image" content="https://s2.loli.net/2023/12/15/ZLWnl8aCVHJsEFp.jpg">
-<meta property="og:image" content="https://s2.loli.net/2023/12/15/w5D2mUFeLafGApI.jpg">
-<meta property="og:image" content="https://s2.loli.net/2023/12/15/zkwPoygMcN4HFOY.jpg">
-<meta property="og:image" content="https://s2.loli.net/2023/12/15/7acshmzoLFEj4lG.jpg">
-<meta property="article:published_time" content="2023-12-14T16:12:30.000Z">
-<meta property="article:modified_time" content="2024-03-11T02:16:18.611Z">
-<meta property="article:tag" content="XCPC">
-<meta property="article:tag" content="生活">
+<meta property="og:image" content="https://s2.loli.net/2024/05/19/3QHJIeDTZrj6aSc.png">
+<meta property="og:image" content="https://s2.loli.net/2024/05/19/JymvnXKrs1qcgu7.png">
+<meta property="og:image" content="https://s2.loli.net/2024/05/19/w8jBODLMzGYhATy.png">
+<meta property="og:image" content="https://s2.loli.net/2024/05/19/Fria9cYMpWR3jnm.png">
+<meta property="og:image" content="https://s2.loli.net/2024/05/19/xFKTVQlncwAIj8J.png">
+<meta property="og:image" content="https://s2.loli.net/2024/05/19/XcnCGji5HSUldTg.png">
+<meta property="og:image" content="https://s2.loli.net/2024/05/19/hby3aJoRglYeSOH.png">
+<meta property="og:image" content="https://s2.loli.net/2024/05/19/8u9IntSRyEXHkPq.png">
+<meta property="og:image" content="https://s2.loli.net/2024/05/19/Vpe3wSPnUozIFOx.png">
+<meta property="article:published_time" content="2024-05-02T17:18:50.000Z">
+<meta property="article:modified_time" content="2024-05-19T04:55:23.752Z">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="图形学">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s2.loli.net/2023/12/15/jPVewszvi1UIhbt.jpg">
+<meta name="twitter:image" content="https://s2.loli.net/2024/05/19/3QHJIeDTZrj6aSc.png">
 
 
-<link rel="canonical" href="https://cabbage74.github.io/2023/12/15/xcpcend/">
+<link rel="canonical" href="https://cabbage74.github.io/2024/05/03/pointcloudprocess/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cabbage74.github.io/2023/12/15/xcpcend/","path":"2023/12/15/xcpcend/","title":"记XCPC END"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cabbage74.github.io/2024/05/03/pointcloudprocess/","path":"2024/05/03/pointcloudprocess/","title":"点云处理"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>记XCPC END | Cabbage74</title>
+<title>点云处理 | Cabbage74</title>
   
 
 
@@ -149,7 +151,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Foreword"><span class="nav-number">1.</span> <span class="nav-text">Foreword</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A5%BF%E5%AE%89"><span class="nav-number">2.</span> <span class="nav-text">西安</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%9C%B3"><span class="nav-number">3.</span> <span class="nav-text">深圳</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%AD%E5%B7%9E"><span class="nav-number">4.</span> <span class="nav-text">杭州</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Endword"><span class="nav-number">5.</span> <span class="nav-text">Endword</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">概要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%BB%E5%99%AA"><span class="nav-number">3.</span> <span class="nav-text">去噪</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%8D%E9%87%87%E6%A0%B7"><span class="nav-number">3.1.</span> <span class="nav-text">降采样</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%B4%E7%B4%A0%E5%8E%BB%E5%99%AA"><span class="nav-number">3.2.</span> <span class="nav-text">朴素去噪</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E5%89%8D%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">3.3.</span> <span class="nav-text">目前的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mesh%E5%8C%96"><span class="nav-number">4.</span> <span class="nav-text">Mesh化</span></a></li></ol></div>
         </div>
         <!--/noindex-->
  
@@ -205,7 +207,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://cabbage74.github.io/2023/12/15/xcpcend/">
+    <link itemprop="mainEntityOfPage" href="https://cabbage74.github.io/2024/05/03/pointcloudprocess/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/withbobo.jpg">
@@ -218,12 +220,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="记XCPC END | Cabbage74">
+      <meta itemprop="name" content="点云处理 | Cabbage74">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          记XCPC END
+          点云处理
         </h1>
 
         <div class="post-meta-container">
@@ -234,14 +236,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2023-12-15 00:12:30" itemprop="dateCreated datePublished" datetime="2023-12-15T00:12:30+08:00">2023-12-15</time>
+      <time title="创建时间：2024-05-03 01:18:50" itemprop="dateCreated datePublished" datetime="2024-05-03T01:18:50+08:00">2024-05-03</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-03-11 10:16:18" itemprop="dateModified" datetime="2024-03-11T10:16:18+08:00">2024-03-11</time>
+      <time title="修改时间：2024-05-19 12:55:23" itemprop="dateModified" datetime="2024-05-19T12:55:23+08:00">2024-05-19</time>
     </span>
 
   
@@ -258,14 +260,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>620</span>
+      <span>2.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>4 分钟</span>
     </span>
 </div>
 
@@ -275,41 +277,48 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="Foreword"><a href="#Foreword" class="headerlink" title="Foreword"></a>Foreword</h2><p>虽然很失败，但还是想潦草地记录一下，为两年时紧凑时摆烂的训练画上句号<br><span id="more"></span></p>
-<h2 id="西安"><a href="#西安" class="headerlink" title="西安"></a>西安</h2><p>最黑暗的一集</p>
-<p>由于网络赛shit一样的发挥，起初以为ICPC只能打这一场，便寄希望于上半年来过的西安</p>
-<p>可惜被南外附中的OI爷教育了数论的重要性，两个队友似乎都阳了(我为什么没阳还是个未解之谜</p>
-<p>遂铁</p>
-<p>一瞬间感觉暑假的多校都白打了</p>
-<p>真的太黑暗了，图都不想放</p>
-<p>完全道心破碎的一场比赛</p>
-<h2 id="深圳"><a href="#深圳" class="headerlink" title="深圳"></a>深圳</h2><p>最堵车的一集</p>
-<p>即使是上海的中环，在工作日晚上八九点这个时候也是几乎无阻的</p>
-<p>这由我的回家之路便可证明</p>
-<p>然而深圳就是能堵得动都动不了，周日返程时甚至更夸张</p>
-<p>吃了一个已经忘掉叫什么的饭，除了鸡腿都还挺好吃</p>
-<p><img src="https://s2.loli.net/2023/12/15/jPVewszvi1UIhbt.jpg"></p>
-<p>还竟然住上了单人间</p>
-<p><img src="https://s2.loli.net/2023/12/15/HsgGbc28LzSw5oq.jpg"></p>
-<p>赛时被一道期望题卡死，三人全部宕机</p>
-<p>遂铜</p>
-<p><img src="https://s2.loli.net/2023/12/15/AtcTBrpMG1RKzSg.jpg"></p>
-<p>这场离银线差了好像两题，没什么好遗憾的，实力差距吧</p>
-<h2 id="杭州"><a href="#杭州" class="headerlink" title="杭州"></a>杭州</h2><p>最释然的一集</p>
-<p>本来没料到还能来杭州，经历完前面失败的两场，其实已经在心理上觉得就这样了，就当旅个游</p>
-<p>这次还住上了双层单人间</p>
-<p><img src="https://s2.loli.net/2023/12/15/ZLWnl8aCVHJsEFp.jpg"></p>
-<p><img src="https://s2.loli.net/2023/12/15/w5D2mUFeLafGApI.jpg"></p>
-<p>看到了一个离谱翻译</p>
-<p><img src="https://s2.loli.net/2023/12/15/zkwPoygMcN4HFOY.jpg"></p>
-<p>开局真的很完美，光速三题，本来以为稳了</p>
-<p>可惜一道正解是$Dijkstra$的题死活调不出来，队友似乎写的确实就是正解，但就是调不对</p>
-<p>我从头到尾都在写一道逆天大模拟，但太菜了，也没调出来，赛后发现这个分类讨论竟然是金牌题，但感觉要是不慌还是能写的</p>
-<p>另一个队友最后开出了一道期望题，但好像对结局没有改变</p>
-<p>又铜</p>
-<p><img src="https://s2.loli.net/2023/12/15/7acshmzoLFEj4lG.jpg"></p>
-<h2 id="Endword"><a href="#Endword" class="headerlink" title="Endword"></a>Endword</h2><p>很遗憾，三场区域赛没有遇到一场有可做的计算几何题，做了很多无谓的训练</p>
-<p>甚至好像没遇到可做的动态规划题，可惜了，感觉两个队友都挺擅长动态规划的</p>
+    <div class="post-body" itemprop="articleBody"><h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>记录一下点云处理的细节、算法和坑</p>
+<span id="more"></span>
+<h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><p>先后在Wsl2和虚拟机里都尝试了配置</p>
+<p>Wsl2的问题是性能拉跨，一可视化就严重卡死</p>
+<p><img src="https://s2.loli.net/2024/05/19/3QHJIeDTZrj6aSc.png" alt="卡到花屏"></p>
+<p>虚拟机的好处是可以直接用apt安装PCL，问题是我的Ubuntu镜像似乎自带了VTK9.1，而apt默认下载PCL1.12，两者会在可视化点云时发生冲突，在窗口出现的一瞬间段错误</p>
+<p>遂又自行拉源代码编译安装，奈何make过程中不是虚拟机内存不够就是虚拟机存储空间不够</p>
+<p>最后干脆Docker拉取了pointcloudlibrary/env:22.04这个镜像(虽然不知道这个镜像里为什么没有安装pcl库，还是得自己装)，加上VcXsrv作为XServer，终于解决了环境配置</p>
+<p>由于pcl_viewer无法可视化.ply文件(Mesh化后的文件)，还安装了一个Python Open3D环境用来可视化Mesh化后的点云，在第三方库这方面，自带包管理器的语言确实方便，pip一下就完事</p>
+<h2 id="去噪"><a href="#去噪" class="headerlink" title="去噪"></a>去噪</h2><h3 id="降采样"><a href="#降采样" class="headerlink" title="降采样"></a>降采样</h3><p>由于每一个pcd文件都有几百兆，基本每个pcd文件里都有千万个点，笔记本上跑一个半径滤波都跑不动</p>
+<p>一开始以为是电脑问题，等了很久还是跑不出来</p>
+<p>然后发现有个东西叫降采样，类似于主动降低图片分辨率的原理</p>
+<p>pcl库里的VoxelGrid可以做这件事，原理是可以指定某个大小的三维立方体，然后在每个三位立方体内部求取所有点云的重心，用这个重心点表示立方体</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[pcl::VoxelGrid::applyFilter] Leaf size is too small for the input dataset. Integer indices would overflow.</span><br></pre></td></tr></table></figure>
+<p>用pcl的VoxelGrid的时候可能会报这个错，然后降采样会无效，原因是当前设置的三维立方体太小，而点又太多，导致索引溢出</p>
+<p>Open3D就没这个问题，最后我在pcl里设了$5\times 5\times 5$的立方体，Open3D设了$2\times 2\times 2$</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@447194bfa0c9:/pcd_files/build# ./denoise_pcl ../test.pcd ../denoised.pcd</span><br><span class="line">Loaded 11796480 data points from ../test.pcd</span><br><span class="line">X range: [-2346.11, 2586.31]</span><br><span class="line">Y range: [-2451.44, 2471.86]</span><br><span class="line">Z range: [0, 3123.43]</span><br><span class="line">Starting Voxel Grid filter...</span><br><span class="line">Voxel Grid filter complete. Remaining points: 1964866</span><br></pre></td></tr></table></figure>
+<p>上面是我在运行pcl程序的时候打印的日志，降采样缩小了将近十分之一的数据量，降采样完以后连可视化也会流畅许多</p>
+<h3 id="朴素去噪"><a href="#朴素去噪" class="headerlink" title="朴素去噪"></a>朴素去噪</h3><p>可视化了几个钢板的pcd，主要的噪声应该是激光扫描的时候把旁边的不知道是桌子还是垫子也给扫进去了，离群点倒不是很多</p>
+<p><img src="https://s2.loli.net/2024/05/19/JymvnXKrs1qcgu7.png" alt="周围的一圈可能是桌子、架子还是垫子？"></p>
+<p><img src="https://s2.loli.net/2024/05/19/w8jBODLMzGYhATy.png" alt="用Open3D看会清楚一点，这是另一个钢板"></p>
+<p>目前看了几个去噪算法，感觉经典算法大部分是针对离群点的</p>
+<p>直通滤波是对X、Y、Z轴做简单约束的滤波，原理很简单，就是在三个轴上进行截断，PassThrough能做这个事</p>
+<p>于是我目前通过不断可视化不断调参调出了一个能比较好针对这些实验室钢板的约束，能做到去得只剩钢板和部分离群点</p>
+<p>对于剩下来的离群点，主要用了半径滤波，通过判定指定半径内的点数量是否满足阈值来判定是否为离群点，进而进行剔除，RadiusOutlierRemoval能做这件事</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">root@447194bfa0c9:/pcd_files/build# ./denoise_pcl ../test.pcd ../denoised.pcd</span><br><span class="line">Loaded 11796480 data points from ../test.pcd</span><br><span class="line">X range: [-2346.11, 2586.31]</span><br><span class="line">Y range: [-2451.44, 2471.86]</span><br><span class="line">Z range: [0, 3123.43]</span><br><span class="line">Starting Voxel Grid filter...</span><br><span class="line">Voxel Grid filter complete. Remaining points: 1964866</span><br><span class="line">Starting PassThrough filter on Z axis...</span><br><span class="line">PassThrough filter on Z axis complete. Remaining points: 392336</span><br><span class="line">Starting PassThrough filter on X axis...</span><br><span class="line">PassThrough filter on X axis complete. Remaining points: 282039</span><br><span class="line">Starting PassThrough filter on Y axis...</span><br><span class="line">PassThrough filter on Y axis complete. Remaining points: 225942</span><br><span class="line">Starting Radius Outlier Removal...</span><br><span class="line">Radius Outlier Removal complete. Remaining points: 210442</span><br><span class="line">Saved 210442 data points to ../denoised.pcd</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.loli.net/2024/05/19/Fria9cYMpWR3jnm.png" alt="denoised.pcd可视化，不知为何去噪颜色变了"></p>
+<p><img src="https://s2.loli.net/2024/05/19/xFKTVQlncwAIj8J.png" alt="我用Open3D用相同思路对另一个钢板做了同样的事"></p>
+<h3 id="目前的问题"><a href="#目前的问题" class="headerlink" title="目前的问题"></a>目前的问题</h3><p>目前基于PassThrough和RadiusOutlierRemoval的滤波只能处理实验室数据里钢板的点云</p>
+<p>我看实验室里还有一些奇怪的pcd文件，可视化出来好像不是钢板，但也看不出是什么东西</p>
+<p>可能最好的方法还是应该利用深度学习进行点云去噪，尤其是这种离群点不多的点云数据，后续我会尝试</p>
+<p>似乎还有一个叫RANSAC平面拟合的方法，可以从点云里分割出主要平面，听上去也很适合提取钢板</p>
+<h2 id="Mesh化"><a href="#Mesh化" class="headerlink" title="Mesh化"></a>Mesh化</h2><p>一开始用了一个基于解泊松方程的表面重建方法，步骤是先估计每个点的法线方向(可指定搜索半径和考虑的最大邻居数来平滑法线估计)</p>
+<p>然后一致化法线方向，最后解泊松方程生成网络</p>
+<p><img src="https://s2.loli.net/2024/05/19/XcnCGji5HSUldTg.png" alt="Open3D版，不知道为什么Mesh完出来是黑色的"></p>
+<p><img src="https://s2.loli.net/2024/05/19/hby3aJoRglYeSOH.png" alt="换成亮色看纹理更清晰"></p>
+<p><img src="https://s2.loli.net/2024/05/19/8u9IntSRyEXHkPq.png" alt="PCL版，效果并不理想"></p>
+<p>于是又尝试了贪心三角化算法</p>
+<p>原理是根据法向量将点云投影到某个二维平面上</p>
+<p>然后在二维平面上做Delaunay三角剖分(上次看到你还是ACM，好亲切)得到投影后的点的拓扑连接关系</p>
+<p>将得到的拓扑关系应用到三维点</p>
+<p><img src="https://s2.loli.net/2024/05/19/Vpe3wSPnUozIFOx.png" alt="像点样子，但是降采样好像降过头了"></p>
 
     </div>
 
@@ -319,21 +328,21 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/XCPC/" rel="tag"># XCPC</a>
-              <a href="/tags/%E7%94%9F%E6%B4%BB/" rel="tag"># 生活</a>
+              <a href="/tags/C/" rel="tag"># C++</a>
+              <a href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/" rel="tag"># 图形学</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2023/09/16/template/" rel="prev" title="XCPC Template">
-                  <i class="fa fa-chevron-left"></i> XCPC Template
+                <a href="/2024/04/21/syntaxanalyzer/" rel="prev" title="语法分析">
+                  <i class="fa fa-chevron-left"></i> 语法分析
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2023/12/19/cs106b-assignment1/" rel="next" title="CS106B Assignment1">
-                  CS106B Assignment1 <i class="fa fa-chevron-right"></i>
+                <a href="/2024/05/05/cmu15445p0/" rel="next" title="Project 0">
+                  Project 0 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -462,7 +471,7 @@ darkmode.showWidget();
 </script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Cabbage74","repo":"Cabbage74.github.io","client_id":"5880294dcc8269ff3a03","client_secret":"bf429afa7f37f79c6696fabc4e51f5b60aa6471a","admin_user":"Cabbage74","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"0cb742c47a091e632a2eb18f2f0cf4ab"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Cabbage74","repo":"Cabbage74.github.io","client_id":"5880294dcc8269ff3a03","client_secret":"bf429afa7f37f79c6696fabc4e51f5b60aa6471a","admin_user":"Cabbage74","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"c2d112ddf7265d6052412d941322ddc1"}</script>
 <script src="/js/third-party/comments/gitalk.js"></script>
 
 
