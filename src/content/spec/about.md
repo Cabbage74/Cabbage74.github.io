@@ -20,6 +20,10 @@ Huawei, R&D Intern, May 2024 – Aug 2024. Contributed to the development in LTE
 
 2023 CCPC Shenzhen Regional Bronze
 
+# Publications
+
+Gamba-SR: Efficient Content-Aware Super-Resolution with Clustered Sequence Mamba(ICIC 2026 Oral)
+
 # Certificates
 
 IELTS Academic 7.5
