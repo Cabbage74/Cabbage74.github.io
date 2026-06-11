@@ -1,0 +1,1 @@
+function s(n,e){const o=n.replace(/^\/|\/$/g,"").toLowerCase(),t=e.replace(/^\/|\/$/g,"").toLowerCase();return o===t}function r(...n){return n.join("/").replace(/\/+/g,"/")}function u(n){return a(`/posts/${n}/`)}function a(n){return r("","/",n)}export{u as g,s as p,a as u};
