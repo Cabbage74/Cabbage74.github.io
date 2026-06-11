@@ -8,15 +8,13 @@ My research interests lie in DBMS and AI Agents but I am always willing to try o
 
 Momenta, R&D Intern, June 2026 - Now
 
-MatrixOrigin, R&D Intern, April 2025 – Aug 2025, Contributed to the daily development of the open-source database MatrixOne
+MatrixOrigin, R&D Intern, April 2025 – Aug 2025, Contributed to the development of the open-source database MatrixOne
 
-Huawei, R&D Intern, May 2024 – Aug 2024, Contributed to daily development in the LTE & 5G Solutions department
+Huawei, R&D Intern, May 2024 – Aug 2024, Contributed to the development in LTE & 5G Solutions department
 
 # Selected Awards
 
-2023 ACM-ICPC Xi'an Invitational Silver
-
-2023 ACM-ICPC HangZhou Regional Bronze
+2023 ACM-ICPC Hangzhou Regional Bronze
 
 2023 CCPC Shenzhen Regional Bronze
 
