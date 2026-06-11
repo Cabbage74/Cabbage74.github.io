@@ -1,16 +1,18 @@
 # Shuhang Sun
 
-I am currently a grad student at the Department of Software Engineering, East China Normal University, supervised by Prof. Xueqing Gong. Previously, I received my B.Eng. degree from East China Normal University in 2025.
+I am a grad student at the Department of Software Engineering, East China Normal University, supervised by Prof. Xueqing Gong.
 
-My research interests lie in DBMS and AI Agents but I am always willing to try out new things.
+Previously, I received my B.Eng. degree from East China Normal University in 2025.
+
+My research interests lie in DBMS and AI Agents, but I am always willing to try out new things.
 
 # Experience
 
-Momenta, R&D Intern, June 2026 - Now
+Momenta, R&D Intern, June 2026 - Present.
 
-MatrixOrigin, R&D Intern, April 2025 – Aug 2025, Contributed to the development of the open-source database MatrixOne
+MatrixOrigin, R&D Intern, April 2025 – Aug 2025. Contributed to the development of the open-source database MatrixOne
 
-Huawei, R&D Intern, May 2024 – Aug 2024, Contributed to the development in LTE & 5G Solutions department
+Huawei, R&D Intern, May 2024 – Aug 2024. Contributed to the development in LTE & 5G Solutions department
 
 # Selected Awards
 
