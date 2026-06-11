@@ -45,7 +45,6 @@ published: 2023-09-09
 description: Đây là bài viết đầu tiên vủa mình trên trang blog tạo bằng Astro này.
 image: ./cover.jpg
 tags: [Foo, Bar]
-category: Front-end
 draft: false
 lang: jp      # Chỉ đặt nếu ngôn ngữ của bài viết khác với ngôn ngữ của trang web trong `config.ts`
 ---

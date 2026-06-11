@@ -8,13 +8,11 @@ export const ja: Translation = {
 	[Key.search]: "検索",
 
 	[Key.tags]: "タグ",
-	[Key.categories]: "カテゴリ",
 	[Key.recentPosts]: "最近の投稿",
 
 	[Key.comments]: "コメント",
 
 	[Key.untitled]: "タイトルなし",
-	[Key.uncategorized]: "カテゴリなし",
 	[Key.noTags]: "タグなし",
 
 	[Key.wordCount]: "文字",

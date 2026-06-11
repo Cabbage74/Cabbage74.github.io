@@ -5,13 +5,11 @@ enum I18nKey {
 	search = "search",
 
 	tags = "tags",
-	categories = "categories",
 	recentPosts = "recentPosts",
 
 	comments = "comments",
 
 	untitled = "untitled",
-	uncategorized = "uncategorized",
 	noTags = "noTags",
 
 	wordCount = "wordCount",

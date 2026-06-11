@@ -8,13 +8,11 @@ export const id: Translation = {
 	[Key.search]: "Cari",
 
 	[Key.tags]: "Tag",
-	[Key.categories]: "Kategori",
 	[Key.recentPosts]: "Postingan Terbaru",
 
 	[Key.comments]: "Komentar",
 
 	[Key.untitled]: "Tanpa Judul",
-	[Key.uncategorized]: "Tanpa Kategori",
 	[Key.noTags]: "Tanpa Tag",
 
 	[Key.wordCount]: "kata",

@@ -8,13 +8,11 @@ export const zh_CN: Translation = {
 	[Key.search]: "搜索",
 
 	[Key.tags]: "标签",
-	[Key.categories]: "分类",
 	[Key.recentPosts]: "最新文章",
 
 	[Key.comments]: "评论",
 
 	[Key.untitled]: "无标题",
-	[Key.uncategorized]: "未分类",
 	[Key.noTags]: "无标签",
 
 	[Key.wordCount]: "字",

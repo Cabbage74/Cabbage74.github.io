@@ -8,13 +8,11 @@ export const es: Translation = {
 	[Key.search]: "Buscar",
 
 	[Key.tags]: "Etiquetas",
-	[Key.categories]: "Categorías",
 	[Key.recentPosts]: "Publicaciones recientes",
 
 	[Key.comments]: "Comentarios",
 
 	[Key.untitled]: "Sin título",
-	[Key.uncategorized]: "Sin categoría",
 	[Key.noTags]: "Sin etiquetas",
 
 	[Key.wordCount]: "palabra",

@@ -4,7 +4,6 @@ published: 2024-04-01
 description: "How to use this blog template."
 image: "./cover.jpeg"
 tags: ["Fuwari", "Blogging", "Customization"]
-category: Guides
 draft: false
 ---
 
@@ -21,7 +20,6 @@ published: 2023-09-09
 description: This is the first post of my new Astro blog.
 image: ./cover.jpg
 tags: [Foo, Bar]
-category: Front-end
 draft: false
 ---
 ```
@@ -33,7 +31,6 @@ draft: false
 | `description` | A short description of the post. Displayed on index page.                                                                                                                                                   |
 | `image`       | The cover image path of the post.<br/>1. Start with `http://` or `https://`: Use web image<br/>2. Start with `/`: For image in `public` dir<br/>3. With none of the prefixes: Relative to the markdown file |
 | `tags`        | The tags of the post.                                                                                                                                                                                       |
-| `category`    | The category of the post.                                                                                                                                                                                   |
 | `draft`        | If this post is still a draft, which won't be displayed.                                                                                                                                                    |
 
 ## Where to Place the Post Files

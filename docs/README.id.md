@@ -63,7 +63,6 @@ published: 2023-09-09
 description: Ini adalah postingan pertama blog Astro saya.
 image: ./cover.jpg
 tags: [Foo, Bar]
-category: Front-end
 draft: false
 lang: id   # Isi hanya jika bahasa postingan berbeda dari bahasa default di `config.ts`
 ---
