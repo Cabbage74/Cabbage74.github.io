@@ -1,4 +1,6 @@
 .custom-md {
+    font-variant-ligatures: no-common-ligatures;
+
     h1 {
         @apply text-3xl;
     }

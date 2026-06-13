@@ -16,6 +16,8 @@ Huawei, R&D Intern, May 2024 – Aug 2024. Contributed to the development in LTE
 
 # Selected Awards
 
+2023 ACM-ICPC Xi\'an Invitational Silver
+
 2023 ACM-ICPC Hangzhou Regional Bronze
 
 2023 CCPC Shenzhen Regional Bronze
