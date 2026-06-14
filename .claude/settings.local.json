@@ -1,7 +1,21 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(mkdir -p /Users/cabbage/blog/public/images)",
+      "Bash(cp /Users/cabbage/blog/src/assets/images/wechat-qr.jpg /Users/cabbage/blog/public/images/wechat-qr.jpg)",
+      "Bash(npx:*)",
+      "Bash(gh run:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(curl:*)",
+      "Bash(python3 -c \"import sys,json; data=json.load\\(sys.stdin\\); [print\\(f''''Job: {j[\"\"name\"\"]}, Status: {j[\"\"status\"\"]}, Conclusion: {j[\"\"conclusion\"\"]}''''\\) for j in data.get\\(''''jobs'''',[]\\)]\")",
+      "Bash(python3 -m json.tool)",
+      "Bash(unzip -p /tmp/job_logs.zip)",
+      "Bash(pnpm run:*)",
+      "Bash(python3 -c \":*)",
+      "Bash(pnpm astro:*)",
+      "Bash(git revert:*)",
+      "Bash(git stash:*)"
     ]
   }
 }
