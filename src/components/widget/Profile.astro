@@ -5,6 +5,8 @@ import { url } from "../../utils/url-utils";
 import ImageWrapper from "../misc/ImageWrapper.astro";
 
 const config = profileConfig;
+const links = config.links;
+const qrLinks = links.filter(l => l.qr);
 ---
 <div class="card-base p-3">
     <a aria-label="Go to About Page" href={url('/about/')}
@@ -23,17 +25,69 @@ const config = profileConfig;
         <div class="h-1 w-5 bg-[var(--primary)] mx-auto rounded-full mb-2 transition"></div>
         <div class="text-center text-neutral-400 mb-2.5 transition">{config.bio}</div>
         <div class="flex flex-wrap gap-2 justify-center mb-1">
-            {config.links.length > 1 && config.links.map(item =>
-                    <a rel="me" aria-label={item.name} href={item.url} target="_blank" class="btn-regular rounded-lg h-10 w-10 active:scale-90">
+            {links.map(item => {
+                if (item.qr) {
+                    const modalId = `qr-modal-${item.name.toLowerCase().replace(/\s+/g, '-')}`;
+                    return (
+                        <button type="button" aria-label={item.name} data-qr-modal={modalId}
+                                class="qr-trigger btn-regular rounded-lg h-10 w-10 active:scale-90">
+                            <Icon name={item.icon} class="text-[1.5rem]"></Icon>
+                        </button>
+                    );
+                }
+                if (links.length > 1) {
+                    return (
+                        <a rel="me" aria-label={item.name} href={item.url} target="_blank" class="btn-regular rounded-lg h-10 w-10 active:scale-90">
+                            <Icon name={item.icon} class="text-[1.5rem]"></Icon>
+                        </a>
+                    );
+                }
+                return (
+                    <a rel="me" aria-label={item.name} href={item.url} target="_blank"
+                       class="btn-regular rounded-lg h-10 gap-2 px-3 font-bold active:scale-95">
                         <Icon name={item.icon} class="text-[1.5rem]"></Icon>
+                        {item.name}
                     </a>
-            )}
-            {config.links.length == 1 && <a rel="me" aria-label={config.links[0].name} href={config.links[0].url} target="_blank"
-                                            class="btn-regular rounded-lg h-10 gap-2 px-3 font-bold active:scale-95">
-                <Icon name={config.links[0].icon} class="text-[1.5rem]"></Icon>
-                {config.links[0].name}
-            </a>}
+                );
+            })}
         </div>
     </div>
 </div>
+
+{qrLinks.map(item => {
+    const modalId = `qr-modal-${item.name.toLowerCase().replace(/\s+/g, '-')}`;
+    return (
+        <div id={modalId} class="qr-modal fixed inset-0 z-[999] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200">
+            <div class="qr-backdrop absolute inset-0 bg-black/60"></div>
+            <div class="relative bg-[var(--card-bg)] rounded-xl p-6 mx-4 max-w-xs w-full shadow-2xl">
+                <button type="button" class="qr-close absolute top-2 right-2 btn-regular rounded-lg h-8 w-8 active:scale-90">
+                    <Icon name="fa6-solid:xmark" class="text-lg"></Icon>
+                </button>
+                <div class="text-center font-bold text-lg mb-3">{item.name}</div>
+                <img src={url(item.qr!)} alt={`${item.name} QR Code`} class="w-full rounded-lg" />
+                <div class="text-center text-sm text-neutral-400 mt-2">Scan to add me on {item.name}</div>
+            </div>
+        </div>
+    );
+})}
+
+<script>
+    document.querySelectorAll('.qr-trigger').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const modalId = (btn as HTMLElement).dataset.qrModal;
+            const modal = document.getElementById(modalId!);
+            if (modal) {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+            }
+        });
+    });
+    document.querySelectorAll('.qr-modal').forEach(modal => {
+        modal.querySelector('.qr-backdrop')?.addEventListener('click', () => {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        });
+        modal.querySelector('.qr-close')?.addEventListener('click', () => {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        });
+    });
+</script>
 

@@ -63,7 +63,7 @@ export const navBarConfig: NavBarConfig = {
 export const profileConfig: ProfileConfig = {
 	avatar: "assets/images/cabbage.jpg", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
 	name: "Cabbage74",
-	bio: "",
+	bio: "What brings you here?",
 	links: [
 		// You will need to install the corresponding icon set if it's not already included
 		// `pnpm add @iconify-json/<icon-set-name>`
@@ -71,6 +71,12 @@ export const profileConfig: ProfileConfig = {
 			name: "GitHub",
 			icon: "fa6-brands:github",
 			url: "https://github.com/Cabbage74",
+		},
+		{
+			name: "WeChat",
+			icon: "fa6-brands:weixin",
+			url: "",
+			qr: "/images/wechat-qr.jpg",
 		},
 	],
 };

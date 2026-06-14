@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(mkdir -p /Users/cabbage/blog/public/images)",
+      "Bash(cp /Users/cabbage/blog/src/assets/images/wechat-qr.jpg /Users/cabbage/blog/public/images/wechat-qr.jpg)",
+      "Bash(npx:*)"
     ]
   }
 }
