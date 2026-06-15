@@ -1,6 +1,6 @@
 # Shuhang Sun
 
-I am a grad student at the Department of Software Engineering, East China Normal University, supervised by Prof. Xueqing Gong.
+I am a postgrad at the Department of Software Engineering, East China Normal University, supervised by Prof. Xueqing Gong.
 
 Previously, I received my B.Eng. degree from East China Normal University in 2025.
 
