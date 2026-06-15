@@ -8,7 +8,7 @@ My research interests lie in DBMS and AI Agents, but I am always willing to try 
 
 # Experience
 
-Momenta, R&D Intern, June 2026 - Present.
+Momenta, R&D Intern, May 2026 - Present. Contributed to the development in Data Infra department
 
 MatrixOrigin, R&D Intern, April 2025 – Aug 2025. Contributed to the development of the open-source database MatrixOne
 
