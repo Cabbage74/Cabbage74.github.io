@@ -1,4 +1,4 @@
-# Shuhang Sun
+# Shuhang Sun | Cabbage74
 
 I am a postgrad at the Department of Software Engineering, East China Normal University, supervised by Prof. Xueqing Gong.
 
@@ -33,3 +33,5 @@ IELTS Academic 7.5
 # Fun Facts
 
 I am a huge fan of YiEr and BuBu. In my spare time, I enjoy using AI tools to create content inspired by them and sharing it on social media. I have built a small following on [Douyin](https://www.douyin.com/user/MS4wLjABAAAA0tG4jZiQrHByKxo7BpGKKVB00vvHqgMU0Dl89UF31l8) and [Rednote](https://www.xiaohongshu.com/user/profile/65dc67540000000005008ce0).
+
+I have been playing Clash of Clans for a really long time.
