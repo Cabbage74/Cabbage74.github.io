@@ -4,7 +4,7 @@ published: 2026-06-20
 description: '包与虚拟环境'
 image: ''
 tags: [学习, 阅读, Python]
-draft: true
+draft: false
 lang: ''
 ---
 
