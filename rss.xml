@@ -1,4 +1,74 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>2026.06.12</title><link>https://cabbage74.github.io/posts/20260612/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/20260612/</guid><description>阶段性总结</description><pubDate>Fri, 12 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;前几天在小红书刷到了别人用Astro搭建的静态网站，让我想起了自己巨久没有维护的博客。&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>Python入门（一）</title><link>https://cabbage74.github.io/posts/python%E5%85%A5%E9%97%A8%E4%B8%80/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/python%E5%85%A5%E9%97%A8%E4%B8%80/</guid><description>包与虚拟环境</description><pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;由于实习工作需要用到很多Python，并且之前一直拿Python当脚本语言用，基础不扎实。&lt;/p&gt;
+&lt;p&gt;这个系列记录《Python编程从新手到高手》的阅读过程，希望厘清之前没能力弄懂和没意愿弄懂的知识。&lt;/p&gt;
+&lt;h2&gt;包与虚拟环境&lt;/h2&gt;
+&lt;p&gt;包就是Python里的第三方库。&lt;/p&gt;
+&lt;p&gt;一个系统下不同项目的包可能有版本冲突，可以通过虚拟环境解决。相当于给每个项目配一个沙盒。&lt;/p&gt;
+&lt;p&gt;:::tip
+不过虚拟环境在实现上和项目是解耦的，所以其实可以创造一些系统级别的通用虚拟环境。
+:::&lt;/p&gt;
+&lt;h3&gt;这里讨论虚拟环境的使用&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;python3 -m venv venv
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;该命令在当前目录创建一个虚拟环境，第一个venv表示调用Python提供的venv工具，第二个venv表示相对路径。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;source venv/bin/activate
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;该命令激活虚拟环境。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;deactivate
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;该命令退出虚拟环境。&lt;/p&gt;
+&lt;h3&gt;这里讨论虚拟环境的原理&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;我的项目/
+├── venv/              ← 虚拟环境根目录
+│   ├── bin/           ← Linux/macOS 下的可执行文件
+│   │   ├── python     ← Python解释器的符号链接
+│   │   ├── pip        ← 独立的包管理器
+│   │   └── activate   ← 激活脚本
+│   ├── lib/
+│   │   └── python3.x/
+│   │       └── site-packages/  ← 第三方包安装位置（每个虚拟环境独有）
+│   └── pyvenv.cfg     ← 配置文件
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这是创建虚拟环境后一个比较经典的venv文件夹构成。&lt;/p&gt;
+&lt;p&gt;激活脚本做了以下事情：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;保存当前旧PATH。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;修改PATH：把虚拟环境路径放到PATH最前面。比如原本的PATH是&lt;code&gt;/usr/local/bin:/usr/bin:...&lt;/code&gt;，那么修改后就是&lt;code&gt;/Users/cabbage/python-lab/venv/bin:/usr/local/bin:/usr/bin:...&lt;/code&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;设置&lt;code&gt;VIRTUAL_ENV&lt;/code&gt;环境变量&lt;code&gt;VIRTUAL_ENV=/Users/cabbage/python-lab/venv&lt;/code&gt;。&lt;code&gt;VIRTUAL_ENV&lt;/code&gt;是Python生态的一个约定俗成变量，下游工具都认它。比如pip看到这个变量就知道包要装到venv的site-packages里，而不是系统级别的site-packages里。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;修改提示符前缀 (venv)。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;定义deactivate函数用于恢复。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为什么激活脚本好像只是简单改个PATH就实现了隔离呢？&lt;/p&gt;
+&lt;p&gt;关键在于 &lt;code&gt;pyvenv.cfg&lt;/code&gt; 文件。Python 解释器启动时会做一件事：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;拿到自己的路径 &lt;code&gt;sys.executable&lt;/code&gt;（比如 &lt;code&gt;.../venv/bin/python&lt;/code&gt;）&lt;/li&gt;
+&lt;li&gt;从这个路径向上查找 &lt;code&gt;pyvenv.cfg&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;找到了，就读取配置，把 &lt;code&gt;sys.path&lt;/code&gt; 里的系统 &lt;code&gt;site-packages&lt;/code&gt; 替换成 venv 的 &lt;code&gt;site-packages&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;code&gt;sys.path&lt;/code&gt; 是 Python 内部的一个列表，控制 &lt;code&gt;import&lt;/code&gt; 时去哪里找模块——
+和 shell 的 &lt;code&gt;PATH&lt;/code&gt; 原理一样，只是找的是 &lt;code&gt;.py&lt;/code&gt; 文件而非可执行文件。&lt;/p&gt;
+&lt;p&gt;所以隔离不是靠 PATH 实现的，PATH 只负责让 shell 找到 venv 里的
+python 和 pip。真正的包隔离靠的是 Python 启动时自己读了 &lt;code&gt;pyvenv.cfg&lt;/code&gt;
+然后改了 &lt;code&gt;sys.path&lt;/code&gt;。&lt;/p&gt;
+&lt;h2&gt;虚拟环境相关的Python生态产品&lt;/h2&gt;
+&lt;p&gt;venv只解决了一个问题：在一个Python版本下隔离包。现实中的需求比这复杂得多，这些工具就是来填补其他空白的。&lt;/p&gt;
+&lt;h3&gt;conda&lt;/h3&gt;
+&lt;p&gt;还能管理Python版本以及一些Python包底层依赖的C库和Fortran库。&lt;/p&gt;
+&lt;p&gt;在机器学习领域使用很多。&lt;/p&gt;
+&lt;h3&gt;poetry&lt;/h3&gt;
+&lt;p&gt;npm/cargo风格的Python包管理。&lt;/p&gt;
+&lt;h3&gt;uv&lt;/h3&gt;
+&lt;p&gt;和poetry类似，因为是用Rust写的，性能很好。&lt;/p&gt;
+</content:encoded></item><item><title>2026.06.12</title><link>https://cabbage74.github.io/posts/20260612/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/20260612/</guid><description>阶段性总结</description><pubDate>Fri, 12 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;前几天在小红书刷到了别人用Astro搭建的静态网站，让我想起了自己巨久没有维护的博客。&lt;/p&gt;
 &lt;p&gt;还记得大二那天跟着网上的各种教程，用Hexo+Next搭，遇到了很多版本不一致导致的Bug。应该前前后后花了有两到三个下午，那个时候的ChatGPT远没有如今强大。&lt;/p&gt;
 &lt;p&gt;昨天我让Claude Code + DeepSeek用Astro重新搭建一下，几分钟就搞定了。哈哈～&lt;/p&gt;
 &lt;p&gt;感觉Astro确实比之前Hexo那套更美观，性能还更好点。虽然我现在看不懂Typescript，但是感觉这个语言的代码挺规整，还让人怪想学一下的。&lt;/p&gt;
