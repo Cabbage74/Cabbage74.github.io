@@ -82,7 +82,7 @@ deactivate
 `sys.path` 是 Python 内部的一个列表，控制 `import` 时去哪里找模块——
 和 shell 的 `PATH` 原理一样，只是找的是 `.py` 文件而非可执行文件。
 
-所以隔离不是靠 PATH 实现的，PATH 只负责让 shell 找到 venv 里的
+所以隔离不是靠`PATH`实现的，`PATH`只负责让 shell 找到 venv 里的
 python 和 pip。真正的包隔离靠的是 Python 启动时自己读了 `pyvenv.cfg`
 然后改了 `sys.path`。
 
