@@ -117,7 +117,7 @@ if (document.readyState === 'loading') {
 <li>从这个路径向上查找 <code>pyvenv.cfg</code></li>
 <li>找到了，就读取配置，把 <code>sys.path</code> 里的系统 <code>site-packages</code> 替换成 venv 的 <code>site-packages</code></li>
 </ol><p><code>sys.path</code> 是 Python 内部的一个列表，控制 <code>import</code> 时去哪里找模块——
-和 shell 的 <code>PATH</code> 原理一样，只是找的是 <code>.py</code> 文件而非可执行文件。</p><p>所以隔离不是靠 PATH 实现的，PATH 只负责让 shell 找到 venv 里的
+和 shell 的 <code>PATH</code> 原理一样，只是找的是 <code>.py</code> 文件而非可执行文件。</p><p>所以隔离不是靠<code>PATH</code>实现的，<code>PATH</code>只负责让 shell 找到 venv 里的
 python 和 pip。真正的包隔离靠的是 Python 启动时自己读了 <code>pyvenv.cfg</code>
 然后改了 <code>sys.path</code>。</p></section></section>
 <section><h2 id="虚拟环境相关的python生态产品">虚拟环境相关的Python生态产品<a class="anchor" href="#虚拟环境相关的python生态产品"><span class="anchor-icon" data-pagefind-ignore="">#</span></a></h2><p>venv只解决了一个问题：在一个Python版本下隔离包。现实中的需求比这复杂得多，这些工具就是来填补其他空白的。</p><section><h3 id="conda">conda<a class="anchor" href="#conda"><span class="anchor-icon" data-pagefind-ignore="">#</span></a></h3><p>还能管理Python版本以及一些Python包底层依赖的C库和Fortran库。</p><p>在机器学习领域使用很多。</p></section><section><h3 id="poetry">poetry<a class="anchor" href="#poetry"><span class="anchor-icon" data-pagefind-ignore="">#</span></a></h3><p>npm/cargo风格的Python包管理。</p></section><section><h3 id="uv">uv<a class="anchor" href="#uv"><span class="anchor-icon" data-pagefind-ignore="">#</span></a></h3><p>和poetry类似，因为是用Rust写的，性能很好。</p></section></section>  </div> <script type="module">document.addEventListener("click",function(s){const t=s.target;if(t&&t.classList.contains("copy-btn")){const c=t.closest("pre")?.querySelector("code"),i=Array.from(c?.querySelectorAll(".code:not(summary *)")??[]).map(e=>e.textContent).map(e=>e===`

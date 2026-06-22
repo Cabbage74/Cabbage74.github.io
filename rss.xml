@@ -56,7 +56,7 @@
 &lt;/ol&gt;
 &lt;p&gt;&lt;code&gt;sys.path&lt;/code&gt; 是 Python 内部的一个列表，控制 &lt;code&gt;import&lt;/code&gt; 时去哪里找模块——
 和 shell 的 &lt;code&gt;PATH&lt;/code&gt; 原理一样，只是找的是 &lt;code&gt;.py&lt;/code&gt; 文件而非可执行文件。&lt;/p&gt;
-&lt;p&gt;所以隔离不是靠 PATH 实现的，PATH 只负责让 shell 找到 venv 里的
+&lt;p&gt;所以隔离不是靠&lt;code&gt;PATH&lt;/code&gt;实现的，&lt;code&gt;PATH&lt;/code&gt;只负责让 shell 找到 venv 里的
 python 和 pip。真正的包隔离靠的是 Python 启动时自己读了 &lt;code&gt;pyvenv.cfg&lt;/code&gt;
 然后改了 &lt;code&gt;sys.path&lt;/code&gt;。&lt;/p&gt;
 &lt;h2&gt;虚拟环境相关的Python生态产品&lt;/h2&gt;
