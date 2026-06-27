@@ -1,4 +1,220 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>Python入门（一）</title><link>https://cabbage74.github.io/posts/python%E5%85%A5%E9%97%A8%E4%B8%80/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/python%E5%85%A5%E9%97%A8%E4%B8%80/</guid><description>包与虚拟环境</description><pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;由于实习工作需要用到很多Python，并且之前一直拿Python当脚本语言用，基础不扎实。&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>Python入门（二）</title><link>https://cabbage74.github.io/posts/python%E5%85%A5%E9%97%A8%E4%BA%8C/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/python%E5%85%A5%E9%97%A8%E4%BA%8C/</guid><description>Python独特语法</description><pubDate>Mon, 22 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;这篇记录阅读过程中看到的Python里让我感觉比较意外、反直觉的独特语法。&lt;/p&gt;
+&lt;h2&gt;作用域&lt;/h2&gt;
+&lt;p&gt;Python里只有函数和推导式定义了作用域的结构。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def spam():
+    message = &quot;Spam&quot;
+    word = &quot;Spam&quot;
+    for _ in range(10):
+        separator = &quot;,&quot;
+        message += separator + word
+    message += separator
+    message += &quot;spam!&quot;
+    return message
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;循环是没有作用域的，所以&lt;code&gt;separator&lt;/code&gt;可以在循环外面用。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;high_score = 10
+
+def score(new_score):
+    high_score = new_score
+
+score(100)
+print(high_score) # 10
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;如果在函数内部定义和全局变量同名的变量，会shadow掉（如果不定义，只是使用的话不会）。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;high_score = 10
+
+def score(new_score):
+    global high_score
+    high_score = new_score
+
+score(100)
+print(high_score) # 100
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;显式地用&lt;code&gt;global&lt;/code&gt;关键字能解决这个问题。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def score():
+    val = 1
+    def score2():
+        nonlocal val
+        val = 2
+    score2()
+    print(val) # 2
+
+score()    
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;类似&lt;code&gt;global&lt;/code&gt;，在内部函数要修改外部函数的变量时，用&lt;code&gt;nonlocal&lt;/code&gt;关键字，只是读取的话不需要。&lt;/p&gt;
+&lt;p&gt;存在多层嵌套的函数时，&lt;code&gt;nonlocal&lt;/code&gt;的查找顺序是由里向外就近原则。&lt;/p&gt;
+&lt;h2&gt;不可变值与可变值&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;a = 1
+b = a
+print(b is a) # True
+b += 1
+print(b is a) # False
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Python里整数、浮点数、字符串、元组这类值是不可变的，意味着修改的时候其实是创建一个新内存空间，在里面写新值。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;c = [1, 2, 3]
+d = c
+print(d is c) # True
+d += [4, 5]
+print(d is c) # True
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;可变类型比如列表，就是原地更新。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def find_lowest(numbers):
+    numbers.sort()
+    return numbers[0]
+
+a = [3, 1, 2]
+find_lowest(a)
+print(a)  # [1, 2, 3]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Python函数传参的语义是“赋值”传递，等于多定义一个变量指向这个值，所以传可变对象的时候函数内变动会对函数外有影响。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import copy
+
+original = [[1, 2, 3], [4, 5, 6]]
+
+# 普通赋值：只是起了个别名，指向同一个对象
+ref = original
+
+# 浅拷贝：外层列表是新的，内层列表仍是原对象的引用
+shallow = copy.copy(original)
+
+# 深拷贝：外层和内层列表都是全新的独立副本
+deep = copy.deepcopy(original)
+
+# 修改原对象的内层列表
+original[0][0] = 999
+
+print(f&quot;original: {original}&quot;)   # [[999, 2, 3], [4, 5, 6]]
+print(f&quot;ref:      {ref}&quot;)        # [[999, 2, 3], [4, 5, 6]] ← 完全一样！
+print(f&quot;shallow:  {shallow}&quot;)    # [[999, 2, 3], [4, 5, 6]] ← 受影响！
+print(f&quot;deep:     {deep}&quot;)       # [[1, 2, 3], [4, 5, 6]]   ← 不受影响
+
+
+original2 = [[1, 2, 3], [4, 5, 6]]
+ref2 = original2                      # 普通赋值
+shallow2 = copy.copy(original2)       # 浅拷贝
+deep2 = copy.deepcopy(original2)      # 深拷贝
+
+# 修改外层列表
+original2.append([7, 8, 9])           
+
+print(f&quot;original2: {original2}&quot;)      # [[1,2,3], [4,5,6], [7,8,9]]
+print(f&quot;ref2:      {ref2}&quot;)           # [[1,2,3], [4,5,6], [7,8,9]] ← 一样！
+print(f&quot;shallow2:  {shallow2}&quot;)       # [[1,2,3], [4,5,6]]          ← 不受影响！
+print(f&quot;deep2:     {deep2}&quot;)          # [[1,2,3], [4,5,6]]          ← 不受影响
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;上面这个程序能清楚表现普通赋值、浅拷贝、深拷贝的区别。&lt;/p&gt;
+&lt;h2&gt;函数签名&lt;/h2&gt;
+&lt;p&gt;Python的函数签名应该是我目前见过的语言里最花里胡哨的了。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def fib(series=[1,1]):
+    series.append(series[-1] + series[-2])
+    return series
+
+print(fib()) # [1, 1, 2]
+print(fib()) # [1, 1, 2, 3]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;:::tip
+默认参数值只在函数定义（&lt;code&gt;def&lt;/code&gt;语句执行）时计算一次，不是调用时，所以永远不要在默认参数放一个可变值。
+:::&lt;/p&gt;
+&lt;p&gt;这个坑&lt;code&gt;Momenta&lt;/code&gt;面试的时候其实被问了，当时不会。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def fib(series=None):
+    if series is None:
+        series = [1, 1]
+    series.append(series[-1] + series[-2])
+    return series
+
+print(fib()) # [1, 1, 2]
+print(fib()) # [1, 1, 2]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;正确的写法是这样的。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def f(a, b=2, *args, c, d=4, e, **kwargs):
+    print(f&quot;a: {a}, b: {b}, args: {args}, c: {c}, d: {d}, e: {e}, kwargs: {kwargs}&quot;)
+
+f(1, 2, 3, 4, c=5, e=6, f=7, g=8)
+# a: 1, b: 2, args: (3, 4), c: 5, d: 4, e: 6, kwargs: {&apos;f&apos;: 7, &apos;g&apos;: 8}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Python参数可以分为位置参数和关键字参数。&lt;/p&gt;
+&lt;p&gt;默认参数和这两个概念是正交的，位置参数和关键字参数都可以有默认值。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;*args&lt;/code&gt;会收走所有多余的位置参数，&lt;code&gt;**kwargs&lt;/code&gt;会收走所有多余的关键字参数。&lt;/p&gt;
+&lt;p&gt;有默认值的位置参数一定要放在位置参数的最后。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;*args&lt;/code&gt;后面的参数一定都是关键字参数。&lt;/p&gt;
+&lt;h2&gt;闭包&lt;/h2&gt;
+&lt;p&gt;闭包 = 函数 + 它诞生时引用到的外部环境。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;funcs = []
+for i in range(3):
+    funcs.append(lambda: print(i))
+
+funcs[0]()  # 2
+funcs[1]()  # 2
+funcs[2]()  # 2
+
+for i in range(3):
+    funcs.append(lambda i=i: print(i))
+
+funcs[3]()  # 0
+funcs[4]()  # 1
+funcs[5]()  # 2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;闭包捕获的是变量本身，不是变量指向的值。&lt;/p&gt;
+&lt;p&gt;相当于C++的&lt;code&gt;[&amp;amp;]&lt;/code&gt;捕获，Python没提供现成的&lt;code&gt;[=]&lt;/code&gt;捕获&lt;/p&gt;
+&lt;h2&gt;Lambda&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;lambda x, y: x + y
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;相比普通函数更方便作为表达式内嵌&lt;/p&gt;
+&lt;h2&gt;装饰器&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;def bold(func):
+    def wrapper():
+        return f&quot;&amp;lt;b&amp;gt;{func()}&amp;lt;/b&amp;gt;&quot;
+    return wrapper
+
+def italic(func):
+    def wrapper():
+        return f&quot;&amp;lt;i&amp;gt;{func()}&amp;lt;/i&amp;gt;&quot;
+    return wrapper
+
+@bold
+@italic
+def hello():
+    return &quot;你好&quot;
+
+print(hello())  # &amp;lt;b&amp;gt;&amp;lt;i&amp;gt;你好&amp;lt;/i&amp;gt;&amp;lt;/b&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;函数套函数的语法糖。&lt;/p&gt;
+&lt;p&gt;要定义一个装饰器，就要定义一个函数，这个函数接收一个函数，返回一个函数。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def log(func):
+    def wrapper(*args, **kwargs):
+        print(&quot;调用中...&quot;)
+        return func(*args, **kwargs)
+    return wrapper
+
+@log
+def greet():
+    &quot;&quot;&quot;问好&quot;&quot;&quot;
+    print(&quot;你好&quot;)
+
+print(greet.__name__)  # wrapper
+print(greet.__doc__)   # None  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这样的装饰器会让函数本身的重要元信息失效。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;from functools import wraps
+
+def log(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        print(&quot;调用中...&quot;)
+        return func(*args, **kwargs)
+    return wrapper
+
+@log
+def greet():
+    &quot;&quot;&quot;问好&quot;&quot;&quot;
+    print(&quot;你好&quot;)
+
+print(greet.__name__)  # greet
+print(greet.__doc__)   # 问好 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;可以加这样一个装饰器解决。&lt;/p&gt;
+</content:encoded></item><item><title>Python入门（一）</title><link>https://cabbage74.github.io/posts/python%E5%85%A5%E9%97%A8%E4%B8%80/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/python%E5%85%A5%E9%97%A8%E4%B8%80/</guid><description>包与虚拟环境</description><pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;由于实习工作需要用到很多Python，并且之前一直拿Python当脚本语言用，基础不扎实。&lt;/p&gt;
 &lt;p&gt;这个系列记录《Python编程从新手到高手》的阅读过程，希望厘清之前没能力弄懂和没意愿弄懂的知识。&lt;/p&gt;
 &lt;h2&gt;包与虚拟环境&lt;/h2&gt;
 &lt;p&gt;包就是Python里的第三方库。&lt;/p&gt;
