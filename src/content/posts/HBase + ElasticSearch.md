@@ -1,7 +1,7 @@
 ---
 title: HBase + ElasticSearch
 published: 2026-06-29
-description: ''
+description: '研究一下这个组合的读写特性'
 image: ''
 tags: [学习]
 draft: false
