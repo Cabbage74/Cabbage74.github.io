@@ -158,6 +158,144 @@ MemStore   HFile   MemStore   HFile ...
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
+</content:encoded></item><item><title>Python入门（三）</title><link>https://cabbage74.github.io/posts/python%E5%85%A5%E9%97%A8%E4%B8%89/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/python%E5%85%A5%E9%97%A8%E4%B8%89/</guid><description>Python独特语法</description><pubDate>Sun, 28 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;类&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;class A:
+    def __new__(cls, *args, **kwargs):
+        return super().__new__(cls)
+
+    def __init__(self, value):
+        self.value = value
+
+    def display(self):
+        print(f&quot;Value: {self.value}&quot;)
+
+    def __del__(self):
+        print(f&quot;Deleting instance with value: {self.value}&quot;)
+
+a = A(10)
+a.display() # Value: 10
+
+b = a
+del a
+b.display() # Value: 10
+
+# Deleting instance with value: 10
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;别的语言的构造函数被Python分成了两块。&lt;code&gt;__new__&lt;/code&gt;负责内存分配，这个内存是固定大小的，只放对象的骨架。这块固定的内存里有一个空字典&lt;code&gt;__dict__={}&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;__init__&lt;/code&gt;负责初始化属性，在这里第一次定义的变量就是放在&lt;code&gt;__dict__&lt;/code&gt;指向的地方。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;self.value = 10&lt;/code&gt;本质是&lt;code&gt;self.__dict__[&apos;value&apos;] = 10&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;__del__&lt;/code&gt;是析构函数，引用计数为零的时候就会被调用。&lt;/p&gt;
+&lt;p&gt;手动调用&lt;code&gt;del&lt;/code&gt;只会让引用计数减一，不会强制回收内存里这块值。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class A:
+    name = &quot;Class A&quot;
+
+    def __init__(self, value):
+        self.value = value
+
+    version = 1.0
+    _speed = 100
+    __hidden = &quot;This is a hidden attribute&quot;
+
+    def display(self):
+        print(f&quot;Value: {self.value}&quot;)
+
+    
+print(A.name)  # Class A
+print(A.version)  # 1.0
+print(A._speed)  # 100
+print(A._A__hidden)  # This is a hidden attribute
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;不在方法里的属性都是类属性。&lt;/p&gt;
+&lt;p&gt;在属性前面加一个下划线是约定“不要访问我”，但硬要访问也可以。&lt;/p&gt;
+&lt;p&gt;加两个下划线是让编译器改名，但这个改名的模式是可预测的。一般用于防止子类意外覆盖父类的同名属性。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class A:
+    name = &quot;Class A&quot;
+
+    def __init__(self, value):
+        self.value = value
+
+    @classmethod
+    def get_name(cls):
+        return cls.name
+
+    @staticmethod
+    def add(a, b):
+        return a + b
+
+    @property
+    def info(self):
+        return f&quot;{self.__class__.__name__}(value={self.value})&quot;
+
+
+print(A.get_name())       # Class A
+print(A.add(1, 2))        # 3
+
+a = A(10)
+print(a.info)             # A(value=10)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;@classmethod&lt;/code&gt;修饰的是类方法，第一个参数是类本身，所以通常只访问类属性。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;@staticmethod&lt;/code&gt;修饰的是静态方法，类似工具函数。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;@property&lt;/code&gt;修饰的让方法能像属性一样被访问。&lt;/p&gt;
+&lt;p&gt;这三个装饰器的原理和普通的函数套函数语法糖不一样，是基于描述符协议实现的。经过我和AI的讨论，我决定姑且把它们记作Python的特殊实现，描述符协议我不打算深入了解。&lt;/p&gt;
+&lt;p&gt;一般情况下，Python的装饰器有两个用法，一个就是普通的函数套函数语法糖，一个是给函数注入一些元信息方便框架进行扫描。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class A:
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return f&quot;A(value={self.value})&quot;
+
+    def __lt__(self, other):
+        return self.value &amp;lt; other.value
+ 
+    def __call__(self, x):
+        return self.value + x
+
+
+a = A(10)
+print(str(a))           # A(value=10)
+print(a &amp;lt; A(20))        # True
+print(a(5))             # 15
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Python里以两个下划线开头和结尾的是特殊方法，大概有100多个。这里我挑了三个。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;__call__&lt;/code&gt;很有意思，让对象能被调用。&lt;code&gt;def&lt;/code&gt;本质就是创建了一个&lt;code&gt;function&lt;/code&gt;的实例对象，而&lt;code&gt;function&lt;/code&gt;类实现了&lt;code&gt;__call__&lt;/code&gt;。&lt;/p&gt;
+&lt;h2&gt;错误和异常&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;def make_guess():
+    guess = int(input(&quot;Guess a number between 1 and 10: &quot;)) # fifty
+    return guess
+
+guess = make_guess()
+
+# Traceback (most recent call last):
+#   File &quot;/Users/cabbage/python-lab/main.py&quot;, line 5, in &amp;lt;module&amp;gt;
+#     guess = make_guess()
+#   File &quot;/Users/cabbage/python-lab/main.py&quot;, line 2, in make_guess
+#     guess = int(input(&quot;Guess a number between 1 and 10: &quot;))
+# ValueError: invalid literal for int() with base 10: &apos;fifty&apos;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Python的异常自底向上读，是由近向远的调用栈。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def divide(a, b):
+    try:
+        result = a / b
+    except ZeroDivisionError as e:
+        raise ValueError(&quot;b不能等于0&quot;) from e
+    else:
+        print(f&quot;result = {result}&quot;)
+        return result
+    finally:
+        print(&quot;divide结束&quot;)
+
+
+divide(10, 2)
+
+try:
+    divide(10, 0)
+except ValueError as e:
+    print(e)          # b不能等于0
+    print(e.__cause__) # division by zero
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;try&lt;/code&gt;里放可能出错的代码，&lt;code&gt;except&lt;/code&gt;负责捕获异常，&lt;code&gt;else&lt;/code&gt;只会在没报错的时候执行，&lt;code&gt;finally&lt;/code&gt;无论有没有异常都会执行（只要配对的&lt;code&gt;try&lt;/code&gt;执行了就会执行，不管有没有&lt;code&gt;return&lt;/code&gt;或&lt;code&gt;raise&lt;/code&gt;。不过进程被杀或者解释器崩溃的话还是会执行不了）。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;raise ... from e&lt;/code&gt;会把新的异常和原来的异常串起来，形成异常链。如果不用&lt;code&gt;raise from&lt;/code&gt;只是简单&lt;code&gt;raise&lt;/code&gt;有可能丢失原始错误的上下文。&lt;/p&gt;
 </content:encoded></item><item><title>Python入门（二）</title><link>https://cabbage74.github.io/posts/python%E5%85%A5%E9%97%A8%E4%BA%8C/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/python%E5%85%A5%E9%97%A8%E4%BA%8C/</guid><description>Python独特语法</description><pubDate>Mon, 22 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;这篇记录阅读过程中看到的Python里让我感觉比较意外、反直觉的独特语法。&lt;/p&gt;
 &lt;h2&gt;作用域&lt;/h2&gt;
 &lt;p&gt;Python里只有函数和推导式定义了作用域的结构。&lt;/p&gt;
