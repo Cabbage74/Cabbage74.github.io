@@ -10,7 +10,7 @@ lang: ''
 
 上节的模块化只解决了前端开发中一小部分问题。
 
-```HTML title="index.html"
+``` html title="index.html"
 <!doctype html>
 <html lang="zh-CN">
   <head>
@@ -49,13 +49,13 @@ Vite是用Node\.js写的，Node\.js是一套让js能在浏览器外面跑的环�
 
 npm是Node\.js的包管理器，类似Cargo之于Rust。
 
-```Bash
+``` bash
 npm init -y
 ```
 
 用npm初始化项目，\-y是告诉npm全部走默认，跳过交互式的提问
 
-```JSON title="package.json"
+``` json title="package.json"
 {
   "name": "zero-to-tech-4-1",
   "version": "1.0.0",
@@ -67,13 +67,13 @@ npm init -y
 
 初始化完会多一个package\.json，有很多其实没什么用的字段，这里都手动删掉了。
 
-```Bash
+``` bash
 npm install -D vite
 ```
 
 \-D代表装的是开发依赖，不进最终的网站。
 
-```JSON title="package.json"
+``` json title="package.json"
 {
   "name": "zero-to-tech-4-1",
   "version": "1.0.0",
@@ -94,13 +94,13 @@ package\.json多了一条依赖。
 
 和Cargo\.toml、Cargo\.lock的设计是一样的。
 
-```Bash
+``` bash
 ./node_modules/.bin/vite
 ```
 
 此时执行Vite的可执行文件，Vite就能起一个服务器用于开发预览，而且是热更新不用自己刷新的。解决了文章开头提到的第一个问题。
 
-```Bash
+``` bash
 ./node_modules/.bin/vite build
 ```
 
@@ -110,13 +110,13 @@ package\.json多了一条依赖。
 
 Vite构建的核心就是保持代码语义，但把代码打包成最适合浏览器使用的形态。可以看到css和js都各自被合成了一个文件，解决了文章开头提到的第二个问题。文件名最后有一串哈希指纹，解决了文章开头提到的第三个问题。
 
-```Bash
+``` bash
 ./node_modules/.bin/vite preview
 ```
 
 这个命令会起一个服务器，可以预览dist产物。
 
-```JSON title="package.json"
+``` json title="package.json"
 {
   "name": "zero-to-tech-4-1",
   "version": "1.0.0",
@@ -134,25 +134,25 @@ Vite构建的核心就是保持代码语义，但把代码打包成最适合浏�
 
 前面使用Vite的命令都不是很方便，普遍做法是在package\.json自定义命令。
 
-```JavaScript title="cards.js"
+``` js title="cards.js"
 import { animate, stagger } from "https://cdn.jsdelivr.net/npm/animejs@4/+esm";
 ...
 ```
 
 现在对于anime第三方库的import依然是走cdn服务，为了可靠还是应该让npm把它装成本地依赖。
 
-```Bash
+``` bash
 npm install animejs
 ```
 
-```JavaScript title="cards.js"
+``` js title="cards.js"
 import { animate, stagger } from "animejs";
 ...
 ```
 
 Vite会将animejs指向node\_modules下的animejs。
 
-```JSON title="package.json"
+``` json title="package.json"
 {
   "name": "zero-to-tech-4-1",
   "version": "1.0.0",
