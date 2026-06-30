@@ -4,7 +4,7 @@ published: 2026-06-28
 description: 'Python独特语法'
 image: ''
 tags: [学习, 阅读, Python]
-draft: true
+draft: false
 lang: ''
 ---
 
@@ -131,7 +131,7 @@ print(a(5))             # 15
 
 Python里以两个下划线开头和结尾的是特殊方法，大概有100多个。这里我挑了三个。
 
-`__call__`很有意思，让类能被调用。`def`本质就是创建了一个`function`的实例对象，而`function`类实现了`__call__`。
+`__call__`很有意思，让对象能被调用。`def`本质就是创建了一个`function`的实例对象，而`function`类实现了`__call__`。
 
 ## 错误和异常
 
@@ -151,3 +151,29 @@ guess = make_guess()
 ```
 
 Python的异常自底向上读，是由近向远的调用栈。
+
+``` python
+def divide(a, b):
+    try:
+        result = a / b
+    except ZeroDivisionError as e:
+        raise ValueError("b不能等于0") from e
+    else:
+        print(f"result = {result}")
+        return result
+    finally:
+        print("divide结束")
+
+
+divide(10, 2)
+
+try:
+    divide(10, 0)
+except ValueError as e:
+    print(e)          # b不能等于0
+    print(e.__cause__) # division by zero
+```
+
+`try`里放可能出错的代码，`except`负责捕获异常，`else`只会在没报错的时候执行，`finally`无论有没有异常都会执行（只要配对的`try`执行了就会执行，不管有没有`return`或`raise`。不过进程被杀或者解释器崩溃的话还是会执行不了）。
+
+`raise ... from e`会把新的异常和原来的异常串起来，形成异常链。如果不用`raise from`只是简单`raise`有可能丢失原始错误的上下文。
