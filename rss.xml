@@ -312,9 +312,9 @@ createRoot(document.getElementById(&quot;root&quot;)).render(
   &quot;version&quot;: &quot;1.0.0&quot;,
   &quot;scripts&quot;: {
     &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;,
-    &quot;dev&quot;: &quot;vite&quot;,             *// npm run dev*
-    &quot;build&quot;: &quot;vite build&quot;,     *// npm run build*
-    &quot;preview&quot;: &quot;vite preview&quot;  *// npm run preview*
+    &quot;dev&quot;: &quot;vite&quot;,             // npm run dev*
+    &quot;build&quot;: &quot;vite build&quot;,     // npm run build*
+    &quot;preview&quot;: &quot;vite preview&quot;  // npm run preview*
   },
   &quot;devDependencies&quot;: {
     &quot;vite&quot;: &quot;^8.1.0&quot;
