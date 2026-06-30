@@ -21,7 +21,7 @@ npm install -D @vitejs/plugin-react
 
 NPM安装react相关依赖、能让Vite知道怎么翻译react的插件。
 
-```JavaScript
+```JavaScript title="vite.config.js"
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
@@ -34,7 +34,7 @@ export default defineConfig({
 
 ![Image](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=NDA4MTg5NDNjZmFjYTA5OTA5ZmRkOGIwNTdhYTc2MjRfYmU0ZmQzMzcyOTY3ZTNmZWY3ZjUxZjQyYzUxMDJjNDhfSUQ6NzY1NzE2Nzk5ODI5NzY0MDE1OV8xNzgyODI2NjE1OjE3ODI5MTMwMTVfVjM)
 
-```HTML
+```HTML title="text-lab.html"
 <!doctype html>
 <html lang="zh-CN">
   <head>
@@ -128,7 +128,7 @@ export default defineConfig({
 
 html/css/js就像是后端的controller/service/repository按技术切分。React就像是后端按业务切分服务一样切分出组件。
 
-```JavaScript
+```JavaScript title="Nav.jsx"
 // Nav 原本在 index.html 和 text-lab.html 各抄了一遍。
 // 现在它是一个组件，整个项目只有这一份。
 // 想加链接、改样式？只改这一处，两个页面自动一起跟着变。
@@ -160,7 +160,7 @@ export default function Nav({ current, onNavigate }) {
 
 以导航Nav\.jsx为例。一个jsx文件一般对应一个组件，一个组件就像是一个函数，输出一段由**运行时输入**决定的类似html的结构。这个结构经过React和Vite最终会变成真的html。容易想象每个组件都是一个动态的DOM子树，由React来动态的创建、修改、销毁。
 
-```JavaScript
+```JavaScript title="TextLabPage.jsx"
 import Nav from "./Nav.jsx";
 import PageHeading from "./PageHeading.jsx";
 import AnimatedCardGrid from "./AnimatedCardGrid.jsx";
@@ -190,7 +190,7 @@ export default function TextLabPage({ current, onNavigate }) {
 
 Vanilla写法里，不同的页面一般就是不同的html。
 
-```JavaScript
+```JavaScript title="App.jsx"
 import { useState } from "react";
 import HomePage from "./components/HomePage.jsx";
 import TextLabPage from "./components/TextLabPage.jsx";
@@ -216,7 +216,7 @@ export default function App() {
 
 React里每个页面都是一个组件，可以把它们合成一个最大的组件App\.jsx。切换页面不再是切换html，而是切换组件。写完App\.jsx就写完了最大的一个组件。
 
-```JavaScript
+```JavaScript title="main.jsx"
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
@@ -237,7 +237,7 @@ createRoot(document.getElementById("root")).render(
 );
 ```
 
-```HTML
+```HTML title="index.html"
 <!doctype html>
 <html lang="zh-CN">
   <head>

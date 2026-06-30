@@ -10,7 +10,7 @@ lang: ''
 
 上节的模块化只解决了前端开发中一小部分问题。
 
-```HTML
+```HTML title="index.html"
 <!doctype html>
 <html lang="zh-CN">
   <head>
@@ -55,7 +55,7 @@ npm init -y
 
 用npm初始化项目，\-y是告诉npm全部走默认，跳过交互式的提问
 
-```JSON
+```JSON title="package.json"
 {
   "name": "zero-to-tech-4-1",
   "version": "1.0.0",
@@ -73,7 +73,7 @@ npm install -D vite
 
 \-D代表装的是开发依赖，不进最终的网站。
 
-```JSON
+```JSON title="package.json"
 {
   "name": "zero-to-tech-4-1",
   "version": "1.0.0",
@@ -116,15 +116,15 @@ Vite构建的核心就是保持代码语义，但把代码打包成最适合浏�
 
 这个命令会起一个服务器，可以预览dist产物。
 
-```JSON
+```JSON title="package.json"
 {
   "name": "zero-to-tech-4-1",
   "version": "1.0.0",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "vite",             *// npm run dev*
-    "build": "vite build",     *// npm run build*
-    "preview": "vite preview"  *// npm run preview*
+    "dev": "vite",             // npm run dev*
+    "build": "vite build",     // npm run build*
+    "preview": "vite preview"  // npm run preview*
   },
   "devDependencies": {
     "vite": "^8.1.0"
@@ -134,7 +134,7 @@ Vite构建的核心就是保持代码语义，但把代码打包成最适合浏�
 
 前面使用Vite的命令都不是很方便，普遍做法是在package\.json自定义命令。
 
-```JavaScript
+```JavaScript title="cards.js"
 import { animate, stagger } from "https://cdn.jsdelivr.net/npm/animejs@4/+esm";
 ...
 ```
@@ -145,14 +145,14 @@ import { animate, stagger } from "https://cdn.jsdelivr.net/npm/animejs@4/+esm";
 npm install animejs
 ```
 
-```JavaScript
+```JavaScript title="cards.js"
 import { animate, stagger } from "animejs";
 ...
 ```
 
 Vite会将animejs指向node\_modules下的animejs。
 
-```JSON
+```JSON title="package.json"
 {
   "name": "zero-to-tech-4-1",
   "version": "1.0.0",
