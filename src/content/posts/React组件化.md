@@ -158,7 +158,7 @@ export default function Nav({ current, onNavigate }) {
 }
 ```
 
-以导航Nav\.jsx为例。一个jsx文件一般对应一个组件，一个组件就像是一个函数，输出一段由**运行时输入**决定的类似html的结构。这个结构经过React和Vite最终会变成真的html。容易想象每个组件都是一个动态的DOM子树，由React来动态的创建、修改、销毁。
+以导航Nav\.jsx为例。一个jsx文件一般对应一个组件，一个组件就像是一个函数，输出一段由**运行时输入**决定的类似html的结构。这个结构经过React和Vite最终会变成真的html。容易想象每个组件都是一个动态的DOM子树，由React来动态地创建、修改、销毁。
 
 ```JavaScript title="TextLabPage.jsx"
 import Nav from "./Nav.jsx";
