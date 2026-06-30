@@ -1,4 +1,356 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>HBase + ElasticSearch</title><link>https://cabbage74.github.io/posts/hbase--elasticsearch/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/hbase--elasticsearch/</guid><description>研究一下这个组合的读写特性</description><pubDate>Mon, 29 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;实习业务部分和这套相关，有必要研究一下读写特性。&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>React组件化</title><link>https://cabbage74.github.io/posts/react%E7%BB%84%E4%BB%B6%E5%8C%96/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/react%E7%BB%84%E4%BB%B6%E5%8C%96/</guid><description>React的组件化思想</description><pubDate>Tue, 30 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;上一节里，构建工具承担了“翻译官”的角色。将开发者写起来舒服的代码“翻译”成浏览器看起来舒服的代码。&lt;/p&gt;
+&lt;p&gt;构建工具可以“翻译”，意味着我们可以写出规则更加不同的代码，只要最后让构建工具“翻译”成浏览器看得懂的html/css/js就行了。&lt;/p&gt;
+&lt;p&gt;React是最火的前端框架，核心思想是把复杂页面拆成可复用的组件，通过数据驱动组件更新。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm install react react-dom
+npm install -D @vitejs/plugin-react
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;NPM安装react相关依赖、能让Vite知道怎么翻译react的插件。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import { defineConfig } from &apos;vite&apos;
+import react from &apos;@vitejs/plugin-react&apos;
+
+export default defineConfig({
+  plugins: [react()],
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;安装完还得编写Vite的配置文件vite.config.js，真正地“插”上插件。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=NDA4MTg5NDNjZmFjYTA5OTA5ZmRkOGIwNTdhYTc2MjRfYmU0ZmQzMzcyOTY3ZTNmZWY3ZjUxZjQyYzUxMDJjNDhfSUQ6NzY1NzE2Nzk5ODI5NzY0MDE1OV8xNzgyODI2NjE1OjE3ODI5MTMwMTVfVjM&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;!doctype html&amp;gt;
+&amp;lt;html lang=&quot;zh-CN&quot;&amp;gt;
+  &amp;lt;head&amp;gt;
+    &amp;lt;meta charset=&quot;UTF-8&quot; /&amp;gt;
+    &amp;lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&amp;gt;
+    &amp;lt;title&amp;gt;Zero to Tech · 文字实验室&amp;lt;/title&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/reset.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/variables.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/layout.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/hero.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/nav.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/cards.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/lab.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/responsive.css&quot; /&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    &amp;lt;div class=&quot;app-shell&quot;&amp;gt;
+      &amp;lt;div class=&quot;page-shell&quot;&amp;gt;
+        &amp;lt;main class=&quot;page-content&quot;&amp;gt;
+          &amp;lt;section class=&quot;dashboard-grid&quot;&amp;gt;
+            &amp;lt;article class=&quot;hero-stage panel-full&quot;&amp;gt;
+              &amp;lt;div class=&quot;hero-topline&quot;&amp;gt;
+                &amp;lt;p class=&quot;brand-eyebrow&quot;&amp;gt;zero to tech&amp;lt;/p&amp;gt;
+                &amp;lt;nav class=&quot;inline-links hero-nav&quot;&amp;gt;
+                  &amp;lt;a class=&quot;nav-link&quot; href=&quot;index.html&quot;&amp;gt;个人主页&amp;lt;/a&amp;gt;
+                  &amp;lt;a class=&quot;nav-link&quot; href=&quot;text-lab.html&quot;&amp;gt;文字实验室&amp;lt;/a&amp;gt;
+                &amp;lt;/nav&amp;gt;
+              &amp;lt;/div&amp;gt;
+              &amp;lt;div class=&quot;hero-copy&quot;&amp;gt;
+                &amp;lt;h1 class=&quot;hero-display&quot;&amp;gt;文字实验室&amp;lt;/h1&amp;gt;
+                &amp;lt;p class=&quot;hero-subtitle&quot;&amp;gt;拼音和情绪，挖掘中文里的细节&amp;lt;/p&amp;gt;
+              &amp;lt;/div&amp;gt;
+            &amp;lt;/article&amp;gt;
+
+            &amp;lt;article class=&quot;panel panel-half lab-panel card&quot;&amp;gt;
+              &amp;lt;div class=&quot;panel-heading&quot;&amp;gt;
+                &amp;lt;p class=&quot;section-kicker&quot;&amp;gt;输入区&amp;lt;/p&amp;gt;
+                &amp;lt;h3&amp;gt;贴一段中文&amp;lt;/h3&amp;gt;
+              &amp;lt;/div&amp;gt;
+              &amp;lt;form class=&quot;lab-form&quot;&amp;gt;
+                &amp;lt;label for=&quot;text-input&quot;&amp;gt;文本内容&amp;lt;/label&amp;gt;
+                &amp;lt;textarea
+                  id=&quot;text-input&quot;
+                  rows=&quot;8&quot;
+                  placeholder=&quot;例如：生活没有标准答案，但每一天都值得认真感受。&quot;
+                &amp;gt;今天的风很轻，适合把脑海里的想法慢慢写下来。&amp;lt;/textarea&amp;gt;
+                &amp;lt;button class=&quot;primary-button&quot; type=&quot;button&quot;&amp;gt;开始分析&amp;lt;/button&amp;gt;
+              &amp;lt;/form&amp;gt;
+            &amp;lt;/article&amp;gt;
+
+            &amp;lt;article class=&quot;panel panel-half lab-panel result-panel card&quot;&amp;gt;
+              &amp;lt;div class=&quot;panel-heading&quot;&amp;gt;
+                &amp;lt;p class=&quot;section-kicker&quot;&amp;gt;结果区&amp;lt;/p&amp;gt;
+                &amp;lt;h3&amp;gt;分析结果&amp;lt;/h3&amp;gt;
+              &amp;lt;/div&amp;gt;
+              &amp;lt;div class=&quot;result-stack&quot;&amp;gt;
+                &amp;lt;div class=&quot;result-item&quot;&amp;gt;
+                  &amp;lt;span&amp;gt;原文&amp;lt;/span&amp;gt;
+                  &amp;lt;p&amp;gt;今天的风很轻，适合把脑海里的想法慢慢写下来。&amp;lt;/p&amp;gt;
+                &amp;lt;/div&amp;gt;
+                &amp;lt;div class=&quot;result-item&quot;&amp;gt;
+                  &amp;lt;span&amp;gt;拼音&amp;lt;/span&amp;gt;
+                  &amp;lt;p&amp;gt;jīn tiān de fēng hěn qīng …&amp;lt;/p&amp;gt;
+                &amp;lt;/div&amp;gt;
+                &amp;lt;div class=&quot;result-grid&quot;&amp;gt;
+                  &amp;lt;div class=&quot;result-badge&quot;&amp;gt;
+                    &amp;lt;span&amp;gt;情感分数&amp;lt;/span&amp;gt;
+                    &amp;lt;strong data-score&amp;gt;0.86&amp;lt;/strong&amp;gt;
+                  &amp;lt;/div&amp;gt;
+                  &amp;lt;div class=&quot;result-badge&quot;&amp;gt;
+                    &amp;lt;span&amp;gt;情感判断&amp;lt;/span&amp;gt;
+                    &amp;lt;strong&amp;gt;偏积极&amp;lt;/strong&amp;gt;
+                  &amp;lt;/div&amp;gt;
+                &amp;lt;/div&amp;gt;
+              &amp;lt;/div&amp;gt;
+            &amp;lt;/article&amp;gt;
+
+          &amp;lt;/section&amp;gt;
+        &amp;lt;/main&amp;gt;
+      &amp;lt;/div&amp;gt;
+    &amp;lt;/div&amp;gt;
+
+    &amp;lt;script type=&quot;module&quot; src=&quot;js/main.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+  &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;对于文字实验室text-lab.html这个文件，现在是vanilla的写法。html把页面结构写的很长，而且要写新的一页还是得写这么长。&lt;/p&gt;
+&lt;p&gt;其实可以按导航Nav、输入卡片InputCard等拆成可复用的组件。很多页面可以复用导航Nav。&lt;/p&gt;
+&lt;p&gt;html/css/js就像是后端的controller/service/repository按技术切分。React就像是后端按业务切分服务一样切分出组件。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// Nav 原本在 index.html 和 text-lab.html 各抄了一遍。
+// 现在它是一个组件，整个项目只有这一份。
+// 想加链接、改样式？只改这一处，两个页面自动一起跟着变。
+export default function Nav({ current, onNavigate }) {
+  const items = [
+    { key: &quot;home&quot;,    label: &quot;个人主页&quot; },
+    { key: &quot;textlab&quot;, label: &quot;文字实验室&quot; },
+  ];
+
+  return (
+    &amp;lt;div className=&quot;hero-topline&quot;&amp;gt;
+      &amp;lt;p className=&quot;brand-eyebrow&quot;&amp;gt;zero to tech&amp;lt;/p&amp;gt;
+      &amp;lt;nav className=&quot;inline-links hero-nav&quot;&amp;gt;
+        {items.map((it) =&amp;gt; (
+          &amp;lt;a
+            key={it.key}
+            href=&quot;#&quot;
+            className={&quot;nav-link&quot; + (current === it.key ? &quot; active&quot; : &quot;&quot;)}
+            onClick={(e) =&amp;gt; { e.preventDefault(); onNavigate(it.key); }}
+          &amp;gt;
+            {it.label}
+          &amp;lt;/a&amp;gt;
+        ))}
+      &amp;lt;/nav&amp;gt;
+    &amp;lt;/div&amp;gt;
+  );
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;以导航Nav.jsx为例。一个jsx文件一般对应一个组件，一个组件就像是一个函数，输出一段由&lt;strong&gt;运行时输入&lt;/strong&gt;决定的类似html的结构。这个结构经过React和Vite最终会变成真的html。容易想象每个组件都是一个动态的DOM子树，由React来动态的创建、修改、销毁。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import Nav from &quot;./Nav.jsx&quot;;
+import PageHeading from &quot;./PageHeading.jsx&quot;;
+import AnimatedCardGrid from &quot;./AnimatedCardGrid.jsx&quot;;
+import InputCard from &quot;./InputCard.jsx&quot;;
+import ResultCard from &quot;./ResultCard.jsx&quot;;
+
+// 整页就是几块积木拼起来的：导航、标题、输入卡、结果卡。
+// TextLabPage 这个&quot;大组件&quot;，把这些小组件摆在一起，拼成一整页。
+export default function TextLabPage({ current, onNavigate }) {
+  return (
+    &amp;lt;AnimatedCardGrid className=&quot;dashboard-grid&quot;&amp;gt;
+      &amp;lt;article className=&quot;hero-stage panel-full&quot;&amp;gt;
+        &amp;lt;Nav current={current} onNavigate={onNavigate} /&amp;gt;
+        &amp;lt;PageHeading title=&quot;文字实验室&quot; subtitle=&quot;拼音和情绪，挖掘中文里的细节&quot; /&amp;gt;
+      &amp;lt;/article&amp;gt;
+
+      &amp;lt;InputCard /&amp;gt;
+      &amp;lt;ResultCard /&amp;gt;
+    &amp;lt;/AnimatedCardGrid&amp;gt;
+  );
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;再看含有Nav的页面TextLabPage.jsx。其实和Nav没什么区别，Nav像是小积木，TextLabPage像是大积木。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=Y2ZkMDg0YzcyNThmMzM4NzNkNDEwNTcxNmI5MjM2NzVfYzAwMGM5M2JkZmVjOTFmOTg0MzFiNTQyM2VjNTUxMGFfSUQ6NzY1NzE3NjE4MzUxMTMyMTU0OF8xNzgyODI2NjE1OjE3ODI5MTMwMTVfVjM&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Vanilla写法里，不同的页面一般就是不同的html。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import { useState } from &quot;react&quot;;
+import HomePage from &quot;./components/HomePage.jsx&quot;;
+import TextLabPage from &quot;./components/TextLabPage.jsx&quot;;
+
+export default function App() {
+  // page 是个&quot;状态&quot;——它一变，下面的界面就跟着重新渲染。
+  // 这一节先把它当&quot;框架的规则&quot;用、不展开
+  const [page, setPage] = useState(&quot;home&quot;);
+
+  return (
+    &amp;lt;div className=&quot;app-shell&quot;&amp;gt;
+      &amp;lt;div className=&quot;page-shell&quot;&amp;gt;
+        &amp;lt;main className=&quot;page-content&quot;&amp;gt;
+          {page === &quot;home&quot;
+            ? &amp;lt;HomePage current={page} onNavigate={setPage} /&amp;gt;
+            : &amp;lt;TextLabPage current={page} onNavigate={setPage} /&amp;gt;}
+        &amp;lt;/main&amp;gt;
+      &amp;lt;/div&amp;gt;
+    &amp;lt;/div&amp;gt;
+  );
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;React里每个页面都是一个组件，可以把它们合成一个最大的组件App.jsx。切换页面不再是切换html，而是切换组件。写完App.jsx就写完了最大的一个组件。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import { StrictMode } from &quot;react&quot;;
+import { createRoot } from &quot;react-dom/client&quot;;
+import App from &quot;./App.jsx&quot;;
+
+import &quot;./css/reset.css&quot;;
+import &quot;./css/variables.css&quot;;
+import &quot;./css/layout.css&quot;;
+import &quot;./css/hero.css&quot;;
+import &quot;./css/nav.css&quot;;
+import &quot;./css/cards.css&quot;;
+import &quot;./css/lab.css&quot;;
+import &quot;./css/responsive.css&quot;;
+
+createRoot(document.getElementById(&quot;root&quot;)).render(
+  &amp;lt;StrictMode&amp;gt;
+    &amp;lt;App /&amp;gt;
+  &amp;lt;/StrictMode&amp;gt;,
+);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;!doctype html&amp;gt;
+&amp;lt;html lang=&quot;zh-CN&quot;&amp;gt;
+  &amp;lt;head&amp;gt;
+    &amp;lt;meta charset=&quot;UTF-8&quot; /&amp;gt;
+    &amp;lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&amp;gt;
+    &amp;lt;title&amp;gt;Zero to Tech&amp;lt;/title&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    &amp;lt;div id=&quot;root&quot;&amp;gt;&amp;lt;/div&amp;gt;
+    &amp;lt;script type=&quot;module&quot; src=&quot;/src/main.jsx&quot;&amp;gt;&amp;lt;/script&amp;gt;
+  &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;把index.html和main.jsx结合起来看，就知道组件是怎么和html连接起来的了。&lt;/p&gt;
+&lt;p&gt;React项目里，只有一个空的div，dom树一开始是空的。main.jsx这个脚本告诉React要渲染root这个div。&lt;/p&gt;
+&lt;p&gt;容易发现这种React项目里只有一棵DOM树。&lt;/p&gt;
+&lt;p&gt;传统Vanilla写法：每个 HTML 文件被加载时，浏览器直接解析该 HTML，构建出整棵 DOM 树。切换页面时，旧 DOM 树被完全销毁，浏览器加载新 HTML，构建一棵全新的 DOM 树。&lt;/p&gt;
+&lt;p&gt;React写法：整个应用只有一个 HTML 文件。里面有个容器，比如 root div。React接管这个div，然后动态地在这个div内部创建、更新、销毁 DOM 节点，来模拟“页面切换”。浏览器只加载一次 HTML，后续的“页面”切换，都是 React 在这个 root div 里面变魔术。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;├── README.md
+├── index.html
+├── package-lock.json
+├── package.json
+├── src
+│   ├── App.jsx
+│   ├── components
+│   │   ├── AnimatedCardGrid.jsx
+│   │   ├── HomePage.jsx
+│   │   ├── InputCard.jsx
+│   │   ├── Nav.jsx
+│   │   ├── ...
+│   ├── css
+│   │   ├── cards.css
+│   │   ├── hero.css
+│   │   ├── ...
+│   └── main.jsx
+└── vite.config.js
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这是一个React项目的经典结构。&lt;/p&gt;
+</content:encoded></item><item><title>NPM与构建工具</title><link>https://cabbage74.github.io/posts/npm%E4%B8%8E%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/npm%E4%B8%8E%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/</guid><description>了解Node、NPM、Vite</description><pubDate>Tue, 30 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;上节的模块化只解决了前端开发中一小部分问题。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;!doctype html&amp;gt;
+&amp;lt;html lang=&quot;zh-CN&quot;&amp;gt;
+  &amp;lt;head&amp;gt;
+    ...
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/reset.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/variables.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/layout.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/hero.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/nav.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/cards.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/lab.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/responsive.css&quot; /&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    ...
+    &amp;lt;script type=&quot;module&quot; src=&quot;js/main.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+  &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;延续上一节模块化改造完的index.html代码。&lt;/p&gt;
+&lt;p&gt;目前还有几个可以进一步优化的问题：&lt;/p&gt;
+&lt;p&gt;一是引入模块化写法以后一定要走HTTP、HTTPS，调试起来不方便。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=Mzk2OTFlNzFjZjI0MTViOGY0YzU4YjYyMGQ5NDgzZmNfOWQ5YzliMjJmZWIwNjA0ZGM0M2FlYWQ4YWQ0OGFlNzZfSUQ6NzY1NzExNzUwNDk0NzU3MTg5Ml8xNzgyODI2NjAzOjE3ODI5MTMwMDNfVjM&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;二是要请求的文件太多，需要排队。虽然拆分代码方便程序员调试维护，但不方便浏览器请求。&lt;/p&gt;
+&lt;p&gt;三是浏览器会缓存旧文件，比如这里的anime库走的是memory cache。刷新页面可能不会很及时地体现背后代码的变动。一个笨方法是每次改完代码就把文件名也手动修改一下，让浏览器不走缓存，但显然不方便。&lt;/p&gt;
+&lt;p&gt;构建工具可以帮助解决这三个问题，Vite是现在最流行的一个。&lt;/p&gt;
+&lt;p&gt;Vite是用Node.js写的，Node.js是一套让js能在浏览器外面跑的环境。&lt;/p&gt;
+&lt;p&gt;npm是Node.js的包管理器，类似Cargo之于Rust。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm init -y
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;用npm初始化项目，-y是告诉npm全部走默认，跳过交互式的提问&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  &quot;name&quot;: &quot;zero-to-tech-4-1&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;scripts&quot;: {
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;初始化完会多一个package.json，有很多其实没什么用的字段，这里都手动删掉了。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm install -D vite
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;-D代表装的是开发依赖，不进最终的网站。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  &quot;name&quot;: &quot;zero-to-tech-4-1&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;scripts&quot;: {
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;vite&quot;: &quot;^8.1.0&quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;package.json多了一条依赖。&lt;/p&gt;
+&lt;p&gt;而且装完以后多了一个node_modules文件夹，里面有Vite和Vite自身依赖的其他包的源代码，.bin文件夹里有可执行文件。&lt;/p&gt;
+&lt;p&gt;还多一个package-lock.json，里面有每一个包的具体版本，是为了锁死更深层的依赖。&lt;/p&gt;
+&lt;p&gt;和Cargo.toml、Cargo.lock的设计是一样的。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;./node_modules/.bin/vite
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;此时执行Vite的可执行文件，Vite就能起一个服务器用于开发预览，而且是热更新不用自己刷新的。解决了文章开头提到的第一个问题。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;./node_modules/.bin/vite build
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=ZDI5NmQ0M2YzZjA4MTc0YjkxNzlkMmNiNWQxNjZkYzlfYzdjOTMxNTVlMGU4NDE3MTFkM2JmOGMwZDFmODllN2FfSUQ6NzY1NzExOTA0Mzc4NzA5OTM2MF8xNzgyODI2NjAzOjE3ODI5MTMwMDNfVjM&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;执行build构建命令，多了一个dist文件夹，里面就是构建产物。这个产物是实际放在服务器的代码。&lt;/p&gt;
+&lt;p&gt;Vite构建的核心就是保持代码语义，但把代码打包成最适合浏览器使用的形态。可以看到css和js都各自被合成了一个文件，解决了文章开头提到的第二个问题。文件名最后有一串哈希指纹，解决了文章开头提到的第三个问题。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;./node_modules/.bin/vite preview
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这个命令会起一个服务器，可以预览dist产物。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  &quot;name&quot;: &quot;zero-to-tech-4-1&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;scripts&quot;: {
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;,
+    &quot;dev&quot;: &quot;vite&quot;,             *// npm run dev*
+    &quot;build&quot;: &quot;vite build&quot;,     *// npm run build*
+    &quot;preview&quot;: &quot;vite preview&quot;  *// npm run preview*
+  },
+  &quot;devDependencies&quot;: {
+    &quot;vite&quot;: &quot;^8.1.0&quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;前面使用Vite的命令都不是很方便，普遍做法是在package.json自定义命令。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import { animate, stagger } from &quot;https://cdn.jsdelivr.net/npm/animejs@4/+esm&quot;;
+...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;现在对于anime第三方库的import依然是走cdn服务，为了可靠还是应该让npm把它装成本地依赖。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm install animejs
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;import { animate, stagger } from &quot;animejs&quot;;
+...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Vite会将animejs指向node_modules下的animejs。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  &quot;name&quot;: &quot;zero-to-tech-4-1&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;scripts&quot;: {
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;,
+    &quot;dev&quot;: &quot;vite&quot;,
+    &quot;build&quot;: &quot;vite build&quot;,
+    &quot;preview&quot;: &quot;vite preview&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;vite&quot;: &quot;^8.1.0&quot;
+  },
+  &quot;dependencies&quot;: {
+    &quot;animejs&quot;: &quot;^4.5.0&quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;顺便package.json确实能看出来-D install和普通install的区别。&lt;/p&gt;
+</content:encoded></item><item><title>HBase + ElasticSearch</title><link>https://cabbage74.github.io/posts/hbase--elasticsearch/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/hbase--elasticsearch/</guid><description>研究一下这个组合的读写特性</description><pubDate>Mon, 29 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;实习业务部分和这套相关，有必要研究一下读写特性。&lt;/p&gt;
 &lt;h2&gt;HBase&lt;/h2&gt;
 &lt;p&gt;HBase的设计是面向这样的场景：PB级数据、追求对单行数据或小范围数据的&lt;strong&gt;毫秒级&lt;/strong&gt;访问。是TP系统。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=MTZjZmQ2MTAwYzdhMmNmMjlkZmE0M2ExNTdmNThiODBfY2M2YzRiNjZhMzA3Yjg5Y2M3OTk2N2FhNTNjNmUxZWJfSUQ6NzY1Njc4NDk1MTA5ODU0MzMyMl8xNzgyNzM4NTY2OjE3ODI4MjQ5NjZfVjM&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
@@ -582,6 +934,68 @@ python 和 pip。真正的包隔离靠的是 Python 启动时自己读了 &lt;co
 &lt;p&gt;npm/cargo风格的Python包管理。&lt;/p&gt;
 &lt;h3&gt;uv&lt;/h3&gt;
 &lt;p&gt;和poetry类似，因为是用Rust写的，性能很好。&lt;/p&gt;
+</content:encoded></item><item><title>现代前端基础：模块化</title><link>https://cabbage74.github.io/posts/%E7%8E%B0%E4%BB%A3%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80%E6%A8%A1%E5%9D%97%E5%8C%96/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E7%8E%B0%E4%BB%A3%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80%E6%A8%A1%E5%9D%97%E5%8C%96/</guid><description>JS的模块化写法</description><pubDate>Sun, 14 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;在B站看到了一个不错的课程，&lt;a href=&quot;https://space.bilibili.com/427191943/lists?sid=8088328&amp;amp;spm_id_from=333.788.0.0&quot;&gt;AI时代的全栈开发&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;作为远古人，我对前端的理解还停留在HTML/CSS/JS三件套（其实这三件套也不熟）。所以现在看AI用现代前端的方法生成代码的时候，经常有两眼一抹黑的感觉。&lt;/p&gt;
+&lt;p&gt;这个课程讲的还挺清楚的。打算借此入门一下现代前端。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;!doctype html&amp;gt;
+&amp;lt;html lang=&quot;zh-CN&quot;&amp;gt;
+  &amp;lt;head&amp;gt;
+    ...
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    ...
+    &amp;lt;script src=&quot;https://cdn.jsdelivr.net/npm/animejs@4/lib/anime.iife.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+    &amp;lt;script src=&quot;js/cards.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+  &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;(function () {
+  anime.animate(&quot;.card&quot;, {
+    opacity: [0, 1],
+    translateY: [24, 0],
+    delay: anime.stagger(120),
+    duration: 700,
+    ease: &quot;outBack&quot;,
+  });
+})();
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;假设有这样一个index.html（最简单的原生html/css/js）。引入了两个script，一个是第三方anime库，一个是本地的cards.js负责给当前页面所有card加上闪烁效果。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=YzQwNTc4NjJmN2FmMDAyZjM4NmZlZmNjYjNjYzk1MTJfNjg4MDY5NzI1YzM4MzIwYmViZmViZTY4NzI1ZTQ5M2NfSUQ6NzY1NzA4ODczMzA0NDY4OTg2MF8xNzgyODI2NTkzOjE3ODI5MTI5OTNfVjM&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;cards.js里用到了anime.stagger这个函数，依赖第三方anime库。也就是说一定要先导入anime库，再导入cards.js，这里代码层面的先后导入顺序需要程序员靠人脑记住。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=NmQ5MjgxYTc4YzY1YzYyNTViMjcyYmViZTIzODYxYjlfMjE0ZDY3NjFiZjZhNzkxOTA4ZmVhMjgxNGQ0ZTE5YjVfSUQ6NzY1NzA4OTExNTUzMTc1ODU3NV8xNzgyODI2NTkzOjE3ODI5MTI5OTNfVjM&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;window是浏览器环境下的全局顶层对象，一个独立的html对应一个window。anime.stagger是第三方库往当前页面的window挂的名字。容易想到引入的第三方库多的时候，不同的第三方库容易撞名字，导致全局污染。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=ODAwMDc2OWRhYjNjNjI3NGNiYjFkOGJkMzExNDAyZjZfZDk0OGYzNjVkNGQ1NzMxNDU3NThkNzk3MjE4YWNkMTRfSUQ6NzY1NzA4OTI5Njg2NDg1NzAzNV8xNzgyODI2NTkzOjE3ODI5MTI5OTNfVjM&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;现代前端在ES6标准后引入import/export标准，用模块化的方法解决这两个问题。&lt;/p&gt;
+&lt;p&gt;每个JS文件写的东西默认只有自己看得见，想让别人看得见需要显式export，想用别人的需要显式import。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import { animate, stagger } from &quot;https://cdn.jsdelivr.net/npm/animejs@4/+esm&quot;;
+
+export function initCardsAnim() {
+  animate(&quot;.card&quot;, {
+    opacity: [0, 1],
+    translateY: [24, 0],
+    delay: stagger(120),
+    duration: 700,
+    ease: &quot;outBack&quot;,
+  });
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;import { initCardsAnim } from &quot;./cards.js&quot;;
+
+initCardsAnim();
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;!doctype html&amp;gt;
+&amp;lt;html lang=&quot;zh-CN&quot;&amp;gt;
+  &amp;lt;head&amp;gt;
+    ...
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    ...
+    &amp;lt;script type=&quot;module&quot; src=&quot;js/main.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+  &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;将cards.js改造成模块化版本，新建main.js作为该页面所有js的总开关。可以发现导入顺序问题、全局名称污染问题就解决了。&lt;/p&gt;
+&lt;p&gt;不过引入模块化写法以后，本地打开文件会报跨域错误，浏览器出于安全考虑，规定模块化文件一定要走HTTP或者HTTPS服务。&lt;/p&gt;
 </content:encoded></item><item><title>2026.06.12</title><link>https://cabbage74.github.io/posts/20260612/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/20260612/</guid><description>阶段性总结</description><pubDate>Fri, 12 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;前几天在小红书刷到了别人用Astro搭建的静态网站，让我想起了自己巨久没有维护的博客。&lt;/p&gt;
 &lt;p&gt;还记得大二那天跟着网上的各种教程，用Hexo+Next搭，遇到了很多版本不一致导致的Bug。应该前前后后花了有两到三个下午，那个时候的ChatGPT远没有如今强大。&lt;/p&gt;
 &lt;p&gt;昨天我让Claude Code + DeepSeek用Astro重新搭建一下，几分钟就搞定了。哈哈～&lt;/p&gt;
