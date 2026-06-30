@@ -131,7 +131,7 @@ export default function Nav({ current, onNavigate }) {
   );
 }
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;以导航Nav.jsx为例。一个jsx文件一般对应一个组件，一个组件就像是一个函数，输出一段由&lt;strong&gt;运行时输入&lt;/strong&gt;决定的类似html的结构。这个结构经过React和Vite最终会变成真的html。容易想象每个组件都是一个动态的DOM子树，由React来动态的创建、修改、销毁。&lt;/p&gt;
+&lt;p&gt;以导航Nav.jsx为例。一个jsx文件一般对应一个组件，一个组件就像是一个函数，输出一段由&lt;strong&gt;运行时输入&lt;/strong&gt;决定的类似html的结构。这个结构经过React和Vite最终会变成真的html。容易想象每个组件都是一个动态的DOM子树，由React来动态地创建、修改、销毁。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;import Nav from &quot;./Nav.jsx&quot;;
 import PageHeading from &quot;./PageHeading.jsx&quot;;
 import AnimatedCardGrid from &quot;./AnimatedCardGrid.jsx&quot;;
