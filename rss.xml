@@ -1,4 +1,178 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>React组件化</title><link>https://cabbage74.github.io/posts/react%E7%BB%84%E4%BB%B6%E5%8C%96/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/react%E7%BB%84%E4%BB%B6%E5%8C%96/</guid><description>React的组件化思想</description><pubDate>Tue, 30 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;上一节里，构建工具承担了“翻译官”的角色。将开发者写起来舒服的代码“翻译”成浏览器看起来舒服的代码。&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>React数据驱动页面</title><link>https://cabbage74.github.io/posts/react%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E9%A1%B5%E9%9D%A2/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/react%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E9%A1%B5%E9%9D%A2/</guid><description>React的数据驱动页面思想</description><pubDate>Wed, 01 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;上一节“组件根据运行时输入来渲染”已经能让人感觉到数据驱动页面的思想。&lt;/p&gt;
+&lt;p&gt;这一节更加深入一下这个概念。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import Nav from &quot;./Nav.jsx&quot;;
+import PageHeading from &quot;./PageHeading.jsx&quot;;
+import AnimatedCardGrid from &quot;./AnimatedCardGrid.jsx&quot;;
+
+export default function HomePage({ current, onNavigate }) {
+  return (
+    &amp;lt;AnimatedCardGrid className=&quot;dashboard-grid&quot;&amp;gt;
+      ...
+      &amp;lt;article className=&quot;hero-stage panel-full&quot;&amp;gt;
+        &amp;lt;Nav current={current} onNavigate={onNavigate} /&amp;gt;
+        &amp;lt;PageHeading title=&quot;关于我&quot; subtitle=&quot;项目，创意，灵感，心得，我的作品&quot; /&amp;gt;
+      &amp;lt;/article&amp;gt;
+      ...
+  );
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;上一节HomePage.jsx把个人主页封装成了一个组件，但里面有些数据仍然处于数据和页面没有分开的状态。&lt;/p&gt;
+&lt;p&gt;假如想把“关于我”改成别的文字，要在这个复杂的结构里找到再修改。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// 网站要显示的&quot;内容&quot;，全都集中在这里。
+// 想改标题、改文案、加作品？只动这个文件，组件代码一个字都不用碰。
+// 这就是&quot;数据与界面分离&quot;：组件只管&quot;怎么显示&quot;，site.js 只管&quot;显示什么&quot;。
+
+// 现在这些值写死在文件里，是因为还没有接入后端。
+// 等接入后端，可以改成从网络接口实时取——而组件那边照样一个字都不用动。
+
+export const home = {
+  heroTitle: &quot;关于我&quot;,
+  heroSubtitle: &quot;项目，创意，灵感，心得，我的作品&quot;,
+  featuredWork: {
+    kicker: &quot;作品&quot;,
+    title: &quot;文字实验室&quot;,
+    copy: &quot;拼音和情绪，挖掘中文里的细节&quot;,
+    linkLabel: &quot;打开作品&quot;,
+  },
+  identity: {
+    motto: &quot;已识乾坤大，尤怜草木青&quot;,
+    learning: &quot;零到全栈&quot;,
+  },
+};
+
+export const textLab = {
+  heroTitle: &quot;文字实验室&quot;,
+  heroSubtitle: &quot;拼音和情绪，挖掘中文里的细节&quot;,
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;通过将网站要显示的所有文字全部集中管理，能实现两者的分离。&lt;/p&gt;
+&lt;p&gt;即使还没有接入后端也是有好处的。假设网站新增选取语言的功能，可以根据用户当前所选语言来维护site.zh.js、site.en.js、site.jp.js等。比在同一个组件里写大量if、else是方便很多的。&lt;/p&gt;
+&lt;p&gt;组件目前的输入都是由调用者“喂”的，比如PageHeading的输入由HomePage从上层往下传。&lt;/p&gt;
+&lt;p&gt;其实组件本身也可以生产数据。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;./images/%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E9%A1%B5%E9%9D%A21.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;假设要给InputCard新加一个功能，根据输入显示目前已经输入了多少个字。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import { useState } from &quot;react&quot;;
+
+// 文字实验室的&quot;输入区&quot;卡片。
+// 这一节它多了一个&quot;会变的值&quot;：text——这就是 state。
+//   · text 是这个组件自己揣着的值，出生时带着一段默认文字；
+//   · 用户每打一个字、删一个字，text 就变；
+//   · text 一变，下面那行&quot;已输入 N 字&quot;当场跟着跳——
+//     你连一句&quot;找到那个元素再去改它&quot;都不用写，React 自己刷。
+export default function InputCard() {
+  const [text, setText] = useState(&quot;今天的风很轻，适合把脑海里的想法慢慢写下来。&quot;);
+
+  return (
+    &amp;lt;article className=&quot;panel panel-half lab-panel card&quot;&amp;gt;
+      &amp;lt;div className=&quot;panel-heading&quot;&amp;gt;
+        &amp;lt;p className=&quot;section-kicker&quot;&amp;gt;输入区&amp;lt;/p&amp;gt;
+        &amp;lt;h3&amp;gt;贴一段中文&amp;lt;/h3&amp;gt;
+      &amp;lt;/div&amp;gt;
+      &amp;lt;form className=&quot;lab-form&quot; onSubmit={(e) =&amp;gt; e.preventDefault()}&amp;gt;
+        &amp;lt;label htmlFor=&quot;text-input&quot;&amp;gt;文本内容&amp;lt;/label&amp;gt;
+        &amp;lt;textarea
+          id=&quot;text-input&quot;
+          rows=&quot;8&quot;
+          placeholder=&quot;例如：生活没有标准答案，但每一天都值得认真感受。&quot;
+          value={text}
+          onChange={(e) =&amp;gt; setText(e.target.value)}
+        /&amp;gt;
+        {/* state 现身：text 一变，这行数字自动跟着变 */}
+        &amp;lt;p className=&quot;lab-count&quot;&amp;gt;已输入 {text.length} 字&amp;lt;/p&amp;gt;
+        &amp;lt;button className=&quot;primary-button&quot; type=&quot;button&quot;&amp;gt;开始分析&amp;lt;/button&amp;gt;
+      &amp;lt;/form&amp;gt;
+    &amp;lt;/article&amp;gt;
+  );
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;State就有点像函数的局部变量。不过函数每次被重新调用局部变量会被重置，而State会被React记住，记忆边界是当前页面会话（一刷新就忘记了）。&lt;/p&gt;
+&lt;p&gt;上一节App.jsx其实已经用到了State来记住目前处于HomePage页面还是TextLab页面，起到路由作用。&lt;/p&gt;
+&lt;p&gt;而因为State一刷新就会被忘记，所以上一节的代码存在问题，只要一刷新就会回到HomePage页面。而且因为本质上两个页面都挂在index.html，它们的URL都是完全一样的。&lt;/p&gt;
+&lt;p&gt;解决方法是可以把路由信息存到URL里去。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import HomePage from &quot;./components/HomePage.jsx&quot;;
+import TextLabPage from &quot;./components/TextLabPage.jsx&quot;;
+import { useRoute } from &quot;./router/useRoute.js&quot;;
+
+export default function App() {
+  // 上一节中，&quot;现在在哪一页&quot;记在内存（useState）里——一刷新就被打回首页。
+  // 这一节换成 useRoute：把&quot;在哪一页&quot;读自 / 写入浏览器地址栏。
+  const { path, navigate } = useRoute();
+
+  // 看地址栏决定显示哪一页：/text-lab → 文字实验室；其它（含 /）→ 个人主页
+  const current = path.startsWith(&quot;/text-lab&quot;) ? &quot;textlab&quot; : &quot;home&quot;;
+
+  // 点导航 → 改地址栏（而不再是改内存里的值）
+  const onNavigate = (key) =&amp;gt; navigate(key === &quot;textlab&quot; ? &quot;/text-lab&quot; : &quot;/&quot;);
+
+  return (
+    &amp;lt;div className=&quot;app-shell&quot;&amp;gt;
+      &amp;lt;div className=&quot;page-shell&quot;&amp;gt;
+        &amp;lt;main className=&quot;page-content&quot;&amp;gt;
+          {current === &quot;home&quot;
+            ? &amp;lt;HomePage current={current} onNavigate={onNavigate} /&amp;gt;
+            : &amp;lt;TextLabPage current={current} onNavigate={onNavigate} /&amp;gt;}
+        &amp;lt;/main&amp;gt;
+      &amp;lt;/div&amp;gt;
+    &amp;lt;/div&amp;gt;
+  );
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;import { useEffect, useState } from &quot;react&quot;;
+
+// 一个非常小的&quot;路由&quot;，干三件事：
+//   - 读浏览器地址栏的 path，决定显示哪一页（一刷新还在这一页）
+//   - 提供一个 navigate(path)，点导航时把&quot;在哪一页&quot;写进地址栏
+//   - 用户按浏览器前进 / 后退，界面也跟着变
+//
+// 关键就在于：上一节把&quot;在哪一页&quot;记在内存里（一刷新就丢）；
+// 这一版把它换成&quot;写在网址里&quot;——网址刷新不丢、能整条复制、能前进后退。
+//
+// 这一版&quot;够用但糙&quot;：自己手写、要兼顾的边角不少。真实项目里大家不手搓，
+// 而是用现成的库（叫 react-router）；再往后 Next.js 会用&quot;文件夹=路由&quot;把它整个替掉。
+export function useRoute() {
+  const [path, setPath] = useState(window.location.pathname);
+
+  useEffect(() =&amp;gt; {
+    const handler = () =&amp;gt; setPath(window.location.pathname);
+    window.addEventListener(&quot;popstate&quot;, handler);
+    return () =&amp;gt; window.removeEventListener(&quot;popstate&quot;, handler);
+  }, []);
+
+  function navigate(to) {
+    if (to === path) return;
+    window.history.pushState({}, &quot;&quot;, to);
+    setPath(to);
+  }
+
+  return { path, navigate };
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;总结地说，React将前端开发抽象成面向组件以后，界面的显示由“值”决定。&lt;/p&gt;
+&lt;p&gt;这些值可以是组件内部的State、可以是URL、可以是父亲大组件传进来的输入、可以是site.js里集中定义的模版、可以是后端提供的值。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;├── README.md
+├── index.html
+├── node_modules
+├── package-lock.json
+├── package.json
+├── src
+│   ├── App.jsx
+│   ├── components
+│   │   ├── AnimatedCardGrid.jsx
+│   │   ├── HomePage.jsx
+│   │   ├── ...
+│   ├── css
+│   │   ├── cards.css
+│   │   ├── hero.css
+│   │   ├── ...
+│   ├── data
+│   │   └── site.js
+│   ├── main.jsx
+│   └── router
+│       └── useRoute.js
+└── vite.config.js
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这是加入site.js和useRoute.js以后的React项目结构。&lt;/p&gt;
+</content:encoded></item><item><title>React组件化</title><link>https://cabbage74.github.io/posts/react%E7%BB%84%E4%BB%B6%E5%8C%96/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/react%E7%BB%84%E4%BB%B6%E5%8C%96/</guid><description>React的组件化思想</description><pubDate>Tue, 30 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;上一节里，构建工具承担了“翻译官”的角色。将开发者写起来舒服的代码“翻译”成浏览器看起来舒服的代码。&lt;/p&gt;
 &lt;p&gt;构建工具可以“翻译”，意味着我们可以写出规则更加不同的代码，只要最后让构建工具“翻译”成浏览器看得懂的html/css/js就行了。&lt;/p&gt;
 &lt;p&gt;React是最火的前端框架，核心思想是把复杂页面拆成可复用的组件，通过数据驱动组件更新。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;npm install react react-dom
@@ -219,6 +393,7 @@ createRoot(document.getElementById(&quot;root&quot;)).render(
 &lt;p&gt;React写法：整个应用只有一个 HTML 文件。里面有个容器，比如 root div。React接管这个div，然后动态地在这个div内部创建、更新、销毁 DOM 节点，来模拟“页面切换”。浏览器只加载一次 HTML，后续的“页面”切换，都是 React 在这个 root div 里面变魔术。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;├── README.md
 ├── index.html
+├── node_modules
 ├── package-lock.json
 ├── package.json
 ├── src
