@@ -14,7 +14,7 @@ lang: ''
 
 HBase的设计是面向这样的场景：PB级数据、追求对单行数据或小范围数据的**毫秒级**访问。是TP系统。
 
-![Image](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=MTZjZmQ2MTAwYzdhMmNmMjlkZmE0M2ExNTdmNThiODBfY2M2YzRiNjZhMzA3Yjg5Y2M3OTk2N2FhNTNjNmUxZWJfSUQ6NzY1Njc4NDk1MTA5ODU0MzMyMl8xNzgyNzM4NTY2OjE3ODI4MjQ5NjZfVjM)
+![Image](images/architecuture.png)
 
 HBase 的数据模型是一张巨大的、排序的、稀疏的映射表（Sorted Map），行键（RowKey）按字典序排序。为了分布式存储，表会被自动切分成很多个 Region。
 

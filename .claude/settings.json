@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xxd)",
+      "Bash(grep -n '```' /Users/cabbage/blog/src/content/posts/React组件化.md)",
+      "Bash(grep -n '```' /Users/cabbage/blog/src/content/posts/Python入门（二）.md)"
+    ]
+  }
+}
