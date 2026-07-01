@@ -1,4 +1,5 @@
 import { type CollectionEntry, getCollection } from "astro:content";
+
 // // Retrieve posts and sort them by publication date
 async function getRawSortedPosts() {
 	const allBlogPosts = await getCollection("posts", ({ data }) => {
@@ -67,4 +68,3 @@ export async function getTagList(): Promise<Tag[]> {
 
 	return keys.map((key) => ({ name: key, count: countMap[key] }));
 }
-

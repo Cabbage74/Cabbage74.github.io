@@ -6,7 +6,7 @@ import ImageWrapper from "../misc/ImageWrapper.astro";
 
 const config = profileConfig;
 const links = config.links;
-const qrLinks = links.filter(l => l.qr);
+const qrLinks = links.filter((l) => l.qr);
 ---
 <div class="card-base p-3">
     <a aria-label="Go to About Page" href={url('/about/')}
