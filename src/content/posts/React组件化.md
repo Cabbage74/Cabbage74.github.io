@@ -32,7 +32,7 @@ export default defineConfig({
 
 安装完还得编写Vite的配置文件vite\.config\.js，真正地“插”上插件。
 
-![Image](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=NDA4MTg5NDNjZmFjYTA5OTA5ZmRkOGIwNTdhYTc2MjRfYmU0ZmQzMzcyOTY3ZTNmZWY3ZjUxZjQyYzUxMDJjNDhfSUQ6NzY1NzE2Nzk5ODI5NzY0MDE1OV8xNzgyODI2NjE1OjE3ODI5MTMwMTVfVjM)
+![Image](./images/组件化1.jpg)
 
 ``` html title="text-lab.html"
 <!doctype html>
@@ -186,7 +186,7 @@ export default function TextLabPage({ current, onNavigate }) {
 
 再看含有Nav的页面TextLabPage\.jsx。其实和Nav没什么区别，Nav像是小积木，TextLabPage像是大积木。
 
-![Image](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=Y2ZkMDg0YzcyNThmMzM4NzNkNDEwNTcxNmI5MjM2NzVfYzAwMGM5M2JkZmVjOTFmOTg0MzFiNTQyM2VjNTUxMGFfSUQ6NzY1NzE3NjE4MzUxMTMyMTU0OF8xNzgyODI2NjE1OjE3ODI5MTMwMTVfVjM)
+![Image](./images/组件化2.jpg)
 
 Vanilla写法里，不同的页面一般就是不同的html。
 

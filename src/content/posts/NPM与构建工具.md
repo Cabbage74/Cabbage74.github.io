@@ -37,7 +37,7 @@ lang: ''
 
 一是引入模块化写法以后一定要走HTTP、HTTPS，调试起来不方便。
 
-![Image](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=Mzk2OTFlNzFjZjI0MTViOGY0YzU4YjYyMGQ5NDgzZmNfOWQ5YzliMjJmZWIwNjA0ZGM0M2FlYWQ4YWQ0OGFlNzZfSUQ6NzY1NzExNzUwNDk0NzU3MTg5Ml8xNzgyODI2NjAzOjE3ODI5MTMwMDNfVjM)
+![Image](./images/NPM1.png)
 
 二是要请求的文件太多，需要排队。虽然拆分代码方便程序员调试维护，但不方便浏览器请求。
 
@@ -104,7 +104,7 @@ package\.json多了一条依赖。
 ./node_modules/.bin/vite build
 ```
 
-![Image](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=ZDI5NmQ0M2YzZjA4MTc0YjkxNzlkMmNiNWQxNjZkYzlfYzdjOTMxNTVlMGU4NDE3MTFkM2JmOGMwZDFmODllN2FfSUQ6NzY1NzExOTA0Mzc4NzA5OTM2MF8xNzgyODI2NjAzOjE3ODI5MTMwMDNfVjM)
+![Image](./images/NPM2.png)
 
 执行build构建命令，多了一个dist文件夹，里面就是构建产物。这个产物是实际放在服务器的代码。
 

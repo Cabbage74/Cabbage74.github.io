@@ -14,7 +14,7 @@ lang: ''
 
 HBase的设计是面向这样的场景：PB级数据、追求对单行数据或小范围数据的**毫秒级**访问。是TP系统。
 
-![Image](images/architecuture.png)
+![Image](./images/hbase-architecture.png)
 
 HBase 的数据模型是一张巨大的、排序的、稀疏的映射表（Sorted Map），行键（RowKey）按字典序排序。为了分布式存储，表会被自动切分成很多个 Region。
 
@@ -75,7 +75,7 @@ type指的是put/delete。
 
 HMaster不参与读写，只管负载均衡、故障转移等。
 
-![Image](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=NjJkNDAxODVmNGQxY2M4ZWIwZWI4N2VkMWZkODM4N2NfNGY0MzU4YzY5MTliYTRkOWY2ODRjZDFjY2Q3NjllZDJfSUQ6NzY1Njc5MTA1Njc5MjQ1NjQyMl8xNzgyNzM4NTY2OjE3ODI4MjQ5NjZfVjM)
+![Image](./images/hbase-table.png)
 
 整张表是按RowKey的字典序排序的。
 
