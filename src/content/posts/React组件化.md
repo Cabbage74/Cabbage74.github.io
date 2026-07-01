@@ -265,6 +265,7 @@ React写法：整个应用只有一个 HTML 文件。里面有个容器，比如
 ``` text
 ├── README.md
 ├── index.html
+├── node_modules
 ├── package-lock.json
 ├── package.json
 ├── src
@@ -284,6 +285,3 @@ React写法：整个应用只有一个 HTML 文件。里面有个容器，比如
 ```
 
 这是一个React项目的经典结构。
-
-
-
