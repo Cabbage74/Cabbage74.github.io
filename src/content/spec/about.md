@@ -4,7 +4,7 @@ I am a postgrad at the Department of Software Engineering, East China Normal Uni
 
 Previously, I received my B.Eng. degree from East China Normal University in 2025.
 
-My research interests lie in DBMS and AI Agents, but I am always willing to try out new things.
+My research interests currently lie in Databases and Agents.
 
 # Experience
 
