@@ -13,7 +13,7 @@ export default defineConfig({
 })
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;安装完还得编写Vite的配置文件vite.config.js，真正地“插”上插件。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=NDA4MTg5NDNjZmFjYTA5OTA5ZmRkOGIwNTdhYTc2MjRfYmU0ZmQzMzcyOTY3ZTNmZWY3ZjUxZjQyYzUxMDJjNDhfSUQ6NzY1NzE2Nzk5ODI5NzY0MDE1OV8xNzgyODI2NjE1OjE3ODI5MTMwMTVfVjM&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;./images/%E7%BB%84%E4%BB%B6%E5%8C%961.jpg&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;&amp;lt;!doctype html&amp;gt;
 &amp;lt;html lang=&quot;zh-CN&quot;&amp;gt;
   &amp;lt;head&amp;gt;
@@ -155,7 +155,7 @@ export default function TextLabPage({ current, onNavigate }) {
 }
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;再看含有Nav的页面TextLabPage.jsx。其实和Nav没什么区别，Nav像是小积木，TextLabPage像是大积木。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=Y2ZkMDg0YzcyNThmMzM4NzNkNDEwNTcxNmI5MjM2NzVfYzAwMGM5M2JkZmVjOTFmOTg0MzFiNTQyM2VjNTUxMGFfSUQ6NzY1NzE3NjE4MzUxMTMyMTU0OF8xNzgyODI2NjE1OjE3ODI5MTMwMTVfVjM&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;./images/%E7%BB%84%E4%BB%B6%E5%8C%962.jpg&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;Vanilla写法里，不同的页面一般就是不同的html。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;import { useState } from &quot;react&quot;;
 import HomePage from &quot;./components/HomePage.jsx&quot;;
@@ -260,7 +260,7 @@ createRoot(document.getElementById(&quot;root&quot;)).render(
 &lt;p&gt;延续上一节模块化改造完的index.html代码。&lt;/p&gt;
 &lt;p&gt;目前还有几个可以进一步优化的问题：&lt;/p&gt;
 &lt;p&gt;一是引入模块化写法以后一定要走HTTP、HTTPS，调试起来不方便。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=Mzk2OTFlNzFjZjI0MTViOGY0YzU4YjYyMGQ5NDgzZmNfOWQ5YzliMjJmZWIwNjA0ZGM0M2FlYWQ4YWQ0OGFlNzZfSUQ6NzY1NzExNzUwNDk0NzU3MTg5Ml8xNzgyODI2NjAzOjE3ODI5MTMwMDNfVjM&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;./images/NPM1.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;二是要请求的文件太多，需要排队。虽然拆分代码方便程序员调试维护，但不方便浏览器请求。&lt;/p&gt;
 &lt;p&gt;三是浏览器会缓存旧文件，比如这里的anime库走的是memory cache。刷新页面可能不会很及时地体现背后代码的变动。一个笨方法是每次改完代码就把文件名也手动修改一下，让浏览器不走缓存，但显然不方便。&lt;/p&gt;
 &lt;p&gt;构建工具可以帮助解决这三个问题，Vite是现在最流行的一个。&lt;/p&gt;
@@ -301,7 +301,7 @@ createRoot(document.getElementById(&quot;root&quot;)).render(
 &lt;p&gt;此时执行Vite的可执行文件，Vite就能起一个服务器用于开发预览，而且是热更新不用自己刷新的。解决了文章开头提到的第一个问题。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;./node_modules/.bin/vite build
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&quot;https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=ZDI5NmQ0M2YzZjA4MTc0YjkxNzlkMmNiNWQxNjZkYzlfYzdjOTMxNTVlMGU4NDE3MTFkM2JmOGMwZDFmODllN2FfSUQ6NzY1NzExOTA0Mzc4NzA5OTM2MF8xNzgyODI2NjAzOjE3ODI5MTMwMDNfVjM&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;./images/NPM2.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;执行build构建命令，多了一个dist文件夹，里面就是构建产物。这个产物是实际放在服务器的代码。&lt;/p&gt;
 &lt;p&gt;Vite构建的核心就是保持代码语义，但把代码打包成最适合浏览器使用的形态。可以看到css和js都各自被合成了一个文件，解决了文章开头提到的第二个问题。文件名最后有一串哈希指纹，解决了文章开头提到的第三个问题。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;./node_modules/.bin/vite preview
@@ -353,7 +353,7 @@ createRoot(document.getElementById(&quot;root&quot;)).render(
 </content:encoded></item><item><title>HBase + ElasticSearch</title><link>https://cabbage74.github.io/posts/hbase--elasticsearch/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/hbase--elasticsearch/</guid><description>研究一下这个组合的读写特性</description><pubDate>Mon, 29 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;实习业务部分和这套相关，有必要研究一下读写特性。&lt;/p&gt;
 &lt;h2&gt;HBase&lt;/h2&gt;
 &lt;p&gt;HBase的设计是面向这样的场景：PB级数据、追求对单行数据或小范围数据的&lt;strong&gt;毫秒级&lt;/strong&gt;访问。是TP系统。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=MTZjZmQ2MTAwYzdhMmNmMjlkZmE0M2ExNTdmNThiODBfY2M2YzRiNjZhMzA3Yjg5Y2M3OTk2N2FhNTNjNmUxZWJfSUQ6NzY1Njc4NDk1MTA5ODU0MzMyMl8xNzgyNzM4NTY2OjE3ODI4MjQ5NjZfVjM&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;./images/hbase-architecture.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;HBase 的数据模型是一张巨大的、排序的、稀疏的映射表（Sorted Map），行键（RowKey）按字典序排序。为了分布式存储，表会被自动切分成很多个 Region。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -422,7 +422,7 @@ MemStore   HFile   MemStore   HFile ...
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;HMaster不参与读写，只管负载均衡、故障转移等。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=NjJkNDAxODVmNGQxY2M4ZWIwZWI4N2VkMWZkODM4N2NfNGY0MzU4YzY5MTliYTRkOWY2ODRjZDFjY2Q3NjllZDJfSUQ6NzY1Njc5MTA1Njc5MjQ1NjQyMl8xNzgyNzM4NTY2OjE3ODI4MjQ5NjZfVjM&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;./images/hbase-table.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;整张表是按RowKey的字典序排序的。&lt;/p&gt;
 &lt;p&gt;每个表一开始只有一个Region，随着不断增大会分裂。&lt;/p&gt;
 &lt;h2&gt;ElasticSearch&lt;/h2&gt;
@@ -960,11 +960,11 @@ python 和 pip。真正的包隔离靠的是 Python 启动时自己读了 &lt;co
 })();
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;假设有这样一个index.html（最简单的原生html/css/js）。引入了两个script，一个是第三方anime库，一个是本地的cards.js负责给当前页面所有card加上闪烁效果。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=YzQwNTc4NjJmN2FmMDAyZjM4NmZlZmNjYjNjYzk1MTJfNjg4MDY5NzI1YzM4MzIwYmViZmViZTY4NzI1ZTQ5M2NfSUQ6NzY1NzA4ODczMzA0NDY4OTg2MF8xNzgyODI2NTkzOjE3ODI5MTI5OTNfVjM&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;./images/%E6%A8%A1%E5%9D%97%E5%8C%961.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;cards.js里用到了anime.stagger这个函数，依赖第三方anime库。也就是说一定要先导入anime库，再导入cards.js，这里代码层面的先后导入顺序需要程序员靠人脑记住。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=NmQ5MjgxYTc4YzY1YzYyNTViMjcyYmViZTIzODYxYjlfMjE0ZDY3NjFiZjZhNzkxOTA4ZmVhMjgxNGQ0ZTE5YjVfSUQ6NzY1NzA4OTExNTUzMTc1ODU3NV8xNzgyODI2NTkzOjE3ODI5MTI5OTNfVjM&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;./images/%E6%A8%A1%E5%9D%97%E5%8C%962.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;window是浏览器环境下的全局顶层对象，一个独立的html对应一个window。anime.stagger是第三方库往当前页面的window挂的名字。容易想到引入的第三方库多的时候，不同的第三方库容易撞名字，导致全局污染。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=ODAwMDc2OWRhYjNjNjI3NGNiYjFkOGJkMzExNDAyZjZfZDk0OGYzNjVkNGQ1NzMxNDU3NThkNzk3MjE4YWNkMTRfSUQ6NzY1NzA4OTI5Njg2NDg1NzAzNV8xNzgyODI2NTkzOjE3ODI5MTI5OTNfVjM&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;./images/%E6%A8%A1%E5%9D%97%E5%8C%963.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;现代前端在ES6标准后引入import/export标准，用模块化的方法解决这两个问题。&lt;/p&gt;
 &lt;p&gt;每个JS文件写的东西默认只有自己看得见，想让别人看得见需要显式export，想用别人的需要显式import。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;import { animate, stagger } from &quot;https://cdn.jsdelivr.net/npm/animejs@4/+esm&quot;;
