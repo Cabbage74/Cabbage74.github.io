@@ -1,4 +1,65 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>React数据驱动页面</title><link>https://cabbage74.github.io/posts/react%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E9%A1%B5%E9%9D%A2/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/react%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E9%A1%B5%E9%9D%A2/</guid><description>React的数据驱动页面思想</description><pubDate>Wed, 01 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;上一节“组件根据运行时输入来渲染”已经能让人感觉到数据驱动页面的思想。&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>2026.07.04.md</title><link>https://cabbage74.github.io/posts/20260704/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/20260704/</guid><description>23岁生日</description><pubDate>Sat, 04 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;去年22岁感觉自己还很小，但是今年感觉就不一样了。&lt;/p&gt;
+&lt;p&gt;因为四舍五入就是25岁，再四舍五入就是30岁...&lt;/p&gt;
+&lt;p&gt;也可能是因为身份变了，感觉研究生和本科生的一个区别就是大家都更“独狼”了。&lt;/p&gt;
+&lt;p&gt;...&lt;/p&gt;
+&lt;p&gt;不过听到本科毕业就工作的同龄人最近结婚、听到印象里还是小学生的一个弟弟今年高考时，我还是会下意识惊讶一下。&lt;/p&gt;
+&lt;p&gt;...&lt;/p&gt;
+&lt;p&gt;每年的元旦、春节、生日都会让我感到焦虑，因为这样的时间节点总会让我问自己：“相比上一个这样的时间节点，你有什么长进？”&lt;/p&gt;
+&lt;p&gt;每次我都给不了自己一个满意的回答。&lt;/p&gt;
+&lt;p&gt;在新环境实习也一个月了，目前的工作可以总结为数据业务的后端开发。说实话，能学到东西，但挺无聊。而且有些业务上理解不了的地方同事也理解不了。&lt;/p&gt;
+&lt;p&gt;好在最近自身的学习热情还不错吧。&lt;/p&gt;
+</content:encoded></item><item><title>日拱两卒（一）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%80/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%80/</guid><description>91 - 100</description><pubDate>Sat, 04 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Leetcode的考察点和ACM不太一样，之前面试也有几次尴尬写不出的经历。&lt;/p&gt;
+&lt;p&gt;从2026.07.04开始把Hot100过一遍，因为前面几题其实很久以前提交过，所以这次倒着刷。&lt;/p&gt;
+&lt;p&gt;这轮试着用Python而不是C++！&lt;/p&gt;
+&lt;p&gt;50天！每天两题写完差不多正好是9月日常实习。&lt;/p&gt;
+&lt;h2&gt;100&lt;/h2&gt;
+&lt;p&gt;有&lt;code&gt;n + 1&lt;/code&gt;个整数，值域是&lt;code&gt;[1, n]&lt;/code&gt;，找出唯一的重复的数。&lt;/p&gt;
+&lt;p&gt;假设这个重复的数是&lt;code&gt;x&lt;/code&gt;。定义&lt;code&gt;cnt[i]&lt;/code&gt;为小于等于&lt;code&gt;i&lt;/code&gt;的数的个数。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;cnt[i] &amp;lt;= i&lt;/code&gt; 当 &lt;code&gt;i &amp;lt;= x - 1&lt;/code&gt;时&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;cnt[i] &amp;gt; i&lt;/code&gt; 当 &lt;code&gt;i &amp;gt;= x&lt;/code&gt; 时&lt;/p&gt;
+&lt;p&gt;所以二分出最小的满足&lt;code&gt;cnt[i] &amp;gt; i&lt;/code&gt;的&lt;code&gt;i&lt;/code&gt;就可以了&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def findDuplicate(self, nums: List[int]) -&amp;gt; int:
+        l = 1
+        r = len(nums) - 1
+        while l &amp;lt; r:
+            mid = (l + r) &amp;gt;&amp;gt; 1;
+            
+            cnt = 0
+            for num in nums:
+                cnt += num &amp;lt;= mid
+
+            if cnt &amp;gt; mid:
+                r = mid
+            else:
+                l = mid + 1
+            
+        return l 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;99&lt;/h2&gt;
+&lt;p&gt;按字典序找出下一个排列。&lt;/p&gt;
+&lt;p&gt;比如&lt;code&gt;[1, 2, 3]&lt;/code&gt;的下一个是&lt;code&gt;[1, 3, 2]&lt;/code&gt;，再下一个是&lt;code&gt;[2, 1, 3]&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;[1, 3, 5, 4, 2]&lt;/code&gt; -&amp;gt; &lt;code&gt;[1, 4, 5, 3, 2]&lt;/code&gt; -&amp;gt; &lt;code&gt;[1, 4, 2, 3, 5]&lt;/code&gt;。这是一个一般化过程。&lt;/p&gt;
+&lt;p&gt;从后往前看，如果有一个数破坏了递增，说明这个数移到后面去是可以提升字典序的（因为后面有比它大的数）。&lt;/p&gt;
+&lt;p&gt;那么把哪个数和它调换？因为要求下一个排列，肯定是比它大的最小的数。&lt;/p&gt;
+&lt;p&gt;换完以后容易发现现在递减的部分可以倒过来，进一步缩小字典序。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;[3, 2, 1]&lt;/code&gt; -&amp;gt; &lt;code&gt;[1, 2, 3]&lt;/code&gt;的情况竟然能被兼容，Python的负索引还真挺神奇。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def nextPermutation(self, nums: List[int]) -&amp;gt; None:
+        i = len(nums) - 1
+        while nums[i] &amp;lt; nums[i - 1]:
+            i -= 1
+        i -= 1
+
+        j = len(nums) - 1
+        while nums[j] &amp;lt; nums[i]:
+            j -= 1
+        
+        nums[i], nums[j] = nums[j], nums[i]
+        
+        nums[i+1:] = nums[i+1:][::-1] 
+&lt;/code&gt;&lt;/pre&gt;
+</content:encoded></item><item><title>React数据驱动页面</title><link>https://cabbage74.github.io/posts/react%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E9%A1%B5%E9%9D%A2/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/react%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E9%A1%B5%E9%9D%A2/</guid><description>React的数据驱动页面思想</description><pubDate>Wed, 01 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;上一节“组件根据运行时输入来渲染”已经能让人感觉到数据驱动页面的思想。&lt;/p&gt;
 &lt;p&gt;这一节更加深入一下这个概念。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;import Nav from &quot;./Nav.jsx&quot;;
 import PageHeading from &quot;./PageHeading.jsx&quot;;
