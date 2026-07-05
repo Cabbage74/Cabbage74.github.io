@@ -15,9 +15,9 @@
 &lt;h2&gt;100&lt;/h2&gt;
 &lt;p&gt;有&lt;code&gt;n + 1&lt;/code&gt;个整数，值域是&lt;code&gt;[1, n]&lt;/code&gt;，找出唯一的重复的数。&lt;/p&gt;
 &lt;p&gt;假设这个重复的数是&lt;code&gt;x&lt;/code&gt;。定义&lt;code&gt;cnt[i]&lt;/code&gt;为小于等于&lt;code&gt;i&lt;/code&gt;的数的个数。&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;cnt[i] &amp;lt;= i&lt;/code&gt; 当 &lt;code&gt;i &amp;lt;= x - 1&lt;/code&gt;时&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;cnt[i] &amp;gt; i&lt;/code&gt; 当 &lt;code&gt;i &amp;gt;= x&lt;/code&gt; 时&lt;/p&gt;
-&lt;p&gt;所以二分出最小的满足&lt;code&gt;cnt[i] &amp;gt; i&lt;/code&gt;的&lt;code&gt;i&lt;/code&gt;就可以了&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;cnt[i] &amp;lt;= i&lt;/code&gt; 当 &lt;code&gt;i &amp;lt;= x - 1&lt;/code&gt;时。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;cnt[i] &amp;gt; i&lt;/code&gt; 当 &lt;code&gt;i &amp;gt;= x&lt;/code&gt; 时。&lt;/p&gt;
+&lt;p&gt;所以二分出最小的满足&lt;code&gt;cnt[i] &amp;gt; i&lt;/code&gt;的&lt;code&gt;i&lt;/code&gt;就可以了。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;class Solution:
     def findDuplicate(self, nums: List[int]) -&amp;gt; int:
         l = 1
@@ -58,6 +58,41 @@
         nums[i], nums[j] = nums[j], nums[i]
         
         nums[i+1:] = nums[i+1:][::-1] 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;98&lt;/h2&gt;
+&lt;p&gt;不用&lt;code&gt;sort&lt;/code&gt;排序一个只含有&lt;code&gt;0, 1, 2&lt;/code&gt;的数组。&lt;/p&gt;
+&lt;p&gt;这个问题叫荷兰国旗问题（名字加深印象）！&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;p0&lt;/code&gt;维护下一个&lt;code&gt;0&lt;/code&gt;的位置，它的左边都是&lt;code&gt;0&lt;/code&gt;。&lt;code&gt;p2&lt;/code&gt;维护下一个&lt;code&gt;2&lt;/code&gt;的位置，它的右边都是&lt;code&gt;2&lt;/code&gt;。&lt;code&gt;i&lt;/code&gt;是当前检查的位置。&lt;/p&gt;
+&lt;p&gt;循环的不变量：&lt;code&gt;[0, p0)&lt;/code&gt;都是 &lt;code&gt;0&lt;/code&gt;，&lt;code&gt;(p2, n - 1]&lt;/code&gt;都是 2，中间&lt;code&gt;[p0, i)&lt;/code&gt;都是 1。&lt;/p&gt;
+&lt;p&gt;把&lt;code&gt;2&lt;/code&gt;交换到后面去的时候要再检查一次当前位置，因为被换到前面来的数可能是&lt;code&gt;0&lt;/code&gt;或&lt;code&gt;2&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;在这个算法里，一个数做多会被搬两次。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def sortColors(self, nums: List[int]) -&amp;gt; None:
+        p0, i, p2 = 0, 0, len(nums) - 1
+        while i &amp;lt;= p2:
+            if nums[i] == 0:
+                nums[i], nums[p0] = nums[p0], nums[i]
+                p0 += 1
+                i += 1
+            elif nums[i] == 2:
+                nums[i], nums[p2] = nums[p2], nums[i]
+                p2 -= 1
+            else:
+                i += 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;97&lt;/h2&gt;
+&lt;p&gt;求一个数组里的绝对众数。&lt;/p&gt;
+&lt;p&gt;擂台法。同一个数字想成同一个门派，同门派就加一战斗力，不同门派就减一战斗力。绝对众数的门派肯定能站到最后。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def majorityElement(self, nums: List[int]) -&amp;gt; int:
+        ans, cnt = 0, 0
+        for num in nums:
+            if cnt == 0:
+                ans = num
+                cnt += 1
+            else:
+                cnt += 1 if x == ans else -1
+        return ans
 &lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>React数据驱动页面</title><link>https://cabbage74.github.io/posts/react%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E9%A1%B5%E9%9D%A2/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/react%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E9%A1%B5%E9%9D%A2/</guid><description>React的数据驱动页面思想</description><pubDate>Wed, 01 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;上一节“组件根据运行时输入来渲染”已经能让人感觉到数据驱动页面的思想。&lt;/p&gt;
 &lt;p&gt;这一节更加深入一下这个概念。&lt;/p&gt;
