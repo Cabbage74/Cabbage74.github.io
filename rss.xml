@@ -43,21 +43,21 @@
 &lt;p&gt;从后往前看，如果有一个数破坏了递增，说明这个数移到后面去是可以提升字典序的（因为后面有比它大的数）。&lt;/p&gt;
 &lt;p&gt;那么把哪个数和它调换？因为要求下一个排列，肯定是比它大的最小的数。&lt;/p&gt;
 &lt;p&gt;换完以后容易发现现在递减的部分可以倒过来，进一步缩小字典序。&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;[3, 2, 1]&lt;/code&gt; -&amp;gt; &lt;code&gt;[1, 2, 3]&lt;/code&gt;的情况竟然能被兼容，Python的负索引还真挺神奇。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;class Solution:
     def nextPermutation(self, nums: List[int]) -&amp;gt; None:
-        i = len(nums) - 1
-        while nums[i] &amp;lt; nums[i - 1]:
-            i -= 1
-        i -= 1
+        n = len(nums)
 
-        j = len(nums) - 1
-        while nums[j] &amp;lt; nums[i]:
-            j -= 1
-        
-        nums[i], nums[j] = nums[j], nums[i]
-        
-        nums[i+1:] = nums[i+1:][::-1] 
+        i = n - 2
+        while i &amp;gt;= 0 and nums[i] &amp;gt;= nums[i + 1]:
+            i -= 1
+
+        if i &amp;gt;= 0:
+            j = n - 1
+            while nums[j] &amp;lt;= nums[i]:
+                j -= 1
+            nums[i], nums[j] = nums[j], nums[i]
+
+        nums[i+1:] = nums[i+1:][::-1]
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h2&gt;98&lt;/h2&gt;
 &lt;p&gt;不用&lt;code&gt;sort&lt;/code&gt;排序一个只含有&lt;code&gt;0, 1, 2&lt;/code&gt;的数组。&lt;/p&gt;
@@ -65,7 +65,7 @@
 &lt;p&gt;&lt;code&gt;p0&lt;/code&gt;维护下一个&lt;code&gt;0&lt;/code&gt;的位置，它的左边都是&lt;code&gt;0&lt;/code&gt;。&lt;code&gt;p2&lt;/code&gt;维护下一个&lt;code&gt;2&lt;/code&gt;的位置，它的右边都是&lt;code&gt;2&lt;/code&gt;。&lt;code&gt;i&lt;/code&gt;是当前检查的位置。&lt;/p&gt;
 &lt;p&gt;循环的不变量：&lt;code&gt;[0, p0)&lt;/code&gt;都是 &lt;code&gt;0&lt;/code&gt;，&lt;code&gt;(p2, n - 1]&lt;/code&gt;都是 2，中间&lt;code&gt;[p0, i)&lt;/code&gt;都是 1。&lt;/p&gt;
 &lt;p&gt;把&lt;code&gt;2&lt;/code&gt;交换到后面去的时候要再检查一次当前位置，因为被换到前面来的数可能是&lt;code&gt;0&lt;/code&gt;或&lt;code&gt;2&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;在这个算法里，一个数做多会被搬两次。&lt;/p&gt;
+&lt;p&gt;在这个算法里，一个数最多会被搬两次。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;class Solution:
     def sortColors(self, nums: List[int]) -&amp;gt; None:
         p0, i, p2 = 0, 0, len(nums) - 1
@@ -91,8 +91,42 @@
                 ans = num
                 cnt += 1
             else:
-                cnt += 1 if x == ans else -1
+                cnt += 1 if num == ans else -1
         return ans
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;96&lt;/h2&gt;
+&lt;p&gt;找出只出现一次的数字，保证其他数字都是两次。&lt;/p&gt;
+&lt;p&gt;老生常谈的异或。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def singleNumber(self, nums: List[int]) -&amp;gt; int:
+        ans = 0
+        for num in nums:
+            ans = ans ^ num
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;95&lt;/h2&gt;
+&lt;p&gt;编辑距离。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;dp[n][m]&lt;/code&gt;代表只考虑&lt;code&gt;word1&lt;/code&gt;前&lt;code&gt;n&lt;/code&gt;个字母，&lt;code&gt;word2&lt;/code&gt;前&lt;code&gt;m&lt;/code&gt;个字母的答案。&lt;/p&gt;
+&lt;p&gt;第&lt;code&gt;n&lt;/code&gt;个和第&lt;code&gt;m&lt;/code&gt;个字母相等时，只需要考虑&lt;code&gt;dp[n - 1][m - 1]&lt;/code&gt;这个子问题。&lt;/p&gt;
+&lt;p&gt;不相等时，插入、删除、替换对应三个子问题。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;@cache&lt;/code&gt;起到记忆化搜索的作用，Python把这个功能内置了。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def minDistance(self, word1: str, word2: str) -&amp;gt; int:
+        n = len(word1)
+        m = len(word2)
+
+        @cache
+        def dfs(x, y):
+            if x &amp;lt; 0:
+                return y + 1
+            if y &amp;lt; 0:
+                return x + 1
+            if word1[x] == word2[y]:
+                return dfs(x - 1, y - 1)
+            
+            return min(dfs(x - 1, y), dfs(x, y - 1), dfs(x - 1, y - 1)) + 1
+
+        return dfs(n - 1, m - 1)
 &lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>React数据驱动页面</title><link>https://cabbage74.github.io/posts/react%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E9%A1%B5%E9%9D%A2/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/react%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E9%A1%B5%E9%9D%A2/</guid><description>React的数据驱动页面思想</description><pubDate>Wed, 01 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;上一节“组件根据运行时输入来渲染”已经能让人感觉到数据驱动页面的思想。&lt;/p&gt;
 &lt;p&gt;这一节更加深入一下这个概念。&lt;/p&gt;
