@@ -128,6 +128,52 @@
 
         return dfs(n - 1, m - 1)
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;94&lt;/h2&gt;
+&lt;p&gt;最长公共子序列。&lt;/p&gt;
+&lt;p&gt;熟悉Python的多维列表初始化和&lt;code&gt;enumerate&lt;/code&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def longestCommonSubsequence(self, text1: str, text2: str) -&amp;gt; int:
+        n, m = len(text1), len(text2)
+        dp = [[0] * (m + 1) for _ in range(n + 1)]
+
+        for i, x in enumerate(text1):
+            for j, y in enumerate(text2):
+                dp[i + 1][j + 1] = dp[i][j] + 1 if x == y else max(dp[i][j + 1], dp[i + 1][j])
+
+        return dp[n][m]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;93&lt;/h2&gt;
+&lt;p&gt;最长回文子串。&lt;/p&gt;
+&lt;p&gt;经典的区间DP。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def longestPalindrome(self, s: str) -&amp;gt; str:
+        n = len(s)
+        dp = [[False] * n for _ in range(n)]
+
+        for i in range(n):
+            dp[i][i] = True
+
+        for i in range(n - 1):
+            dp[i][i + 1] = True if s[i] == s[i + 1] else False
+
+        for length in range(3, n + 1):
+            for l in range(n):
+                r = l + length - 1
+                if r &amp;gt; n - 1:
+                    break
+                if s[l] == s[r]:
+                    dp[l][r] = dp[l + 1][r - 1]
+
+        ans = 0
+        st = 0
+        for i in range(n):
+            for j in range(i, n):
+                if dp[i][j] and j - i + 1 &amp;gt; ans:
+                    ans = j - i + 1
+                    st = i
+
+        return s[st:st + ans]
+&lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>React数据驱动页面</title><link>https://cabbage74.github.io/posts/react%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E9%A1%B5%E9%9D%A2/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/react%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E9%A1%B5%E9%9D%A2/</guid><description>React的数据驱动页面思想</description><pubDate>Wed, 01 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;上一节“组件根据运行时输入来渲染”已经能让人感觉到数据驱动页面的思想。&lt;/p&gt;
 &lt;p&gt;这一节更加深入一下这个概念。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;import Nav from &quot;./Nav.jsx&quot;;
