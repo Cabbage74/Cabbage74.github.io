@@ -174,6 +174,36 @@
 
         return s[st:st + ans]
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;92&lt;/h2&gt;
+&lt;p&gt;从左上角走到右下角的最小权重和，只能向下和向右。&lt;/p&gt;
+&lt;p&gt;经典的简单DP。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def minPathSum(self, grid: List[List[int]]) -&amp;gt; int:
+        n, m = len(grid), len(grid[0])
+        dp = [[0] * m for _ in range(n)]
+
+        dp[0][0] = grid[0][0]
+        for j in range(1, m):
+            dp[0][j] = dp[0][j - 1] + grid[0][j]
+
+        for i in range(1, n):
+            dp[i][0] = dp[i - 1][0] + grid[i][0]
+
+        for i in range(1, n):
+            for j in range(1, m):
+                dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j]
+
+        return dp[n - 1][m - 1]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;91&lt;/h2&gt;
+&lt;p&gt;从左上角走到右下角的不同路径数，只能向下和向右。&lt;/p&gt;
+&lt;p&gt;可以是简单DP。&lt;/p&gt;
+&lt;p&gt;也可以是组合数学，&lt;code&gt;m&lt;/code&gt;行&lt;code&gt;n&lt;/code&gt;列，因为只能向下和向右，肯定是走&lt;code&gt;m - 1 + n - 1&lt;/code&gt;步，这些步数里有&lt;code&gt;m - 1&lt;/code&gt;步是向下走。&lt;/p&gt;
+&lt;p&gt;数据量小的时候Python有现成的&lt;code&gt;comb&lt;/code&gt;函数，数据量大的时候还是得上预处理阶乘和逆元的写法。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def uniquePaths(self, m: int, n: int) -&amp;gt; int:
+        return comb(m + n - 2, m - 1)
+&lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>React数据驱动页面</title><link>https://cabbage74.github.io/posts/react%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E9%A1%B5%E9%9D%A2/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/react%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E9%A1%B5%E9%9D%A2/</guid><description>React的数据驱动页面思想</description><pubDate>Wed, 01 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;上一节“组件根据运行时输入来渲染”已经能让人感觉到数据驱动页面的思想。&lt;/p&gt;
 &lt;p&gt;这一节更加深入一下这个概念。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;import Nav from &quot;./Nav.jsx&quot;;
