@@ -8,11 +8,11 @@ My research interests currently lie in Databases and Agents.
 
 # Experience
 
-Momenta, R&D Intern, May 2026 - Present. Contributed to the development in Data Infra department
+Momenta, R&D Intern, 2026. Contributed to the development in Data Infra department
 
-MatrixOrigin, R&D Intern, April 2025 – Aug 2025. Contributed to the development of the open-source database MatrixOne
+MatrixOrigin, R&D Intern, 2025. Contributed to the development of the open-source database MatrixOne
 
-Huawei, R&D Intern, May 2024 – Aug 2024. Contributed to the development in LTE & 5G Solutions department
+Huawei, R&D Intern, 2024. Contributed to the development in LTE & 5G Solutions department
 
 # Selected Awards
 
