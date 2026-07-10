@@ -48,6 +48,68 @@
 
         return dfs(n - 1, s / 2)
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;88&lt;/h2&gt;
+&lt;p&gt;乘积最大子数组。&lt;/p&gt;
+&lt;p&gt;因为这个数组里有负数，所以要同时维护只考虑前&lt;code&gt;i&lt;/code&gt;个数且取第&lt;code&gt;i&lt;/code&gt;个数的最大值和最小值，可能负负得正。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def maxProduct(self, nums: List[int]) -&amp;gt; int:
+        n = len(nums)
+        f = [float(&apos;-inf&apos;)] * n
+        g = [float(&apos;inf&apos;)] * n
+
+        f[0] = nums[0]
+        g[0] = nums[0]
+        for i in range(1, n):
+            f[i] = max(f[i - 1] * nums[i], g[i - 1] * nums[i], nums[i], f[i])
+            g[i] = min(g[i - 1] * nums[i], f[i - 1] * nums[i], nums[i], g[i])
+
+        return max(f)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;87&lt;/h2&gt;
+&lt;p&gt;最长上升子序列。&lt;/p&gt;
+&lt;p&gt;最重要的是理解&lt;code&gt;O(nlogn)&lt;/code&gt;做法的思想。&lt;/p&gt;
+&lt;p&gt;先看代码实际意味着做的事情。&lt;/p&gt;
+&lt;p&gt;想象数组是一副扑克牌，现在按以下规则分成若干堆牌堆：&lt;/p&gt;
+&lt;p&gt;为当前牌找到第一个牌堆顶部牌大于等于它的堆，放上去。&lt;/p&gt;
+&lt;p&gt;如果没找到，就以这个牌新开一个堆。&lt;/p&gt;
+&lt;p&gt;最后牌堆的数量就是LIS长度。&lt;/p&gt;
+&lt;p&gt;为什么两者等价呢？&lt;/p&gt;
+&lt;p&gt;每个牌堆，都精确对应了一个“某个长度的上升子序列”的最好结尾。&lt;/p&gt;
+&lt;p&gt;第&lt;code&gt;k&lt;/code&gt;个牌堆顶部的牌，是目前为止，能构成&quot;长度为&lt;code&gt;k&lt;/code&gt;的LIS&quot;的最小可能结尾数字。&lt;/p&gt;
+&lt;p&gt;具体例子，考虑&lt;code&gt;[3, 1, 5]&lt;/code&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;新建第一个堆，堆顶是&lt;code&gt;3&lt;/code&gt;，意味着想构成长度为&lt;code&gt;1&lt;/code&gt;的子序列，末尾最小可以是&lt;code&gt;3&lt;/code&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;1 &amp;lt; 3&lt;/code&gt;，想构成长度为&lt;code&gt;1&lt;/code&gt;的子序列，末尾最小可以是&lt;code&gt;1&lt;/code&gt;。&lt;code&gt;1&lt;/code&gt;比&lt;code&gt;3&lt;/code&gt;更有潜力。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;5&lt;/code&gt;比前两个数都大，无法去优化长度为&lt;code&gt;1&lt;/code&gt;的子序列的末尾，但它带来了长度为&lt;code&gt;2&lt;/code&gt;的子序列的想象空间，新开一个堆。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;核心比喻抗遗忘：转化分牌堆，维护一个有“潜力”的结构。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def lengthOfLIS(self, nums: List[int]) -&amp;gt; int:
+        d = []
+        n = len(nums)
+
+        for num in nums:
+            l, r = 0, len(d)
+            while l &amp;lt; r:
+                mid = (l + r) &amp;gt;&amp;gt; 1;
+                if num &amp;lt;= d[mid]:
+                    r = mid
+                else:
+                    l = mid + 1
+
+            if l &amp;lt; len(d):
+                d[l] = num
+            else:
+                d.append(num)
+                    
+        return len(d)
+&lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>2026.07.04</title><link>https://cabbage74.github.io/posts/20260704/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/20260704/</guid><description>23岁生日</description><pubDate>Sat, 04 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;去年22岁感觉自己还很小，但是今年感觉就不一样了。&lt;/p&gt;
 &lt;p&gt;因为四舍五入就是25岁，再四舍五入就是30岁...&lt;/p&gt;
 &lt;p&gt;也可能是因为身份变了，感觉研究生和本科生的一个区别就是大家都更“独狼”了。&lt;/p&gt;
