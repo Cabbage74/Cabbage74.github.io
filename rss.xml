@@ -110,6 +110,44 @@
                     
         return len(d)
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;86&lt;/h2&gt;
+&lt;p&gt;单词拆分。给定字符串和单词列表，问字符串能不能由列表内若干单词组成。&lt;/p&gt;
+&lt;p&gt;如果这里没用&lt;code&gt;set&lt;/code&gt;，用了&lt;code&gt;dict&lt;/code&gt;的话，不要写&lt;code&gt;mp[s[j:i]]&lt;/code&gt;，要写&lt;code&gt;s[j:i] in mp&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;Python对于没有的&lt;code&gt;Key&lt;/code&gt;会直接抛一个异常。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -&amp;gt; bool:
+        n = len(s)
+        dp = [False] * (n + 1)
+        word_set = set(wordDict)
+        
+        dp[0] = True
+        for i in range(1, n + 1):
+            for j in range(0, i):
+                dp[i] = dp[i] or (dp[j] and s[j:i] in word_set)
+
+        return dp[n]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;85&lt;/h2&gt;
+&lt;p&gt;零钱兑换。问某一个总额能不能由若干固定面额的零钱凑出来，每种零钱有无数个。&lt;/p&gt;
+&lt;p&gt;记忆化搜索就完了。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def coinChange(self, coins: List[int], amount: int) -&amp;gt; int:
+        
+        @cache
+        def dfs(remains) -&amp;gt; int:
+            if remains &amp;lt; 0:
+                return float(&quot;inf&quot;)
+            if remains == 0:
+                return 0
+            
+            res =  float(&quot;inf&quot;)
+            for coin in coins:
+                res = min(res, dfs(remains - coin) + 1)
+            return res
+
+        res = dfs(amount)
+        return res if res != float(&quot;inf&quot;) else -1
+&lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>2026.07.04</title><link>https://cabbage74.github.io/posts/20260704/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/20260704/</guid><description>23岁生日</description><pubDate>Sat, 04 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;去年22岁感觉自己还很小，但是今年感觉就不一样了。&lt;/p&gt;
 &lt;p&gt;因为四舍五入就是25岁，再四舍五入就是30岁...&lt;/p&gt;
 &lt;p&gt;也可能是因为身份变了，感觉研究生和本科生的一个区别就是大家都更“独狼”了。&lt;/p&gt;
