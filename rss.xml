@@ -148,6 +148,78 @@
         res = dfs(amount)
         return res if res != float(&quot;inf&quot;) else -1
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;84&lt;/h2&gt;
+&lt;p&gt;一个数最少能由几个完全平方数相加得到。&lt;/p&gt;
+&lt;p&gt;简单DP。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def numSquares(self, n: int) -&amp;gt; int:
+        squares = set()
+        
+        i = 1
+        while i * i &amp;lt;= n:
+            squares.add(i * i)
+            i += 1
+
+        @cache
+        def dfs(x) -&amp;gt; int:
+            if x &amp;lt;= 0:
+                return float(&quot;inf&quot;)
+            if x in squares:
+                return 1
+            
+            res = float(&quot;inf&quot;)
+            for square in squares:
+                res = min(res, dfs(x - square) + 1)
+            return res
+
+
+        return dfs(n)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;83&lt;/h2&gt;
+&lt;p&gt;打家劫舍。&lt;/p&gt;
+&lt;p&gt;不能连着抢两家相邻的。简单DP。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def rob(self, nums: List[int]) -&amp;gt; int:
+        n = len(nums)
+        dp = [[0] * 2 for _ in range(n)]
+        
+        dp[0][0] = 0
+        dp[0][1] = nums[0]
+
+        for i in range(1, n):
+            dp[i][0] = max(dp[i - 1][0], dp[i - 1][1])
+            dp[i][1] = dp[i - 1][0] + nums[i]
+        
+        return max(dp[n - 1][0], dp[n - 1][1])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;82&lt;/h2&gt;
+&lt;p&gt;打印杨辉三角形。&lt;/p&gt;
+&lt;p&gt;简单DP。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def generate(self, numRows: int) -&amp;gt; List[List[int]]:
+        f = [[1] for _ in range(numRows)]
+
+        for i in range(1, numRows):
+            for j in range(1, i + 1):
+                f[i].append(f[i - 1][j - 1]) 
+                if j &amp;lt; i:
+                    f[i][j] += f[i - 1][j]
+        
+        return f
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;81&lt;/h2&gt;
+&lt;p&gt;爬楼梯。&lt;/p&gt;
+&lt;p&gt;简单DP。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def climbStairs(self, n: int) -&amp;gt; int:
+        dp = [0] * (n + 1)
+        dp[0] = dp[1] = 1
+
+        for i in range(2, n + 1):
+            dp[i] = dp[i - 1] + dp[i - 2]
+        
+        return dp[n]
+&lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>2026.07.04</title><link>https://cabbage74.github.io/posts/20260704/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/20260704/</guid><description>23岁生日</description><pubDate>Sat, 04 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;去年22岁感觉自己还很小，但是今年感觉就不一样了。&lt;/p&gt;
 &lt;p&gt;因为四舍五入就是25岁，再四舍五入就是30岁...&lt;/p&gt;
 &lt;p&gt;也可能是因为身份变了，感觉研究生和本科生的一个区别就是大家都更“独狼”了。&lt;/p&gt;
@@ -161,7 +233,7 @@
 </content:encoded></item><item><title>日拱两卒（一）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%80/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%80/</guid><description>91 - 100</description><pubDate>Sat, 04 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Leetcode的考察点和ACM不太一样，之前面试也有几次尴尬写不出的经历。&lt;/p&gt;
 &lt;p&gt;从2026.07.04开始把Hot100过一遍，因为前面几题其实很久以前提交过，所以这次倒着刷。&lt;/p&gt;
 &lt;p&gt;这轮试着用Python而不是C++！&lt;/p&gt;
-&lt;p&gt;50天！每天两题写完差不多正好是9月日常实习。&lt;/p&gt;
+&lt;p&gt;每天两题写完差不多正好是9月日常实习。某一天的题太简单的话就多做几道！&lt;/p&gt;
 &lt;h2&gt;100&lt;/h2&gt;
 &lt;p&gt;有&lt;code&gt;n + 1&lt;/code&gt;个整数，值域是&lt;code&gt;[1, n]&lt;/code&gt;，找出唯一的重复的数。&lt;/p&gt;
 &lt;p&gt;假设这个重复的数是&lt;code&gt;x&lt;/code&gt;。定义&lt;code&gt;cnt[i]&lt;/code&gt;为小于等于&lt;code&gt;i&lt;/code&gt;的数的个数。&lt;/p&gt;
