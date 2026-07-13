@@ -1,4 +1,72 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>日拱两卒（二）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%BA%8C/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%BA%8C/</guid><description>81 - 90</description><pubDate>Thu, 09 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;90&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>日拱两卒（三）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%89/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%89/</guid><description>71 - 80</description><pubDate>Mon, 13 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;80&lt;/h2&gt;
+&lt;p&gt;划分字母区间。&lt;/p&gt;
+&lt;p&gt;把一个字符串分成尽可能多的区间，同一种字母必须出现在同一个区间。&lt;/p&gt;
+&lt;p&gt;预处理出来每个字母的最左和最右。&lt;/p&gt;
+&lt;p&gt;从前往后扫，维护必须延伸到的最右边。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def partitionLabels(self, s: str) -&amp;gt; List[int]:
+        n = len(s)
+        seg = [[-1] * 2 for _ in range(26)]
+
+        for i, ch in enumerate(s):
+            idx = ord(ch) - ord(&apos;a&apos;)
+            if seg[idx][0] == -1:
+                seg[idx][0] = i
+            seg[idx][1] = i
+
+        ans = []
+        l = 0
+        r = seg[ord(s[0]) - ord(&apos;a&apos;)][1]
+        i = l
+        while True:
+            if r &amp;gt;= n - 1:
+                ans.append(n - 1 - l + 1)
+                break
+            if i &amp;gt; r:
+                ans.append(r - l + 1)
+                l = i
+                r = seg[ord(s[i]) - ord(&apos;a&apos;)][1]
+
+            r = max(r, seg[ord(s[i]) - ord(&apos;a&apos;)][1])
+            i += 1            
+            
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;79&lt;/h2&gt;
+&lt;p&gt;跳跃游戏II。&lt;/p&gt;
+&lt;p&gt;问在&lt;code&gt;nums&lt;/code&gt;上从&lt;code&gt;0&lt;/code&gt;跳到&lt;code&gt;n - 1&lt;/code&gt;的最小次数。每一次可以跳&lt;code&gt;0&lt;/code&gt;到&lt;code&gt;nums[i]&lt;/code&gt;之间任意远。&lt;/p&gt;
+&lt;p&gt;记忆化做法在Leetcode上没被卡。&lt;/p&gt;
+&lt;p&gt;但本质上和&lt;code&gt;80 划分字母区间&lt;/code&gt;是同一道题。&lt;/p&gt;
+&lt;p&gt;维护当前区间的最远延申位置，每当指针越过这个边界，就完成一次切割或者跳跃。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def jump(self, nums: List[int]) -&amp;gt; int:
+        n = len(nums)
+        if n == 1:
+            return 0
+
+        right = [i + nums[i] for i in range(n)]
+
+        ans = 0
+        r = right[0]
+        max_r = r
+        i = 0
+
+        while True:
+            if r &amp;gt;= n - 1:
+                ans += 1
+                break
+
+            if i &amp;gt; r:
+                ans += 1
+                r = max_r
+                continue
+
+            max_r = max(max_r, right[i])
+            i += 1
+
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
+</content:encoded></item><item><title>日拱两卒（二）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%BA%8C/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%BA%8C/</guid><description>81 - 90</description><pubDate>Thu, 09 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;90&lt;/h2&gt;
 &lt;p&gt;给一个括号序列，问最长的一串合法括号。&lt;/p&gt;
 &lt;p&gt;合法的一串括号一定是连续的，而且每个右括号一定是和最近的左括号配对。&lt;/p&gt;
 &lt;p&gt;拿栈存左括号，先扫一遍把所有配对的左右括号标记，再扫一遍找最长的一串标记。&lt;/p&gt;
