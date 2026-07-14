@@ -66,6 +66,36 @@
 
         return ans
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;78&lt;/h2&gt;
+&lt;p&gt;跳跃游戏。&lt;/p&gt;
+&lt;p&gt;上一题的Easy版，只问能否跳到，而不问最小跳跃次数。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def canJump(self, nums: List[int]) -&amp;gt; bool:
+        n = len(nums)
+        r = 0
+        for i in range(n):
+            r = max(r, i + nums[i]) 
+            if i &amp;gt;= r and r != n - 1:
+                return False
+        return True
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;77&lt;/h2&gt;
+&lt;p&gt;买卖股票的最佳时机。&lt;/p&gt;
+&lt;p&gt;知道每一天的股票价格，问最大可能利润。简单贪心。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def maxProfit(self, prices: List[int]) -&amp;gt; int:
+        n = len(prices)
+
+        rmax = [0] * (n + 1)
+        rmax[n] = 0
+        for i in range(n - 1, -1, -1):
+            rmax[i] = max(rmax[i + 1], prices[i])
+        
+        ans = 0
+        for i in range(n):
+            ans = max(ans, rmax[i] - prices[i])
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>日拱两卒（二）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%BA%8C/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%BA%8C/</guid><description>81 - 90</description><pubDate>Thu, 09 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;90&lt;/h2&gt;
 &lt;p&gt;给一个括号序列，问最长的一串合法括号。&lt;/p&gt;
 &lt;p&gt;合法的一串括号一定是连续的，而且每个右括号一定是和最近的左括号配对。&lt;/p&gt;
@@ -288,7 +318,8 @@
         
         return dp[n]
 &lt;/code&gt;&lt;/pre&gt;
-</content:encoded></item><item><title>Iceberg</title><link>https://cabbage74.github.io/posts/iceberg/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/iceberg/</guid><description>理解&quot;开放的数据湖表格式&quot;到底是何意味</description><pubDate>Tue, 07 Jul 2026 00:00:00 GMT</pubDate><content:encoded/></item><item><title>2026.07.04</title><link>https://cabbage74.github.io/posts/20260704/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/20260704/</guid><description>23岁生日</description><pubDate>Sat, 04 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;去年22岁感觉自己还很小，但是今年感觉就不一样了。&lt;/p&gt;
+</content:encoded></item><item><title>Apache Iceberg：The Definitive Guide（一）</title><link>https://cabbage74.github.io/posts/iceberg/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/iceberg/</guid><description>Introduction</description><pubDate>Tue, 07 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;这个系列记录《Apache Iceberg：The Definitive Guide》的阅读过程。&lt;/p&gt;
+</content:encoded></item><item><title>2026.07.04</title><link>https://cabbage74.github.io/posts/20260704/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/20260704/</guid><description>23岁生日</description><pubDate>Sat, 04 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;去年22岁感觉自己还很小，但是今年感觉就不一样了。&lt;/p&gt;
 &lt;p&gt;因为四舍五入就是25岁，再四舍五入就是30岁...&lt;/p&gt;
 &lt;p&gt;也可能是因为身份变了，感觉研究生和本科生的一个区别就是大家都更“独狼”了。&lt;/p&gt;
 &lt;p&gt;...&lt;/p&gt;
