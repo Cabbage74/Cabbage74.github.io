@@ -3,7 +3,7 @@ title: React数据驱动页面
 published: 2026-07-01
 description: 'React的数据驱动页面思想'
 image: ''
-tags: [学习, 全栈]
+tags: [全栈]
 draft: false
 lang: ''
 ---

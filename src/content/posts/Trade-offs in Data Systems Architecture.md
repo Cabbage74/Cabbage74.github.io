@@ -3,7 +3,7 @@ title: Trade-offs in Data Systems Architecture
 published: 2026-06-16
 description: 'DDIA第二版第一章阅读'
 image: ''
-tags: [学习, 阅读, DDIA]
+tags: [阅读, DDIA]
 draft: true
 lang: ''
 ---

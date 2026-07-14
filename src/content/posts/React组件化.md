@@ -3,7 +3,7 @@ title: React组件化
 published: 2026-06-30
 description: 'React的组件化思想'
 image: ''
-tags: [学习, 全栈]
+tags: [全栈]
 draft: false
 lang: ''
 ---

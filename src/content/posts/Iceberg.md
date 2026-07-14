@@ -1,10 +1,11 @@
 ---
-title: Iceberg
+title: Apache Iceberg：The Definitive Guide（一）
 published: 2026-07-07
-description: '理解"开放的数据湖表格式"到底是何意味'
+description: 'Introduction'
 image: ''
-tags: [学习, Data]
+tags: [阅读, Data]
 draft: false
 lang: ''
 ---
 
+这个系列记录《Apache Iceberg：The Definitive Guide》的阅读过程。
