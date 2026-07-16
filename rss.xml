@@ -141,6 +141,73 @@
             if len(ans) == k:
                 return ans
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;74&lt;/h2&gt;
+&lt;p&gt;数组中的第K大元素。&lt;/p&gt;
+&lt;p&gt;快速排序的思想+每次丢掉一半。&lt;/p&gt;
+&lt;p&gt;Python里写成这种三路归并的方法应该最好理解。&lt;/p&gt;
+&lt;p&gt;处理完有&lt;code&gt;[l, lt - 1] &amp;lt; pivot, [lt, gt] = pivot, [gt + 1, r] &amp;gt; pivot&lt;/code&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def quick_select(self, q, l, r, k) -&amp;gt; int:
+        if l &amp;gt;= r:
+            return q[l]
+
+        pivot = q[random.randint(l, r)]
+        
+        lt, i, gt = l, l, r
+        while i &amp;lt;= gt:
+            if q[i] &amp;lt; pivot:
+                q[i], q[lt] = q[lt], q[i]
+                lt += 1
+                i += 1
+            elif q[i] &amp;gt; pivot:
+                q[i], q[gt] = q[gt], q[i]
+                gt -= 1
+            else:
+                i += 1
+
+        if k &amp;lt; lt - l:
+            return self.quick_select(q, l, lt - 1, k)
+        if k &amp;lt;= gt - l:
+            return pivot
+        return self.quick_select(q, gt + 1, r, k - (gt - l + 1))
+        
+
+    def findKthLargest(self, nums: List[int], k: int) -&amp;gt; int:
+        n = len(nums)
+        return self.quick_select(nums, 0, n - 1, n - k)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;73&lt;/h2&gt;
+&lt;p&gt;柱状图重最大的矩形。&lt;/p&gt;
+&lt;p&gt;枚举高，单调栈算左右最长能延申到哪。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def largestRectangleArea(self, h: List[int]) -&amp;gt; int:
+        ans = 0
+        n = len(h)
+
+        stack = []
+        l = [-1] * n
+        for i in range(n):
+            while(stack and h[stack[-1]] &amp;gt;= h[i]):
+                stack.pop()
+            if stack:
+                l[i] = stack[-1]
+            stack.append(i)
+        
+        stack = []
+        r = [n] * n
+        for i in range(n - 1, -1, -1):
+            while(stack and h[stack[-1]] &amp;gt;= h[i]):
+                stack.pop()
+            if stack:
+                r[i] = stack[-1]
+            stack.append(i)
+
+
+        for i in range(n):
+            ans = max(ans, h[i] * ((r[i] - 1) - (l[i] + 1) + 1))
+
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>日拱两卒（二）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%BA%8C/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%BA%8C/</guid><description>81 - 90</description><pubDate>Thu, 09 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;90&lt;/h2&gt;
 &lt;p&gt;给一个括号序列，问最长的一串合法括号。&lt;/p&gt;
 &lt;p&gt;合法的一串括号一定是连续的，而且每个右括号一定是和最近的左括号配对。&lt;/p&gt;
