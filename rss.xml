@@ -208,6 +208,48 @@
 
         return ans
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;72&lt;/h2&gt;
+&lt;p&gt;每日温度。&lt;/p&gt;
+&lt;p&gt;给定每一天温度，问每一天的下一个更高温度出现在几天后。&lt;/p&gt;
+&lt;p&gt;找右边第一个更大的数，单调栈经典应用。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def dailyTemperatures(self, temperatures: List[int]) -&amp;gt; List[int]:
+        n = len(temperatures)
+        ans = [0] * n
+        stack = []
+
+        for i in range(n - 1, -1, -1):
+            while stack and temperatures[stack[-1]] &amp;lt;= temperatures[i]:
+                stack.pop()
+            if stack:
+                ans[i] = stack[-1] - i
+            stack.append(i)
+
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;71&lt;/h2&gt;
+&lt;p&gt;字符串解码。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;3[a]2[2[bc]]&lt;/code&gt;解析成&lt;code&gt;aaabcbcbcbc&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;简单递归模拟。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def decodeString(self, s: str) -&amp;gt; str:
+        if not s:
+            return s
+
+        if s[0].isalpha():
+            return s[0] + self.decodeString(s[1:])
+        
+        i = s.find(&apos;[&apos;)
+        n = len(s)
+        left = 1
+        for j in range(i + 1, n):
+            if s[j] == &apos;[&apos;:
+                left += 1
+            elif s[j] == &apos;]&apos;:
+                left -= 1
+                if left == 0:
+                    return self.decodeString(s[i+1:j] * int(s[:i])) + self.decodeString(s[j+1:])
+&lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>日拱两卒（二）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%BA%8C/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%BA%8C/</guid><description>81 - 90</description><pubDate>Thu, 09 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;90&lt;/h2&gt;
 &lt;p&gt;给一个括号序列，问最长的一串合法括号。&lt;/p&gt;
 &lt;p&gt;合法的一串括号一定是连续的，而且每个右括号一定是和最近的左括号配对。&lt;/p&gt;
