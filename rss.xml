@@ -1,4 +1,46 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>日拱两卒（三）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%89/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%89/</guid><description>71 - 80</description><pubDate>Mon, 13 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;80&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>日拱两卒（四）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%9B%9B/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%9B%9B/</guid><description>61 - 70</description><pubDate>Sat, 18 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;70&lt;/h2&gt;
+&lt;p&gt;最小栈。让栈能额外支持一个操作，返回栈内最小值。&lt;/p&gt;
+&lt;p&gt;栈内多维护一个“前缀最小值”即可。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class MinStack:
+
+    def __init__(self):
+        self.stack = [(0, float(&quot;inf&quot;))]
+
+    def push(self, value: int) -&amp;gt; None:
+        self.stack.append((value, min(self.stack[-1][1], value)))
+
+    def pop(self) -&amp;gt; None:
+        self.stack.pop()
+
+    def top(self) -&amp;gt; int:
+        return self.stack[-1][0]
+
+    def getMin(self) -&amp;gt; int:
+        return self.stack[-1][1]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;69&lt;/h2&gt;
+&lt;p&gt;有效的括号。&lt;/p&gt;
+&lt;p&gt;给一个含有三种括号的序列，判断是否合法。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def isValid(self, s: str) -&amp;gt; bool:
+        stack = []
+        need = {
+            &quot;}&quot; : &quot;{&quot;,
+            &quot;]&quot; : &quot;[&quot;,
+            &quot;)&quot; : &quot;(&quot;
+        }
+        for c in s:
+            if c == &apos;(&apos; or c == &apos;[&apos; or c == &apos;{&apos;:
+                stack.append(c)
+            else:
+                if not stack:
+                    return False
+                if stack[-1] != need[c]:
+                    return False
+                stack.pop()
+        return not stack
+&lt;/code&gt;&lt;/pre&gt;
+</content:encoded></item><item><title>日拱两卒（三）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%89/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%89/</guid><description>71 - 80</description><pubDate>Mon, 13 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;80&lt;/h2&gt;
 &lt;p&gt;划分字母区间。&lt;/p&gt;
 &lt;p&gt;把一个字符串分成尽可能多的区间，同一种字母必须出现在同一个区间。&lt;/p&gt;
 &lt;p&gt;预处理出来每个字母的最左和最右。&lt;/p&gt;
