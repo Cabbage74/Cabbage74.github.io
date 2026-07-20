@@ -96,6 +96,76 @@
         
         return nums[l]
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;66&lt;/h2&gt;
+&lt;p&gt;搜索旋转排序数组。&lt;/p&gt;
+&lt;p&gt;数组和上一题一样，但这次不是找最小值而是找目标值。&lt;/p&gt;
+&lt;p&gt;思路是先找出最小值，分两段做简单二分。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def findMin(self, nums: List[int]) -&amp;gt; int:
+        l = 0
+        r = len(nums)
+
+        while l &amp;lt; r:
+            mid = (l + r) &amp;gt;&amp;gt; 1
+            if nums[mid] &amp;lt;= nums[-1]:
+                r = mid
+            else:
+                l = mid + 1
+        
+        return l
+
+    def search(self, nums: List[int], target: int) -&amp;gt; int:
+        min_idx = self.findMin(nums)
+        min_v = nums[min_idx]
+        if target &amp;lt;= nums[-1]:
+            l = min_idx
+            r = len(nums)
+            while l &amp;lt; r:
+                mid = (l + r) &amp;gt;&amp;gt; 1
+                if nums[mid] &amp;gt;= target:
+                    r = mid
+                else:
+                    l = mid + 1
+            if l &amp;lt; len(nums) and nums[l] == target:
+                return l
+        else:
+            l = 0
+            r = min_idx - 1
+            while l &amp;lt; r:
+                mid = (l + r) &amp;gt;&amp;gt; 1
+                if nums[mid] &amp;gt;= target:
+                    r = mid
+                else:
+                    l = mid + 1
+            if l &amp;lt; len(nums) and nums[l] == target:
+                return l
+
+        return -1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;65&lt;/h2&gt;
+&lt;p&gt;在排序数组中查找元素的第一个和最后一个位置。&lt;/p&gt;
+&lt;p&gt;简单二分。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def searchRange(self, nums: List[int], target: int) -&amp;gt; List[int]:
+        l, r = 0, len(nums)
+        while l &amp;lt; r:
+            mid = (l + r) &amp;gt;&amp;gt; 1
+            if nums[mid] &amp;gt;= target:
+                r = mid
+            else:
+                l = mid + 1
+        if l &amp;gt;= len(nums) or nums[l] != target:
+            return [-1, -1]
+        ans1 = l
+        l, r = 0, len(nums)
+        while l &amp;lt; r:
+            mid = (l + r) &amp;gt;&amp;gt; 1
+            if nums[mid] &amp;gt; target:
+                r = mid
+            else:
+                l = mid + 1
+        return [ans1, l - 1]
+&lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>日拱两卒（三）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%89/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%89/</guid><description>71 - 80</description><pubDate>Mon, 13 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;80&lt;/h2&gt;
 &lt;p&gt;划分字母区间。&lt;/p&gt;
 &lt;p&gt;把一个字符串分成尽可能多的区间，同一种字母必须出现在同一个区间。&lt;/p&gt;
