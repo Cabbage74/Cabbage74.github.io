@@ -166,6 +166,36 @@
                 l = mid + 1
         return [ans1, l - 1]
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;64&lt;/h2&gt;
+&lt;p&gt;搜索二维矩阵。&lt;/p&gt;
+&lt;p&gt;有一个排序的二维数组，问有没有目标值。&lt;/p&gt;
+&lt;p&gt;每次和右上角比对，排除一行或一列。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -&amp;gt; bool:
+        i, j = 0, len(matrix[0]) - 1
+        while i &amp;lt; len(matrix) and j &amp;gt;= 0:
+            if matrix[i][j] == target:
+                return True
+            if matrix[i][j] &amp;lt; target:
+                i += 1
+            elif matrix[i][j] &amp;gt; target:
+                j -= 1
+        return False
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;63&lt;/h2&gt;
+&lt;p&gt;搜索插入位置。&lt;/p&gt;
+&lt;p&gt;最最简单的二分。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def searchInsert(self, nums: List[int], target: int) -&amp;gt; int:
+        l, r = 0, len(nums)
+        while l &amp;lt; r:
+            mid = (l + r) &amp;gt;&amp;gt; 1
+            if nums[mid] &amp;gt;= target:
+                r = mid
+            else:
+                l = mid + 1
+        return l
+&lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>日拱两卒（三）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%89/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%89/</guid><description>71 - 80</description><pubDate>Mon, 13 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;80&lt;/h2&gt;
 &lt;p&gt;划分字母区间。&lt;/p&gt;
 &lt;p&gt;把一个字符串分成尽可能多的区间，同一种字母必须出现在同一个区间。&lt;/p&gt;
