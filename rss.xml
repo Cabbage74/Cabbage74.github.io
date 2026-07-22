@@ -196,6 +196,68 @@
                 l = mid + 1
         return l
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;62&lt;/h2&gt;
+&lt;p&gt;N皇后。&lt;/p&gt;
+&lt;p&gt;经典搜索。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def solveNQueens(self, n: int) -&amp;gt; List[List[str]]:
+        board = [[&apos;.&apos; for _ in range(n)] for _ in range(n)]
+        ans = []
+
+        col = [False] * n
+        dia1 = [False] * (2 * n - 1)
+        dia2 = [False] * (2 * n - 1)
+
+        def dfs(u):
+            if u == n:
+                ans.append([&apos;&apos;.join(row) for row in board])
+                return
+            for i in range(n):
+                if col[i] or dia1[i - u + n - 1] or dia2[i + u]:
+                    continue
+
+                board[u][i] = &apos;Q&apos;
+                col[i] = True
+                dia1[i - u + n - 1] = True
+                dia2[i + u] = True
+                
+                dfs(u + 1)
+                
+                board[u][i] = &apos;.&apos;
+                col[i] = False
+                dia1[i - u + n - 1] = False
+                dia2[i + u] = False
+            
+        dfs(0)
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;61&lt;/h2&gt;
+&lt;p&gt;分割回文串。&lt;/p&gt;
+&lt;p&gt;经典搜索。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def partition(self, s: str) -&amp;gt; List[List[str]]:
+        ans = []
+        tmp = []
+        n = len(s)
+        
+        def check(s) -&amp;gt; bool:
+            for i in range(len(s) // 2):
+                if s[i] != s[len(s) - 1 - i]:
+                    return False
+            return True
+
+        def dfs(u):
+            if u &amp;gt;= n:
+                ans.append(tmp[:])
+            for length in range(1, n - u + 1):
+                if check(s[u:u + length]):
+                    tmp.append(s[u:u + length])
+                    dfs(u + length)
+                    tmp.pop()
+
+        dfs(0)
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>日拱两卒（三）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%89/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%89/</guid><description>71 - 80</description><pubDate>Mon, 13 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;80&lt;/h2&gt;
 &lt;p&gt;划分字母区间。&lt;/p&gt;
 &lt;p&gt;把一个字符串分成尽可能多的区间，同一种字母必须出现在同一个区间。&lt;/p&gt;
