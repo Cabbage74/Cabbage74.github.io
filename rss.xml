@@ -1,4 +1,105 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>日拱两卒（四）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%9B%9B/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%9B%9B/</guid><description>61 - 70</description><pubDate>Sat, 18 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;70&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>Labyrinth</title><link>https://cabbage74.github.io/posts/labyrinth/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/labyrinth/</guid><description>JYY OS 2026 M1</description><pubDate>Thu, 23 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;有趣的理论知识&lt;/h2&gt;
+&lt;p&gt;进程自身只看得到寄存器和内存里的内容，如果想获取其他自身的信息需要和OS交互。&lt;/p&gt;
+&lt;p&gt;一种是可以通过&lt;code&gt;getpid()&lt;/code&gt;之类的的syscalls。&lt;/p&gt;
+&lt;p&gt;一种是&lt;code&gt;/proc&lt;/code&gt;目录下的文件。&lt;/p&gt;
+&lt;p&gt;Unix通过&lt;code&gt;fork&lt;/code&gt;和&lt;code&gt;execve&lt;/code&gt;两个API来复制和复位状态机。&lt;/p&gt;
+&lt;p&gt;相对地，Windows提供&lt;code&gt;spawn&lt;/code&gt;这个syscall。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;pid_t pid = fork();
+if (pid == 0) {
+    // 子进程：我现在是父进程的完整克隆
+    // 但我可以用自己的系统调用&quot;重新配置自己&quot;
+    
+    close(0);                    // 关掉继承的 stdin
+    open(&quot;/dev/null&quot;, O_RDONLY); // 重定向到 /dev/null
+    dup2(pipe_fd, 1);            // stdout 重定向到管道
+    chdir(&quot;/some/dir&quot;);          // 切换工作目录
+    setenv(&quot;PATH&quot;, &quot;...&quot;, 1);   // 修改环境变量
+    setgid(new_gid);            // 降权
+    setuid(new_uid);            // 降权
+    // ... 任何你能想到的状态修改
+    
+    execve(&quot;/bin/myprog&quot;, argv, envp);  // 最后才加载新程序
+} else {
+    ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;上面的代码创建了一个进程，在&lt;code&gt;execve&lt;/code&gt;之前用代码自由的执行了降权之类的操作。&lt;/p&gt;
+&lt;p&gt;这体现了Unix的&quot;机制而非策略&quot;思想：内核提供 fork和 execve两个正交的机制，组合方式由用户态决定。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;BOOL CreateProcess(
+  LPCTSTR               lpApplicationName,
+  LPTSTR                lpCommandLine,
+  LPSECURITY_ATTRIBUTES lpProcessAttributes,
+  LPSECURITY_ATTRIBUTES lpThreadAttributes,
+  BOOL                  bInheritHandles,
+  DWORD                 dwCreationFlags,
+  LPVOID                lpEnvironment,
+  LPCTSTR               lpCurrentDirectory,
+  LPSTARTUPINFO         lpStartupInfo,
+  LPPROCESS_INFORMATION lpProcessInformation
+);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;相对地，Windows设计&lt;code&gt;spawn&lt;/code&gt;这种API需要维护非常多参数来尽量满足创建不同种类进程需要的能力。&lt;/p&gt;
+</content:encoded></item><item><title>日拱两卒（五）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%BA%94/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%BA%94/</guid><description>51 - 60</description><pubDate>Thu, 23 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;60&lt;/h2&gt;
+&lt;p&gt;单词搜索。&lt;/p&gt;
+&lt;p&gt;在一个二维矩阵里找单词，简单搜索。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def exist(self, board: List[List[str]], word: str) -&amp;gt; bool:
+        n = len(board)
+        m = len(board[0])
+        st = [[False for _ in range (m)] for _ in range (n)]
+        dx = [-1, 1, 0, 0]
+        dy = [0, 0, -1, 1]
+        def dfs(x, y, u) -&amp;gt; bool:
+            if word[u] != board[x][y]:
+                return False
+            if u == len(word) - 1:
+                return True
+            st[x][y] = True
+            ok = False
+            for i in range(4):
+                tx = x + dx[i]
+                ty = y + dy[i]
+                if tx &amp;lt; 0 or tx &amp;gt;= n or ty &amp;lt; 0 or ty &amp;gt;= m:
+                    continue
+                if st[tx][ty]:
+                    continue
+                ok |= dfs(tx, ty, u + 1)
+            st[x][y] = False
+            return ok
+            
+            
+        for i in range(n):
+            for j in range(m):
+                if dfs(i, j, 0):
+                    return True
+        return False
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;59&lt;/h2&gt;
+&lt;p&gt;括号生成。&lt;/p&gt;
+&lt;p&gt;生成合法括号序列，简单搜索。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def generateParenthesis(self, n: int) -&amp;gt; List[str]:
+        ans = []
+        s = [&apos;.&apos; for _ in range (2 * n)]
+        def dfs(u, left, right):
+            if u == 2 * n:
+                ans.append(&apos;&apos;.join(s))
+                return
+
+            if left &amp;lt; n:
+                s[u] = &apos;(&apos;
+                dfs(u + 1, left + 1, right)
+                s[u] = &apos;.&apos;
+
+            if right &amp;lt; left:
+                s[u] = &apos;)&apos;
+                dfs(u + 1, left, right + 1)
+                s[u] = &apos;.&apos;
+            
+        dfs(0, 0, 0)
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
+</content:encoded></item><item><title>日拱两卒（四）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%9B%9B/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%9B%9B/</guid><description>61 - 70</description><pubDate>Sat, 18 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;70&lt;/h2&gt;
 &lt;p&gt;最小栈。让栈能额外支持一个操作，返回栈内最小值。&lt;/p&gt;
 &lt;p&gt;栈内多维护一个“前缀最小值”即可。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;class MinStack:
