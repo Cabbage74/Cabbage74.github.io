@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>Labyrinth</title><link>https://cabbage74.github.io/posts/labyrinth/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/labyrinth/</guid><description>JYY OS 2026 M1</description><pubDate>Thu, 23 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;有趣的理论知识&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>Labyrinth</title><link>https://cabbage74.github.io/posts/labyrinth/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/labyrinth/</guid><description>JYY OS 2026 M1</description><pubDate>Thu, 23 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
 &lt;p&gt;进程自身只看得到寄存器和内存里的内容，如果想获取其他自身的信息需要和OS交互。&lt;/p&gt;
 &lt;p&gt;一种是可以通过&lt;code&gt;getpid()&lt;/code&gt;之类的的syscalls。&lt;/p&gt;
-&lt;p&gt;一种是&lt;code&gt;/proc&lt;/code&gt;目录下的文件。&lt;/p&gt;
+&lt;p&gt;一种是&lt;code&gt;/proc&lt;/code&gt;目录下的文件，&lt;code&gt;/proc&lt;/code&gt;是一个伪文件系统，挂载在内存里不落盘。&lt;/p&gt;
 &lt;p&gt;Unix通过&lt;code&gt;fork&lt;/code&gt;和&lt;code&gt;execve&lt;/code&gt;两个API来复制和复位状态机。&lt;/p&gt;
-&lt;p&gt;相对地，Windows提供&lt;code&gt;spawn&lt;/code&gt;这个syscall。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;pid_t pid = fork();
 if (pid == 0) {
     // 子进程：我现在是父进程的完整克隆
@@ -38,7 +37,56 @@ if (pid == 0) {
   LPPROCESS_INFORMATION lpProcessInformation
 );
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;相对地，Windows设计&lt;code&gt;spawn&lt;/code&gt;这种API需要维护非常多参数来尽量满足创建不同种类进程需要的能力。&lt;/p&gt;
+&lt;p&gt;相对地，Windows设计&lt;code&gt;spawn&lt;/code&gt;这类API需要维护非常多参数来尽量满足创建不同种类进程需要的能力。&lt;/p&gt;
+&lt;p&gt;教科书上一个简化的进程地址空间如下。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;┌─────────┐ 高地址
+│  stack  │
+├─────────┤
+│    ↓    │
+│   mmap  │
+│    ↑    │
+├─────────┤ ← break
+│  heap   │
+├─────────┤
+│  bss    │
+│  data   │
+│  text   │
+└─────────┘ 低地址
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;可以通过&lt;code&gt;brk&lt;/code&gt;系统调用设置&lt;code&gt;break&lt;/code&gt;的位置来控制堆区大小。历史上C语言里有一个&lt;code&gt;sbrk&lt;/code&gt;函数是更高级的封装，现在被废弃了。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;mmap&lt;/code&gt;操纵内存映射区。&lt;/p&gt;
+&lt;p&gt;想要看一个Linux进程具体的进程地址空间信息，可以用下面的命令。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ubuntu@VM-0-9-ubuntu:~/os2026$ cat /proc/self/maps
+5647336d4000-5647336d6000 r--p 00000000 fc:02 926                        /usr/bin/cat
+5647336d6000-5647336da000 r-xp 00002000 fc:02 926                        /usr/bin/cat
+5647336da000-5647336dc000 r--p 00006000 fc:02 926                        /usr/bin/cat
+5647336dc000-5647336dd000 r--p 00007000 fc:02 926                        /usr/bin/cat
+5647336dd000-5647336de000 rw-p 00008000 fc:02 926                        /usr/bin/cat
+56476abe5000-56476ac06000 rw-p 00000000 00:00 0                          [heap]
+7f76c0218000-7f76c023a000 rw-p 00000000 00:00 0 
+7f76c023a000-7f76c0523000 r--p 00000000 fc:02 2694                       /usr/lib/locale/locale-archive
+7f76c0523000-7f76c0526000 rw-p 00000000 00:00 0 
+7f76c0526000-7f76c054e000 r--p 00000000 fc:02 11781                      /usr/lib/x86_64-linux-gnu/libc.so.6
+7f76c054e000-7f76c06e3000 r-xp 00028000 fc:02 11781                      /usr/lib/x86_64-linux-gnu/libc.so.6
+7f76c06e3000-7f76c073b000 r--p 001bd000 fc:02 11781                      /usr/lib/x86_64-linux-gnu/libc.so.6
+7f76c073b000-7f76c073c000 ---p 00215000 fc:02 11781                      /usr/lib/x86_64-linux-gnu/libc.so.6
+7f76c073c000-7f76c0740000 r--p 00215000 fc:02 11781                      /usr/lib/x86_64-linux-gnu/libc.so.6
+7f76c0740000-7f76c0742000 rw-p 00219000 fc:02 11781                      /usr/lib/x86_64-linux-gnu/libc.so.6
+7f76c0742000-7f76c074f000 rw-p 00000000 00:00 0 
+7f76c0758000-7f76c075a000 rw-p 00000000 00:00 0 
+7f76c075a000-7f76c075c000 r--p 00000000 fc:02 600                        /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7f76c075c000-7f76c0786000 r-xp 00002000 fc:02 600                        /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7f76c0786000-7f76c0791000 r--p 0002c000 fc:02 600                        /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7f76c0792000-7f76c0794000 r--p 00037000 fc:02 600                        /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7f76c0794000-7f76c0796000 rw-p 00039000 fc:02 600                        /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7fffd6eb6000-7fffd6ed8000 rw-p 00000000 00:00 0                          [stack]
+7fffd6f00000-7fffd6f04000 r--p 00000000 00:00 0                          [vvar]
+7fffd6f04000-7fffd6f06000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0                  [vsyscall]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;/proc/self&lt;/code&gt;是一个符号链接，指向&quot;正在读它的那个进程&quot;的PID目录。&lt;/p&gt;
+&lt;p&gt;所以上面的命令返回的是&lt;code&gt;cat&lt;/code&gt;这个进程的地址空间映射信息。&lt;/p&gt;
+&lt;h2&gt;实验&lt;/h2&gt;
 </content:encoded></item><item><title>日拱两卒（五）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%BA%94/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%BA%94/</guid><description>51 - 60</description><pubDate>Thu, 23 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;60&lt;/h2&gt;
 &lt;p&gt;单词搜索。&lt;/p&gt;
 &lt;p&gt;在一个二维矩阵里找单词，简单搜索。&lt;/p&gt;
@@ -97,6 +145,52 @@ if (pid == 0) {
                 s[u] = &apos;.&apos;
             
         dfs(0, 0, 0)
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;58&lt;/h2&gt;
+&lt;p&gt;组合总和。&lt;/p&gt;
+&lt;p&gt;找出列表里所有能组成目标数字的组合。每个数字能用无数次。&lt;/p&gt;
+&lt;p&gt;简单搜索。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -&amp;gt; List[List[int]]:
+        ans = []
+        tmp = []
+
+        def dfs(u, cur):
+            if cur &amp;gt; target:
+                return
+            if cur == target:
+                ans.append(tmp[:])
+                return
+            for i in range(u, len(candidates)):
+                tmp.append(candidates[i])
+                dfs(i, cur + candidates[i])
+                tmp.pop()
+
+        dfs(0, 0)
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;57&lt;/h2&gt;
+&lt;p&gt;电话号码的字母组合。&lt;/p&gt;
+&lt;p&gt;简单搜索。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def letterCombinations(self, digits: str) -&amp;gt; List[str]:
+        mapping = {2: &apos;abc&apos;, 3: &apos;def&apos;, 4: &apos;ghi&apos;, 5: &apos;jkl&apos;, 6: &apos;mno&apos;, 7: &apos;pqrs&apos;, 8: &apos;tuv&apos;, 9: &apos;wxyz&apos;}
+        ans = []
+        n = len(digits)
+        tmp = []
+
+        def dfs(u):
+            if u &amp;gt;= n:
+                ans.append(&apos;&apos;.join(tmp[:]))
+                return
+            letters = mapping[int(digits[u])]
+            for letter in letters:
+                tmp.append(letter)
+                dfs(u + 1)
+                tmp.pop()
+
+        dfs(0)
         return ans
 &lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>日拱两卒（四）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%9B%9B/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%9B%9B/</guid><description>61 - 70</description><pubDate>Sat, 18 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;70&lt;/h2&gt;
