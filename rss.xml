@@ -1,6 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>Labyrinth</title><link>https://cabbage74.github.io/posts/labyrinth/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/labyrinth/</guid><description>JYY OS 2026 M1</description><pubDate>Thu, 23 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>PSTree</title><link>https://cabbage74.github.io/posts/pstree/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/pstree/</guid><description>JYY OS 2026 M2</description><pubDate>Sat, 25 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
+</content:encoded></item><item><title>Labyrinth</title><link>https://cabbage74.github.io/posts/labyrinth/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/labyrinth/</guid><description>JYY OS 2026 M1</description><pubDate>Thu, 23 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
 &lt;p&gt;进程自身只看得到寄存器和内存里的内容，如果想获取其他自身的信息需要和OS交互。&lt;/p&gt;
-&lt;p&gt;一种是可以通过&lt;code&gt;getpid()&lt;/code&gt;之类的的syscalls。&lt;/p&gt;
+&lt;p&gt;一种是可以通过&lt;code&gt;getpid&lt;/code&gt;之类的的syscalls。&lt;/p&gt;
 &lt;p&gt;一种是&lt;code&gt;/proc&lt;/code&gt;目录下的文件，&lt;code&gt;/proc&lt;/code&gt;是一个伪文件系统，挂载在内存里不落盘。&lt;/p&gt;
 &lt;p&gt;Unix通过&lt;code&gt;fork&lt;/code&gt;和&lt;code&gt;execve&lt;/code&gt;两个API来复制和复位状态机。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;pid_t pid = fork();
@@ -87,6 +88,7 @@ ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0                  [vsysca
 &lt;p&gt;&lt;code&gt;/proc/self&lt;/code&gt;是一个符号链接，指向&quot;正在读它的那个进程&quot;的PID目录。&lt;/p&gt;
 &lt;p&gt;所以上面的命令返回的是&lt;code&gt;cat&lt;/code&gt;这个进程的地址空间映射信息。&lt;/p&gt;
 &lt;h2&gt;实验&lt;/h2&gt;
+&lt;p&gt;简单的模拟，热身实验。&lt;/p&gt;
 </content:encoded></item><item><title>日拱两卒（五）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%BA%94/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%BA%94/</guid><description>51 - 60</description><pubDate>Thu, 23 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;60&lt;/h2&gt;
 &lt;p&gt;单词搜索。&lt;/p&gt;
 &lt;p&gt;在一个二维矩阵里找单词，简单搜索。&lt;/p&gt;
@@ -192,6 +194,125 @@ ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0                  [vsysca
 
         dfs(0)
         return ans
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;56&lt;/h2&gt;
+&lt;p&gt;子集。&lt;/p&gt;
+&lt;p&gt;返回所有可能的子集。简单搜索，每个元素选或不选。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def subsets(self, nums: List[int]) -&amp;gt; List[List[int]]:
+        ans = []
+
+        n = len(nums)
+        tmp = []
+        
+        def dfs(u):
+            if u &amp;gt;= n:
+                ans.append(tmp[:])
+                return
+            
+            dfs(u + 1)
+
+            tmp.append(nums[u])
+            dfs(u + 1)
+            tmp.pop()
+
+        dfs(0)
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;55&lt;/h2&gt;
+&lt;p&gt;全排列。&lt;/p&gt;
+&lt;p&gt;简单搜索。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def permute(self, nums: List[int]) -&amp;gt; List[List[int]]:
+        ans = []
+        n = len(nums)
+
+        tmp = []
+        st = [False for _ in range(n)]
+        def dfs(u):
+            if u &amp;gt;= n:
+                ans.append(tmp[:])
+                return
+            for i in range(n):
+                if st[i]:
+                    continue
+
+                st[i] = True
+                tmp.append(nums[i])
+                
+                dfs(u + 1)
+
+                tmp.pop()
+                st[i] = False
+
+        dfs(0)
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;54&lt;/h2&gt;
+&lt;p&gt;实现Trie。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Node:
+    __slots__ = &apos;son&apos;, &apos;end&apos;
+
+    def __init__(self):
+        self.son = [None] * 26
+        self.end = False
+
+class Trie:
+
+    def __init__(self):
+        self.root = Node()
+
+    def insert(self, word: str) -&amp;gt; None:
+        cur = self.root
+        for c in word:
+            c = ord(c) - ord(&apos;a&apos;)
+            if cur.son[c] is None:
+                cur.son[c] = Node()
+            cur = cur.son[c]
+        cur.end = True
+
+    def search(self, word: str) -&amp;gt; bool:
+        cur = self.root
+        for c in word:
+            c = ord(c) - ord(&apos;a&apos;)
+            if cur.son[c] is None:
+                return False
+            cur = cur.son[c]
+        return cur.end
+
+    def startsWith(self, prefix: str) -&amp;gt; bool:
+        cur = self.root
+        for c in prefix:
+            c = ord(c) - ord(&apos;a&apos;)
+            if cur.son[c] is None:
+                return False
+            cur = cur.son[c]
+        return True
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;53&lt;/h2&gt;
+&lt;p&gt;课程表。&lt;/p&gt;
+&lt;p&gt;课程之间有依赖关系，拓扑排序判有没有可能全部选上。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -&amp;gt; bool:
+        e = [[] for _ in range(numCourses)]
+        in_degree = [0 for _ in range(numCourses)]
+        
+        for edge in prerequisites:
+            e[edge[1]].append(edge[0])
+            in_degree[edge[0]] += 1
+        
+        q = deque([i for i in range(numCourses) if in_degree[i] == 0])
+        visited = 0
+
+        while q:
+            u = q.popleft()
+            visited += 1
+            for v in e[u]:
+                in_degree[v] -= 1
+                if in_degree[v] == 0:
+                    q.append(v)
+        
+        return visited == numCourses
 &lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>日拱两卒（四）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%9B%9B/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%9B%9B/</guid><description>61 - 70</description><pubDate>Sat, 18 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;70&lt;/h2&gt;
 &lt;p&gt;最小栈。让栈能额外支持一个操作，返回栈内最小值。&lt;/p&gt;
