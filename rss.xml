@@ -1,4 +1,77 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>SPerf</title><link>https://cabbage74.github.io/posts/sperf/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/sperf/</guid><description>JYY OS 2026 M3</description><pubDate>Tue, 28 Jul 2026 00:00:00 GMT</pubDate><content:encoded/></item><item><title>日拱两卒（六）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%85%AD/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%85%AD/</guid><description>41 - 50</description><pubDate>Tue, 28 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;50&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>日拱两卒（七）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%83/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%83/</guid><description>31 - 40</description><pubDate>Sun, 02 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;40&lt;/h2&gt;
+&lt;p&gt;二叉树的直径。&lt;/p&gt;
+&lt;p&gt;这里的坑是长度是按边计算的，不是节点数。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -&amp;gt; int:
+        ans = 0
+
+        def dfs(cur) -&amp;gt; int:
+            nonlocal ans
+            if cur is None:
+                return 0
+            l = dfs(cur.left) + 1
+            r = dfs(cur.right) + 1
+            nonlocal ans
+            ans = max(ans, l + r - 2)
+            return max(l, r)
+
+        dfs(root)   
+        return ans     
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;39&lt;/h2&gt;
+&lt;p&gt;对称二叉树。&lt;/p&gt;
+&lt;p&gt;不能拍成中序遍历看回文，是有反例的。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def isSame(self, p, q) -&amp;gt; bool:
+        if p is None or q is None:
+            return p is q
+        if p.val != q.val:
+            return False
+        return self.isSame(p.left, q.right) and self.isSame(p.right, q.left)
+        
+    def isSymmetric(self, root: Optional[TreeNode]) -&amp;gt; bool:
+        return self.isSame(root.left, root.right)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;38&lt;/h2&gt;
+&lt;p&gt;翻转二叉树。&lt;/p&gt;
+&lt;p&gt;简单递归。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -&amp;gt; Optional[TreeNode]:
+        if root is None:
+            return None
+        tmp = deepcopy(root.right)
+        root.right = self.invertTree(root.left)
+        root.left = self.invertTree(tmp)
+        return root
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;37&lt;/h2&gt;
+&lt;p&gt;二叉树的最大深度。&lt;/p&gt;
+&lt;p&gt;简单递归。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def maxDepth(self, root: Optional[TreeNode]) -&amp;gt; int:
+        if root is None:
+            return 0
+        return max(self.maxDepth(root.left) + 1, self.maxDepth(root.right) + 1)        
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;36&lt;/h2&gt;
+&lt;p&gt;二叉树的中序遍历。&lt;/p&gt;
+&lt;p&gt;简单递归。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def inorderTraversal(self, root: Optional[TreeNode]) -&amp;gt; List[int]:
+        ans = []
+
+        def dfs(cur):
+            if cur is None:
+                return
+            dfs(cur.left)
+            ans.append(cur.val)
+            dfs(cur.right)
+
+        dfs(root)
+
+        return ans        
+&lt;/code&gt;&lt;/pre&gt;
+</content:encoded></item><item><title>SPerf</title><link>https://cabbage74.github.io/posts/sperf/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/sperf/</guid><description>JYY OS 2026 M3</description><pubDate>Tue, 28 Jul 2026 00:00:00 GMT</pubDate><content:encoded/></item><item><title>日拱两卒（六）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%85%AD/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%85%AD/</guid><description>41 - 50</description><pubDate>Tue, 28 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;50&lt;/h2&gt;
 &lt;p&gt;二叉树中的最大路径和。&lt;/p&gt;
 &lt;p&gt;维护每个节点的左右两条链。&lt;/p&gt;
 &lt;p&gt;因为有负数，注意和零比较。&lt;/p&gt;
@@ -49,7 +122,166 @@
             return self.lowestCommonAncestor(r, p, q)
         return None
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;48&lt;/h2&gt;
+&lt;p&gt;路径总和III。&lt;/p&gt;
+&lt;p&gt;求路径和等于Target的路径数。这里的路径只向下。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -&amp;gt; int:
+        def getSum(root, target) -&amp;gt; int:
+            if root is None:
+                return 0
+            res = 0
+            if root.val == target:
+                res += 1
+            res += getSum(root.left, target - root.val)
+            res += getSum(root.right, target - root.val)
+            return res
+        
+        if root is None:
+            return 0
+        return getSum(root, targetSum) + self.pathSum(root.left, targetSum) + self.pathSum(root.right, targetSum)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;47&lt;/h2&gt;
+&lt;p&gt;从前序与中序遍历序列构造二叉树。&lt;/p&gt;
+&lt;p&gt;这个初见不会，甚至完全不知道怎么做。&lt;/p&gt;
+&lt;p&gt;通过看前序的第一个元素能找到根，在中序里找到这个元素，那么就知道了左子树和右子树的大小。&lt;/p&gt;
+&lt;p&gt;然后就去递归解子问题。&lt;/p&gt;
+&lt;p&gt;好巧妙，我的脑子好僵化。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -&amp;gt; Optional[TreeNode]:
+        if not preorder:
+            return None
+        left_cnt = inorder.index(preorder[0])
+        left = self.buildTree(preorder[1: 1 + left_cnt], inorder[:left_cnt])
+        right = self.buildTree(preorder[1 + left_cnt:], inorder[1 + left_cnt:])
+        return TreeNode(preorder[0], left, right)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;46&lt;/h2&gt;
+&lt;p&gt;二叉树展开为链表。&lt;/p&gt;
+&lt;p&gt;右左根遍历从后往前构造。不要忘记把左指针置空。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def flatten(self, root: Optional[TreeNode]) -&amp;gt; None:
+        if root is None:
+            return
+
+        end = None
+
+        def dfs(cur):
+            nonlocal end
+            if cur.right:
+                dfs(cur.right)
+            if cur.left:
+                dfs(cur.left)
+            cur.right = end
+            cur.left = None
+            end = cur
+
+        dfs(root)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;45&lt;/h2&gt;
+&lt;p&gt;二叉树的右视图。&lt;/p&gt;
+&lt;p&gt;按深度遍历，每一层的最右边是答案。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -&amp;gt; List[int]:
+        ans = []
+        
+        def dfs(root, depth):
+            if root is None:
+                return
+                
+            if len(ans) &amp;gt; depth:
+                ans[depth] = root.val
+            else:
+                ans.append(root.val)
+
+            dfs(root.left, depth + 1)
+            dfs(root.right, depth + 1)
+            
+
+        dfs(root, 0)
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;44&lt;/h2&gt;
+&lt;p&gt;二叉搜索树中第K小的元素。&lt;/p&gt;
+&lt;p&gt;按子树大小来筛。&lt;/p&gt;
+&lt;p&gt;题解更简单，二叉搜索树的中序遍历是一个递增序列，其实就是求中序遍历的第K个元素。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -&amp;gt; int:
+        @cache
+        def sz(cur) -&amp;gt; int:
+            if cur is None:
+                return 0
+            sz_left = sz(cur.left)
+            sz_right = sz(cur.right)
+            return 1 + sz_left + sz_right
+
+        sz(root)
+
+        def dfs(cur, k) -&amp;gt; int:
+            sz_left = sz(cur.left)
+            if k == sz_left + 1:
+                return cur.val
+            elif k &amp;lt;= sz_left:
+                return dfs(cur.left, k)
+            elif k &amp;gt; sz_left + 1:
+                return dfs(cur.right, k - sz_left - 1)
+
+        return dfs(root, k)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;43&lt;/h2&gt;
+&lt;p&gt;验证二叉搜索树。&lt;/p&gt;
+&lt;p&gt;昨晚上面那道题就知道这里可以检查中序遍历。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def isValidBST(self, root: Optional[TreeNode]) -&amp;gt; bool:
+        check = []
+
+        def dfs(cur):
+            if cur is None:
+                return
+            dfs(cur.left)
+            check.append(cur.val)
+            dfs(cur.right)
+
+        dfs(root)
+
+        for i in range(len(check) - 1):
+            if check[i] &amp;gt;= check[i + 1]:
+                return False
+        return True
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;42&lt;/h2&gt;
+&lt;p&gt;将有序数组转为二叉平衡搜索树。&lt;/p&gt;
+&lt;p&gt;挑出中间的数，简单递归。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def sortedArrayToBST(self, nums: List[int]) -&amp;gt; Optional[TreeNode]:
+        if len(nums) == 0:
+            return None
+        return TreeNode(val=nums[len(nums) // 2], left=self.sortedArrayToBST(nums[:len(nums) // 2]), right=self.sortedArrayToBST(nums[len(nums) // 2 + 1:]))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;41&lt;/h2&gt;
+&lt;p&gt;二叉树的层序遍历。&lt;/p&gt;
+&lt;p&gt;按层级输出。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def levelOrder(self, root: Optional[TreeNode]) -&amp;gt; List[List[int]]:
+        ans = []
+        def dfs(cur, dep):
+            if cur is None:
+                return
+            if dep &amp;gt;= len(ans):
+                ans.append([cur.val])
+            else:
+                ans[dep].append(cur.val)
+            dfs(cur.left, dep + 1)
+            dfs(cur.right, dep + 1)
+            
+        dfs(root, 0)
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>PSTree</title><link>https://cabbage74.github.io/posts/pstree/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/pstree/</guid><description>JYY OS 2026 M2</description><pubDate>Sat, 25 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
+&lt;p&gt;应用程序需要请求操作系统来做一件事情时，本质上都是要访问“操作系统中的某个对象”。&lt;/p&gt;
+&lt;p&gt;Unix的哲学是尽可能将这些对象以文件形式暴露出来，比如&lt;code&gt;/proc&lt;/code&gt;目录。&lt;/p&gt;
+&lt;p&gt;文件描述符是这个“一切皆文件”哲学的基础。&lt;/p&gt;
+&lt;h2&gt;实验&lt;/h2&gt;
 </content:encoded></item><item><title>Labyrinth</title><link>https://cabbage74.github.io/posts/labyrinth/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/labyrinth/</guid><description>JYY OS 2026 M1</description><pubDate>Thu, 23 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
 &lt;p&gt;进程自身只看得到寄存器和内存里的内容，如果想获取其他自身的信息需要和OS交互。&lt;/p&gt;
 &lt;p&gt;一种是可以通过&lt;code&gt;getpid&lt;/code&gt;之类的的syscalls。&lt;/p&gt;
