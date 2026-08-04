@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>日拱两卒（七）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%83/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%83/</guid><description>31 - 40</description><pubDate>Sun, 02 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;40&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>C-REPL</title><link>https://cabbage74.github.io/posts/c-repl/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/c-repl/</guid><description>JYY OS 2026 M4</description><pubDate>Tue, 04 Aug 2026 00:00:00 GMT</pubDate><content:encoded/></item><item><title>日拱两卒（七）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%83/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%83/</guid><description>31 - 40</description><pubDate>Sun, 02 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;40&lt;/h2&gt;
 &lt;p&gt;二叉树的直径。&lt;/p&gt;
 &lt;p&gt;这里的坑是长度是按边计算的，不是节点数。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;class Solution:
@@ -71,7 +71,107 @@
 
         return ans        
 &lt;/code&gt;&lt;/pre&gt;
-</content:encoded></item><item><title>SPerf</title><link>https://cabbage74.github.io/posts/sperf/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/sperf/</guid><description>JYY OS 2026 M3</description><pubDate>Tue, 28 Jul 2026 00:00:00 GMT</pubDate><content:encoded/></item><item><title>日拱两卒（六）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%85%AD/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%85%AD/</guid><description>41 - 50</description><pubDate>Tue, 28 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;50&lt;/h2&gt;
+&lt;h2&gt;35&lt;/h2&gt;
+&lt;p&gt;LRU缓存。&lt;/p&gt;
+&lt;p&gt;维护一个每个节点含有KV信息的双向链表+一个用于快速定位的哈希表。&lt;/p&gt;
+&lt;p&gt;Python竟然有现成的数据结构&lt;code&gt;OrderedDict&lt;/code&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = OrderedDict()
+
+    def get(self, key: int) -&amp;gt; int:
+        if key not in self.cache:
+            return -1
+        self.cache.move_to_end(key, last=False)
+        return self.cache[key]
+
+    def put(self, key: int, value: int) -&amp;gt; None:
+        self.cache[key] = value
+        self.cache.move_to_end(key, last=False)
+        if len(self.cache) &amp;gt; self.capacity:
+            self.cache.popitem()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;34&lt;/h2&gt;
+&lt;p&gt;合并K个升序链表。&lt;/p&gt;
+&lt;p&gt;递归左右两部分再合二为一。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def mergeTwo(self, left: Optional[ListNode], right: Optional[ListNode]) -&amp;gt; Optional[ListNode]:
+        dummy = ListNode()
+        cur = dummy
+        
+        while left and right:
+            if left.val &amp;lt; right.val:
+                cur.next = left
+                left = left.next
+            else:
+                cur.next = right
+                right = right.next
+            cur = cur.next
+        cur.next = left if left else right
+
+        return dummy.next
+    
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -&amp;gt; Optional[ListNode]:
+        k = len(lists)
+        if k == 0:
+            return None
+        if k == 1:
+            return lists[0]
+        left = self.mergeKLists(lists[: k // 2])
+        right = self.mergeKLists(lists[k // 2 :])
+        return self.mergeTwo(left, right)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;33&lt;/h2&gt;
+&lt;p&gt;排序链表。&lt;/p&gt;
+&lt;p&gt;感觉写起来很烦，一看题解确实要写这么烦。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def get_middle(self, head: Optional[ListNode]) -&amp;gt; Optional[ListNode]:
+        if head is None:
+            return None
+
+        slow = head
+        fast = head
+        while fast.next and fast.next.next:
+            fast = fast.next.next
+            slow = slow.next
+        
+        res = slow.next
+        slow.next = None
+        return res
+        
+    def mergeTwo(self, left: Optional[ListNode], right: Optional[ListNode]) -&amp;gt; Optional[ListNode]:
+        dummy = ListNode()
+        cur = dummy
+        
+        while left and right:
+            if left.val &amp;lt; right.val:
+                cur.next = left
+                left = left.next
+            else:
+                cur.next = right
+                right = right.next
+            cur = cur.next
+        cur.next = left if left else right
+
+        return dummy.next
+
+
+    def sortList(self, head: Optional[ListNode]) -&amp;gt; Optional[ListNode]:
+        if head is None or head.next is None:
+            return head
+        
+        middle = self.get_middle(head)
+
+        left = self.sortList(head)
+        right = self.sortList(middle)
+
+        return self.mergeTwo(left, right)
+&lt;/code&gt;&lt;/pre&gt;
+</content:encoded></item><item><title>SPerf</title><link>https://cabbage74.github.io/posts/sperf/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/sperf/</guid><description>JYY OS 2026 M3</description><pubDate>Tue, 28 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
+&lt;h2&gt;实验&lt;/h2&gt;
+</content:encoded></item><item><title>日拱两卒（六）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%85%AD/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%85%AD/</guid><description>41 - 50</description><pubDate>Tue, 28 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;50&lt;/h2&gt;
 &lt;p&gt;二叉树中的最大路径和。&lt;/p&gt;
 &lt;p&gt;维护每个节点的左右两条链。&lt;/p&gt;
 &lt;p&gt;因为有负数，注意和零比较。&lt;/p&gt;
@@ -280,8 +380,91 @@
 </content:encoded></item><item><title>PSTree</title><link>https://cabbage74.github.io/posts/pstree/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/pstree/</guid><description>JYY OS 2026 M2</description><pubDate>Sat, 25 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
 &lt;p&gt;应用程序需要请求操作系统来做一件事情时，本质上都是要访问“操作系统中的某个对象”。&lt;/p&gt;
 &lt;p&gt;Unix的哲学是尽可能将这些对象以文件形式暴露出来，比如&lt;code&gt;/proc&lt;/code&gt;目录。&lt;/p&gt;
-&lt;p&gt;文件描述符是这个“一切皆文件”哲学的基础。&lt;/p&gt;
+&lt;p&gt;文件描述符是这个“一切皆文件”哲学的基础。它的本质是一个可替换的I/O通道编号。&lt;/p&gt;
+&lt;p&gt;“一切皆文件”更准确的描述是Unix将大量资源抽象为可通过文件描述符访问的对象。&lt;/p&gt;
+&lt;p&gt;假设没有文件描述符，当程序通过&lt;code&gt;open&lt;/code&gt;打开一个文件时，内核需要返回内核里文件的地址（或者其他类似的东西），但这既不安全，也破坏了抽象（程序不应该需要知道磁盘是怎么组织的）。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;int fd = open(&quot;a.txt&quot;, O_RDONLY); // fd = 3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这个3是如何与实际文件关联起来的呢？&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;用户空间:
+fd = 3
+
+内核空间:
++----------------+
+| fd table       |
++----------------+
+|0 | stdin       |
+|1 | stdout      |
+|2 | stderr      |
+|3 | a.txt       |
++----------------+
+        |
+        v
+... 很多层
+        |
+        v
+struct file
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这个&lt;code&gt;fd table&lt;/code&gt;在Linux内核里位于&lt;code&gt;task_struct&lt;/code&gt;里的&lt;code&gt;files_struct&lt;/code&gt;里面。每个进程都有&lt;code&gt;task_struct&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;由于文件描述符只是一个数字索引，可以很方便地统一所有资源。除了&lt;code&gt;file&lt;/code&gt;，其他&lt;code&gt;socket&lt;/code&gt;、&lt;code&gt;pipe&lt;/code&gt;之类的东西也可以用&lt;code&gt;int&lt;/code&gt;管理了。&lt;/p&gt;
+&lt;p&gt;每个Unix进程启动的时候&lt;code&gt;stdin, stdout, stderr&lt;/code&gt;默认占三个文件描述符。&lt;/p&gt;
+&lt;p&gt;文件描述符是Unix管道的核心。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ubuntu@VM-0-9-ubuntu:~$ ls | grep txt
+a.txt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;下面研究这条命令背后到底发生了什么。&lt;/p&gt;
+&lt;p&gt;在最开始，&lt;code&gt;shell&lt;/code&gt;的&lt;code&gt;fd table&lt;/code&gt;如下。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;fd:
+0 stdin
+1 stdout
+2 stderr
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;shell&lt;/code&gt;进程接收到这条命令以后，发现命令涉及管道，调用&lt;code&gt;pipe&lt;/code&gt;这个syscall。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;pipe&lt;/code&gt;这个syscall会创建一块内核缓冲区，并返回两个fd，一个读端一个写端。&lt;/p&gt;
+&lt;p&gt;此时&lt;code&gt;shell&lt;/code&gt;的&lt;code&gt;fd table&lt;/code&gt;如下。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;fd:
+0 stdin
+1 stdout
+2 stderr
+3 pipe读端
+4 pipe写端
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;现在正式调用&lt;code&gt;fork&lt;/code&gt;召唤出&lt;code&gt;ls&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;fork&lt;/code&gt;会原样复制&lt;code&gt;fd table&lt;/code&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;fd:
+0 stdin
+1 stdout
+2 stderr
+3 pipe读端
+4 pipe写端
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;此时&lt;code&gt;ls&lt;/code&gt;实际上和&lt;code&gt;shell&lt;/code&gt;没区别，在这个时候&lt;code&gt;execve&lt;/code&gt;的话&lt;code&gt;ls&lt;/code&gt;的输出还是会去&lt;code&gt;stdout&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;我们想让&lt;code&gt;ls&lt;/code&gt;往&lt;code&gt;pipe&lt;/code&gt;的写端里写，而不是往&lt;code&gt;stdout&lt;/code&gt;里写。通过&lt;code&gt;dup2(4,1)&lt;/code&gt;这个syscall把4号&lt;code&gt;fd&lt;/code&gt;复制到1号。再&lt;code&gt;close(3), close(4)&lt;/code&gt;把无关端口关掉。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;fd:
+0 stdin
+1 pipe写端
+2 stderr
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;此时再&lt;code&gt;execve&lt;/code&gt;加载&lt;code&gt;ls&lt;/code&gt;。&lt;code&gt;ls&lt;/code&gt;的代码完全没有改动，但输出时&lt;code&gt;printf&lt;/code&gt;里面的&lt;code&gt;write(1, ..)&lt;/code&gt;这个系统调用无感知地往&lt;code&gt;pipe&lt;/code&gt;的写端里写了。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;grep&lt;/code&gt;同理，会经历类似上面的过程。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;fd:
+0 pipe读端
+1 stdout
+2 stderr
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;总的来说，管道的实现思想是修改程序看到的&lt;code&gt;fd&lt;/code&gt;表。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;stty -a&lt;/code&gt;可以看当前终端的绑定键。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;stty -a | claude &apos;这几个快捷键都有什么用&apos;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Unix也有类似Windows的任务管理。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Ctrl-z 放后台
+jobs 就像是Windows的任务管理器
+fg/bg %n 把第n个job移到前台和后台
+&lt;/code&gt;&lt;/pre&gt;
 &lt;h2&gt;实验&lt;/h2&gt;
+&lt;p&gt;扫描&lt;code&gt;/proc&lt;/code&gt;里每一个数字进程的&lt;code&gt;status&lt;/code&gt;，拿&lt;code&gt;ppid&lt;/code&gt;。扫描&lt;code&gt;comm&lt;/code&gt;拿名字。&lt;/p&gt;
+&lt;p&gt;建图，打印。&lt;/p&gt;
+&lt;p&gt;和Linux的实现的区别包括但不限于：Linux的实现还会打印出线程，是用花括号包裹的。同名的默认会被折叠成&lt;code&gt;n*[xxx]&lt;/code&gt;的形式。&lt;/p&gt;
 </content:encoded></item><item><title>Labyrinth</title><link>https://cabbage74.github.io/posts/labyrinth/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/labyrinth/</guid><description>JYY OS 2026 M1</description><pubDate>Thu, 23 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
 &lt;p&gt;进程自身只看得到寄存器和内存里的内容，如果想获取其他自身的信息需要和OS交互。&lt;/p&gt;
 &lt;p&gt;一种是可以通过&lt;code&gt;getpid&lt;/code&gt;之类的的syscalls。&lt;/p&gt;
