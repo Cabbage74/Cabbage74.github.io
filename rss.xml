@@ -1805,7 +1805,6 @@ class Trie:
         
         return dp[n]
 &lt;/code&gt;&lt;/pre&gt;
-</content:encoded></item><item><title>Apache Iceberg：The Definitive Guide（一）</title><link>https://cabbage74.github.io/posts/apache-icebergthe-definitive-guide%E4%B8%80/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/apache-icebergthe-definitive-guide%E4%B8%80/</guid><description>Introduction</description><pubDate>Tue, 07 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;这个系列记录《Apache Iceberg：The Definitive Guide》的阅读过程。&lt;/p&gt;
 </content:encoded></item><item><title>2026.07.04</title><link>https://cabbage74.github.io/posts/20260704/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/20260704/</guid><description>23岁生日</description><pubDate>Sat, 04 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;去年22岁感觉自己还很小，但是今年感觉就不一样了。&lt;/p&gt;
 &lt;p&gt;因为四舍五入就是25岁，再四舍五入就是30岁...&lt;/p&gt;
 &lt;p&gt;也可能是因为身份变了，感觉研究生和本科生的一个区别就是大家都更“独狼”了。&lt;/p&gt;
