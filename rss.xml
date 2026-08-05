@@ -1,4 +1,133 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>C-REPL</title><link>https://cabbage74.github.io/posts/c-repl/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/c-repl/</guid><description>JYY OS 2026 M4</description><pubDate>Tue, 04 Aug 2026 00:00:00 GMT</pubDate><content:encoded/></item><item><title>日拱两卒（七）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%83/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%83/</guid><description>31 - 40</description><pubDate>Sun, 02 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;40&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>C-REPL</title><link>https://cabbage74.github.io/posts/c-repl/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/c-repl/</guid><description>JYY OS 2026 M4</description><pubDate>Tue, 04 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
+&lt;p&gt;可执行文件到底是什么？&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;┌─────────┐ 高地址
+│  stack  │ &amp;lt;- OS
+├─────────┤
+│    ↓    │ 
+│   mmap  │ &amp;lt;- OS
+│    ↑    │
+├─────────┤ 
+│  heap   │ &amp;lt;- OS
+├─────────┤
+│  bss    │
+│  data   │ &amp;lt;- ELF
+│  text   │
+└─────────┘ 低地址
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这样一个简化的进程地址空间不是全在ELF里的。&lt;/p&gt;
+&lt;p&gt;ELF只描述程序初始需要加载哪些东西。如代码段、全局变量。&lt;/p&gt;
+&lt;p&gt;而OS负责把它变成一个运行中的进程。&lt;/p&gt;
+&lt;p&gt;比如栈是由OS创建的，然后OS把&lt;code&gt;argc, argv, envp&lt;/code&gt;放在初始的栈上。ELF的入口执行点是&lt;code&gt;_start&lt;/code&gt;的地址，CRT相关的代码负责从这个初始栈里取出参数，喂给真正的&lt;code&gt;main&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;ELF(Executable and Linkable Format)不等价于可执行文件，实际上在Linux里有三种。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;.o&lt;/code&gt;可重定位文件，可执行文件，&lt;code&gt;.so&lt;/code&gt;共享目标文件。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;stdio.h&amp;gt;
+
+int add(int a, int b);
+
+int main() {
+    int result = add(10, 20);
+
+    printf(&quot;result = %d\n&quot;, result);
+
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;int add(int a, int b) {
+    return a + b;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;如果&lt;code&gt;gcc main.c&lt;/code&gt;或者&lt;code&gt;gcc add.c&lt;/code&gt;都是不会通过的，一个报找不到&lt;code&gt;add&lt;/code&gt;，一个报找不到&lt;code&gt;main&lt;/code&gt;(&lt;code&gt;_start&lt;/code&gt;函数里调了&lt;code&gt;main&lt;/code&gt;)。&lt;/p&gt;
+&lt;p&gt;我们需要把两份代码给链接到一起。链接器会通过符号解析、重定位两步做这件事。&lt;/p&gt;
+&lt;p&gt;通过&lt;code&gt;gcc -c xxx&lt;/code&gt;得到&lt;code&gt;.o&lt;/code&gt;的可重定位文件。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ubuntu@VM-0-9-ubuntu:~/elf-lab$ readelf -s main.o
+
+Symbol table &apos;.symtab&apos; contains 7 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND
+     1: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS main.c
+     2: 0000000000000000     0 SECTION LOCAL  DEFAULT    1 .text
+     3: 0000000000000000     0 SECTION LOCAL  DEFAULT    5 .rodata
+     4: 0000000000000000    62 FUNC    GLOBAL DEFAULT    1 main
+     5: 0000000000000000     0 NOTYPE  GLOBAL DEFAULT  UND add
+     6: 0000000000000000     0 NOTYPE  GLOBAL DEFAULT  UND printf
+ubuntu@VM-0-9-ubuntu:~/elf-lab$ readelf -s add.o
+
+Symbol table &apos;.symtab&apos; contains 4 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND
+     1: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS add.c
+     2: 0000000000000000     0 SECTION LOCAL  DEFAULT    1 .text
+     3: 0000000000000000    24 FUNC    GLOBAL DEFAULT    1 add
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;能看到&lt;code&gt;main.o&lt;/code&gt;里的&lt;code&gt;add&lt;/code&gt;是&lt;code&gt;UNDEFINED&lt;/code&gt;，而&lt;code&gt;add.o&lt;/code&gt;的符号表确实提供了这个符号，而且是&lt;code&gt;GLOBAL&lt;/code&gt;的。&lt;/p&gt;
+&lt;p&gt;链接器是能抓到这个关系的，根据两者的&lt;code&gt;.symtab&lt;/code&gt;能建立起符号如何对应。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ubuntu@VM-0-9-ubuntu:~/elf-lab$ objdump -d main.o
+
+main.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 &amp;lt;main&amp;gt;:
+   0:	f3 0f 1e fa          	endbr64
+   4:	55                   	push   %rbp
+   5:	48 89 e5             	mov    %rsp,%rbp
+   8:	48 83 ec 10          	sub    $0x10,%rsp
+   c:	be 14 00 00 00       	mov    $0x14,%esi
+  11:	bf 0a 00 00 00       	mov    $0xa,%edi
+  16:	e8 00 00 00 00       	call   1b &amp;lt;main+0x1b&amp;gt;
+  1b:	89 45 fc             	mov    %eax,-0x4(%rbp)
+  1e:	8b 45 fc             	mov    -0x4(%rbp),%eax
+  21:	89 c6                	mov    %eax,%esi
+  23:	48 8d 05 00 00 00 00 	lea    0x0(%rip),%rax        # 2a &amp;lt;main+0x2a&amp;gt;
+  2a:	48 89 c7             	mov    %rax,%rdi
+  2d:	b8 00 00 00 00       	mov    $0x0,%eax
+  32:	e8 00 00 00 00       	call   37 &amp;lt;main+0x37&amp;gt;
+  37:	b8 00 00 00 00       	mov    $0x0,%eax
+  3c:	c9                   	leave
+  3d:	c3                   	ret
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;main.o&lt;/code&gt;不知道&lt;code&gt;add&lt;/code&gt;函数在哪，所以&lt;code&gt;call add&lt;/code&gt;的时候，那个地址是全零。&lt;/p&gt;
+&lt;p&gt;上一步符号解析只解决这个&lt;code&gt;add&lt;/code&gt;到底是哪里定义的，还需要重定位过程解决这里地址的填写。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ubuntu@VM-0-9-ubuntu:~/elf-lab$ readelf -r main.o
+
+Relocation section &apos;.rela.text&apos; at offset 0x1d8 contains 3 entries:
+  Offset          Info           Type           Sym. Value    Sym. Name + Addend
+000000000017  000500000004 R_X86_64_PLT32    0000000000000000 add - 4
+000000000026  000300000002 R_X86_64_PC32     0000000000000000 .rodata - 4
+000000000033  000600000004 R_X86_64_PLT32    0000000000000000 printf - 4
+
+Relocation section &apos;.rela.eh_frame&apos; at offset 0x220 contains 1 entry:
+  Offset          Info           Type           Sym. Value    Sym. Name + Addend
+000000000020  000200000002 R_X86_64_PC32     0000000000000000 .text + 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;.rela.*&lt;/code&gt;这类section告诉链接器哪里需要修改。&lt;/p&gt;
+&lt;p&gt;看&lt;code&gt;objdump&lt;/code&gt;的输出，&lt;code&gt;.text&lt;/code&gt;段的&lt;code&gt;0x16&lt;/code&gt;偏移处是&lt;code&gt;call add&lt;/code&gt;，其中&lt;code&gt;e8&lt;/code&gt;是&lt;code&gt;call&lt;/code&gt;，&lt;code&gt;0x17&lt;/code&gt;就是实际的需要填的&lt;code&gt;add&lt;/code&gt;地址，对应了&lt;code&gt;.rela.text&lt;/code&gt;的第一条。&lt;/p&gt;
+&lt;p&gt;当&lt;code&gt;gcc main.o add.o -o main&lt;/code&gt;让链接器同时看到&lt;code&gt;main.o&lt;/code&gt;和&lt;code&gt;add.o&lt;/code&gt;时，它的视角大概是这样。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;main.o
+
+.text
+    main
+
+add.o
+
+.text
+    add
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;链接器会决定最终的布局。这里的决定方法是由一个默认链接脚本决定的。&lt;code&gt;ld --verbose&lt;/code&gt;能看。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;.text
+
+0x401000:
+    main
+
+0x401050:
+    add
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;有了这个地址，链接器再填回&lt;code&gt;.rela.*&lt;/code&gt;里告诉链接器需要填的地方。&lt;/p&gt;
+&lt;p&gt;总结步骤，链接器看各个&lt;code&gt;.o&lt;/code&gt;文件的&lt;code&gt;.symtab&lt;/code&gt;符号表，解析应该怎么依赖。合并符号表，最终布局决定以后，去把&lt;code&gt;.rela.text&lt;/code&gt;里的需要填的地址填好。符号解析+重定位地址，这就是静态链接。&lt;/p&gt;
+&lt;p&gt;静态链接会把代码都打包进一个文件里，但是&lt;code&gt;libc&lt;/code&gt;这种库如果让每个C程序都完整持有一份，显然不合理。&lt;/p&gt;
+&lt;h2&gt;实验&lt;/h2&gt;
+</content:encoded></item><item><title>日拱两卒（七）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%83/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%83/</guid><description>31 - 40</description><pubDate>Sun, 02 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;40&lt;/h2&gt;
 &lt;p&gt;二叉树的直径。&lt;/p&gt;
 &lt;p&gt;这里的坑是长度是按边计算的，不是节点数。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;class Solution:
@@ -169,8 +298,94 @@
 
         return self.mergeTwo(left, right)
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;32&lt;/h2&gt;
+&lt;p&gt;随机链表的复制。&lt;/p&gt;
+&lt;p&gt;目前题干最莫名其妙的一题。&lt;/p&gt;
+&lt;p&gt;深拷贝每个节点多一个随机指针的链表，可以用哈希表解决。题解做法也是目前最出乎意料，每个节点原地复制，然后拆出最后的结果。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def copyRandomList(self, head: &apos;Optional[Node]&apos;) -&amp;gt; &apos;Optional[Node]&apos;:
+        cur = head
+        while cur:
+            cur.next = Node(cur.val, cur.next)
+            cur = cur.next.next
+
+        cur = head
+        while cur:
+            if cur.random:
+                cur.next.random = cur.random.next
+            cur = cur.next.next
+
+        cur = dummy = Node(0, head)
+        while cur.next:
+            cur.next = cur.next.next
+            cur = cur.next
+
+        return dummy.next      
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;31&lt;/h2&gt;
+&lt;p&gt;K个一组翻转链表。&lt;/p&gt;
+&lt;p&gt;有些繁琐。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def reverse(self, head: Optional[ListNode]) -&amp;gt; Optional[ListNode]:
+        prev = None
+        cur = head
+        while cur:
+            nxt = cur.next
+            cur.next = prev
+            prev = cur
+            cur = nxt
+        return prev
+
+    def reverseKGroup(self, head: Optional[ListNode], k: int) -&amp;gt; Optional[ListNode]:
+        dummy = ListNode(0, head)
+
+        cur = dummy.next
+        cnt = 0
+        cur_head = cur
+        pre_cur_head = dummy
+        while cur:
+            cnt += 1
+            tmp = cur
+            cur = cur.next
+            if cnt &amp;gt;= k:
+                tmp.next = None
+                new_head = self.reverse(cur_head)
+                pre_cur_head.next = new_head
+                cur_head.next = cur
+                cnt = 0
+                pre_cur_head = cur_head
+                cur_head = cur
+
+        return dummy.next
+&lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>SPerf</title><link>https://cabbage74.github.io/posts/sperf/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/sperf/</guid><description>JYY OS 2026 M3</description><pubDate>Tue, 28 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
+&lt;p&gt;ABI是规定已经编译好的程序如何交互的规范。&lt;/p&gt;
+&lt;p&gt;它包含但不限于以下方面：调用函数时参数放哪里？结构体内存布局如何Padding？函数名如何修饰？&lt;/p&gt;
+&lt;p&gt;类似CSAPP的书在教学的时候一般都是这样的心智模型：调用函数时，参数、局部变量、返回地址都扔到栈上。&lt;/p&gt;
+&lt;p&gt;这其实就是一种具体的ABI。&lt;/p&gt;
+&lt;p&gt;在x86的系统上其实是另一种规范，第一个参数会放到rdi上，第二个参数会放到rsi上...&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;int add(int a, int b);
+
+int main()
+{
+    int x = add(10, 20);
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;假设&lt;code&gt;add&lt;/code&gt;是我们写的一个汇编函数，为什么C语言能正确调用汇编呢？&lt;/p&gt;
+&lt;p&gt;因为Linux x86-64的ABI规定了第一个参数会放到rdi上，第二个参数会放到rsi上。&lt;/p&gt;
+&lt;p&gt;所以只要我们写的汇编函数确实是这样就能调用。这里的寄存器e开头指的是只拿低32位。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;add:
+    mov eax, edi
+    add eax, esi
+    ret
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;也就是说如果需要裸写汇编，对于Linux和Windows两个平台就得维护两份代码，对应两种ABI。&lt;/p&gt;
+&lt;p&gt;但如果用C语法写&lt;code&gt;add&lt;/code&gt;函数，编译器会根据ABI生成出正确的汇编。&lt;/p&gt;
+&lt;p&gt;C的ABI是事实上的通用接口，只要符合C的ABI就可以调用C函数，比如&lt;code&gt;libc&lt;/code&gt;库里的函数。&lt;/p&gt;
 &lt;h2&gt;实验&lt;/h2&gt;
+&lt;p&gt;实现一个命令行工具，能启动另一个程序，然后统计这个程序里每个系统调用的时间。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;strace -T&lt;/code&gt;其实有这个功能。JYY给的方法是父进程启动子进程跑&lt;code&gt;strace&lt;/code&gt;，用管道拿到以后直接解析。&lt;/p&gt;
+&lt;p&gt;Linux还提供了&lt;code&gt;ptrace&lt;/code&gt;这个系统调用，允许一个进程观察和控制另一个进程的执行。&lt;code&gt;strace, gdb, perf&lt;/code&gt;这些都基于这个。&lt;/p&gt;
 </content:encoded></item><item><title>日拱两卒（六）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%85%AD/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%85%AD/</guid><description>41 - 50</description><pubDate>Tue, 28 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;50&lt;/h2&gt;
 &lt;p&gt;二叉树中的最大路径和。&lt;/p&gt;
 &lt;p&gt;维护每个节点的左右两条链。&lt;/p&gt;
@@ -2128,6 +2343,119 @@ gen.send(&quot;hello&quot;)  # 收到: hello
 gen.send(&quot;world&quot;)  # 收到: world
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;code&gt;yield&lt;/code&gt;出现在等式右边时也可以接收值。这是简单协程的写法，现代Python基本没人用了。&lt;/p&gt;
+</content:encoded></item><item><title>NPM与构建工具</title><link>https://cabbage74.github.io/posts/npm%E4%B8%8E%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/npm%E4%B8%8E%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/</guid><description>了解Node、NPM、Vite</description><pubDate>Tue, 30 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;上节的模块化只解决了前端开发中一小部分问题。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;!doctype html&amp;gt;
+&amp;lt;html lang=&quot;zh-CN&quot;&amp;gt;
+  &amp;lt;head&amp;gt;
+    ...
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/reset.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/variables.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/layout.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/hero.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/nav.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/cards.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/lab.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/responsive.css&quot; /&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    ...
+    &amp;lt;script type=&quot;module&quot; src=&quot;js/main.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+  &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;延续上一节模块化改造完的index.html代码。&lt;/p&gt;
+&lt;p&gt;目前还有几个可以进一步优化的问题：&lt;/p&gt;
+&lt;p&gt;一是引入模块化写法以后一定要走HTTP、HTTPS，调试起来不方便。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;./images/NPM1.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;二是要请求的文件太多，需要排队。虽然拆分代码方便程序员调试维护，但不方便浏览器请求。&lt;/p&gt;
+&lt;p&gt;三是浏览器会缓存旧文件，比如这里的anime库走的是memory cache。刷新页面可能不会很及时地体现背后代码的变动。一个笨方法是每次改完代码就把文件名也手动修改一下，让浏览器不走缓存，但显然不方便。&lt;/p&gt;
+&lt;p&gt;构建工具可以帮助解决这三个问题，Vite是现在最流行的一个。&lt;/p&gt;
+&lt;p&gt;Vite是用Node.js写的，Node.js是一套让js能在浏览器外面跑的环境。&lt;/p&gt;
+&lt;p&gt;npm是Node.js的包管理器，类似Cargo之于Rust。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm init -y
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;用npm初始化项目，-y是告诉npm全部走默认，跳过交互式的提问&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  &quot;name&quot;: &quot;zero-to-tech-4-1&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;scripts&quot;: {
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;初始化完会多一个package.json，有很多其实没什么用的字段，这里都手动删掉了。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm install -D vite
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;-D代表装的是开发依赖，不进最终的网站。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  &quot;name&quot;: &quot;zero-to-tech-4-1&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;scripts&quot;: {
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;vite&quot;: &quot;^8.1.0&quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;package.json多了一条依赖。&lt;/p&gt;
+&lt;p&gt;而且装完以后多了一个node_modules文件夹，里面有Vite和Vite自身依赖的其他包的源代码，.bin文件夹里有可执行文件。&lt;/p&gt;
+&lt;p&gt;还多一个package-lock.json，里面有每一个包的具体版本，是为了锁死更深层的依赖。&lt;/p&gt;
+&lt;p&gt;和Cargo.toml、Cargo.lock的设计是一样的。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;./node_modules/.bin/vite
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;此时执行Vite的可执行文件，Vite就能起一个服务器用于开发预览，而且是热更新不用自己刷新的。解决了文章开头提到的第一个问题。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;./node_modules/.bin/vite build
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;./images/NPM2.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;执行build构建命令，多了一个dist文件夹，里面就是构建产物。这个产物是实际放在服务器的代码。&lt;/p&gt;
+&lt;p&gt;Vite构建的核心就是保持代码语义，但把代码打包成最适合浏览器使用的形态。可以看到css和js都各自被合成了一个文件，解决了文章开头提到的第二个问题。文件名最后有一串哈希指纹，解决了文章开头提到的第三个问题。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;./node_modules/.bin/vite preview
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这个命令会起一个服务器，可以预览dist产物。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  &quot;name&quot;: &quot;zero-to-tech-4-1&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;scripts&quot;: {
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;,
+    &quot;dev&quot;: &quot;vite&quot;,             // npm run dev*
+    &quot;build&quot;: &quot;vite build&quot;,     // npm run build*
+    &quot;preview&quot;: &quot;vite preview&quot;  // npm run preview*
+  },
+  &quot;devDependencies&quot;: {
+    &quot;vite&quot;: &quot;^8.1.0&quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;前面使用Vite的命令都不是很方便，普遍做法是在package.json自定义命令。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import { animate, stagger } from &quot;https://cdn.jsdelivr.net/npm/animejs@4/+esm&quot;;
+...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;现在对于anime第三方库的import依然是走cdn服务，为了可靠还是应该让npm把它装成本地依赖。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm install animejs
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;import { animate, stagger } from &quot;animejs&quot;;
+...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Vite会将animejs指向node_modules下的animejs。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  &quot;name&quot;: &quot;zero-to-tech-4-1&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;scripts&quot;: {
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;,
+    &quot;dev&quot;: &quot;vite&quot;,
+    &quot;build&quot;: &quot;vite build&quot;,
+    &quot;preview&quot;: &quot;vite preview&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;vite&quot;: &quot;^8.1.0&quot;
+  },
+  &quot;dependencies&quot;: {
+    &quot;animejs&quot;: &quot;^4.5.0&quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;顺便package.json确实能看出来-D install和普通install的区别。&lt;/p&gt;
 </content:encoded></item><item><title>React组件化</title><link>https://cabbage74.github.io/posts/react%E7%BB%84%E4%BB%B6%E5%8C%96/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/react%E7%BB%84%E4%BB%B6%E5%8C%96/</guid><description>React的组件化思想</description><pubDate>Tue, 30 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;上一节里，构建工具承担了“翻译官”的角色。将开发者写起来舒服的代码“翻译”成浏览器看起来舒服的代码。&lt;/p&gt;
 &lt;p&gt;构建工具可以“翻译”，意味着我们可以写出规则更加不同的代码，只要最后让构建工具“翻译”成浏览器看得懂的html/css/js就行了。&lt;/p&gt;
 &lt;p&gt;React是最火的前端框架，核心思想是把复杂页面拆成可复用的组件，通过数据驱动组件更新。&lt;/p&gt;
@@ -2368,119 +2696,6 @@ createRoot(document.getElementById(&quot;root&quot;)).render(
 └── vite.config.js
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;这是一个React项目的经典结构。&lt;/p&gt;
-</content:encoded></item><item><title>NPM与构建工具</title><link>https://cabbage74.github.io/posts/npm%E4%B8%8E%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/npm%E4%B8%8E%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/</guid><description>了解Node、NPM、Vite</description><pubDate>Tue, 30 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;上节的模块化只解决了前端开发中一小部分问题。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;!doctype html&amp;gt;
-&amp;lt;html lang=&quot;zh-CN&quot;&amp;gt;
-  &amp;lt;head&amp;gt;
-    ...
-    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/reset.css&quot; /&amp;gt;
-    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/variables.css&quot; /&amp;gt;
-    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/layout.css&quot; /&amp;gt;
-    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/hero.css&quot; /&amp;gt;
-    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/nav.css&quot; /&amp;gt;
-    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/cards.css&quot; /&amp;gt;
-    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/lab.css&quot; /&amp;gt;
-    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/responsive.css&quot; /&amp;gt;
-  &amp;lt;/head&amp;gt;
-  &amp;lt;body&amp;gt;
-    ...
-    &amp;lt;script type=&quot;module&quot; src=&quot;js/main.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-  &amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;延续上一节模块化改造完的index.html代码。&lt;/p&gt;
-&lt;p&gt;目前还有几个可以进一步优化的问题：&lt;/p&gt;
-&lt;p&gt;一是引入模块化写法以后一定要走HTTP、HTTPS，调试起来不方便。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;./images/NPM1.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;二是要请求的文件太多，需要排队。虽然拆分代码方便程序员调试维护，但不方便浏览器请求。&lt;/p&gt;
-&lt;p&gt;三是浏览器会缓存旧文件，比如这里的anime库走的是memory cache。刷新页面可能不会很及时地体现背后代码的变动。一个笨方法是每次改完代码就把文件名也手动修改一下，让浏览器不走缓存，但显然不方便。&lt;/p&gt;
-&lt;p&gt;构建工具可以帮助解决这三个问题，Vite是现在最流行的一个。&lt;/p&gt;
-&lt;p&gt;Vite是用Node.js写的，Node.js是一套让js能在浏览器外面跑的环境。&lt;/p&gt;
-&lt;p&gt;npm是Node.js的包管理器，类似Cargo之于Rust。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;npm init -y
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;用npm初始化项目，-y是告诉npm全部走默认，跳过交互式的提问&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;{
-  &quot;name&quot;: &quot;zero-to-tech-4-1&quot;,
-  &quot;version&quot;: &quot;1.0.0&quot;,
-  &quot;scripts&quot;: {
-    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;初始化完会多一个package.json，有很多其实没什么用的字段，这里都手动删掉了。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;npm install -D vite
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;-D代表装的是开发依赖，不进最终的网站。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;{
-  &quot;name&quot;: &quot;zero-to-tech-4-1&quot;,
-  &quot;version&quot;: &quot;1.0.0&quot;,
-  &quot;scripts&quot;: {
-    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;
-  },
-  &quot;devDependencies&quot;: {
-    &quot;vite&quot;: &quot;^8.1.0&quot;
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;package.json多了一条依赖。&lt;/p&gt;
-&lt;p&gt;而且装完以后多了一个node_modules文件夹，里面有Vite和Vite自身依赖的其他包的源代码，.bin文件夹里有可执行文件。&lt;/p&gt;
-&lt;p&gt;还多一个package-lock.json，里面有每一个包的具体版本，是为了锁死更深层的依赖。&lt;/p&gt;
-&lt;p&gt;和Cargo.toml、Cargo.lock的设计是一样的。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;./node_modules/.bin/vite
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;此时执行Vite的可执行文件，Vite就能起一个服务器用于开发预览，而且是热更新不用自己刷新的。解决了文章开头提到的第一个问题。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;./node_modules/.bin/vite build
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&quot;./images/NPM2.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;执行build构建命令，多了一个dist文件夹，里面就是构建产物。这个产物是实际放在服务器的代码。&lt;/p&gt;
-&lt;p&gt;Vite构建的核心就是保持代码语义，但把代码打包成最适合浏览器使用的形态。可以看到css和js都各自被合成了一个文件，解决了文章开头提到的第二个问题。文件名最后有一串哈希指纹，解决了文章开头提到的第三个问题。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;./node_modules/.bin/vite preview
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;这个命令会起一个服务器，可以预览dist产物。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;{
-  &quot;name&quot;: &quot;zero-to-tech-4-1&quot;,
-  &quot;version&quot;: &quot;1.0.0&quot;,
-  &quot;scripts&quot;: {
-    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;,
-    &quot;dev&quot;: &quot;vite&quot;,             // npm run dev*
-    &quot;build&quot;: &quot;vite build&quot;,     // npm run build*
-    &quot;preview&quot;: &quot;vite preview&quot;  // npm run preview*
-  },
-  &quot;devDependencies&quot;: {
-    &quot;vite&quot;: &quot;^8.1.0&quot;
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;前面使用Vite的命令都不是很方便，普遍做法是在package.json自定义命令。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;import { animate, stagger } from &quot;https://cdn.jsdelivr.net/npm/animejs@4/+esm&quot;;
-...
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;现在对于anime第三方库的import依然是走cdn服务，为了可靠还是应该让npm把它装成本地依赖。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;npm install animejs
-&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;import { animate, stagger } from &quot;animejs&quot;;
-...
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Vite会将animejs指向node_modules下的animejs。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;{
-  &quot;name&quot;: &quot;zero-to-tech-4-1&quot;,
-  &quot;version&quot;: &quot;1.0.0&quot;,
-  &quot;scripts&quot;: {
-    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;,
-    &quot;dev&quot;: &quot;vite&quot;,
-    &quot;build&quot;: &quot;vite build&quot;,
-    &quot;preview&quot;: &quot;vite preview&quot;
-  },
-  &quot;devDependencies&quot;: {
-    &quot;vite&quot;: &quot;^8.1.0&quot;
-  },
-  &quot;dependencies&quot;: {
-    &quot;animejs&quot;: &quot;^4.5.0&quot;
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;顺便package.json确实能看出来-D install和普通install的区别。&lt;/p&gt;
 </content:encoded></item><item><title>HBase + ElasticSearch</title><link>https://cabbage74.github.io/posts/hbase--elasticsearch/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/hbase--elasticsearch/</guid><description>研究一下这个组合的读写特性</description><pubDate>Mon, 29 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;实习业务部分和这套相关，有必要研究一下读写特性。&lt;/p&gt;
 &lt;h2&gt;HBase&lt;/h2&gt;
 &lt;p&gt;HBase的设计是面向这样的场景：PB级数据、追求对单行数据或小范围数据的&lt;strong&gt;毫秒级&lt;/strong&gt;访问。是TP系统。&lt;/p&gt;
