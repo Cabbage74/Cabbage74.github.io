@@ -1,4 +1,62 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>C-REPL</title><link>https://cabbage74.github.io/posts/c-repl/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/c-repl/</guid><description>JYY OS 2026 M4</description><pubDate>Tue, 04 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>日拱两卒（八）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%85%AB/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%85%AB/</guid><description>21 - 30</description><pubDate>Thu, 06 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;30&lt;/h2&gt;
+&lt;p&gt;两两交换链表中的节点。&lt;/p&gt;
+&lt;p&gt;和K个一组翻转没区别。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def reverse(self, head: Optional[ListNode]) -&amp;gt; Optional[ListNode]:
+        cur = head
+        pre = None
+
+        while cur:
+            nxt = cur.next
+            cur.next = pre
+            pre = cur
+            cur = nxt
+        
+        return pre
+
+    def swapPairs(self, head: Optional[ListNode]) -&amp;gt; Optional[ListNode]:
+        dummy = ListNode(0, head)
+
+        cur = dummy.next
+        cur_head = cur
+        pre_cur_head = dummy
+        cnt = 0
+
+        while cur:
+            cnt += 1
+            nxt = cur.next
+            if cnt &amp;gt;= 2:
+                cur.next = None
+                new_head = self.reverse(cur_head)
+                cur_head.next = nxt
+                pre_cur_head.next = new_head
+
+                pre_cur_head = cur_head
+                cur_head = nxt
+                cnt = 0
+
+            cur = nxt                
+        
+        return dummy.next
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;29&lt;/h2&gt;
+&lt;p&gt;删除链表的倒数第N个节点。&lt;/p&gt;
+&lt;p&gt;尺子一开始左端点在链表头，右端点在正数第N个，那么尺子右端点在链表尾时，左端点就在倒数第N个。&lt;/p&gt;
+&lt;p&gt;删除其实是要找第N+1个。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -&amp;gt; Optional[ListNode]:
+        left = right = dummy = ListNode(0, head)
+
+        for _ in range(n):
+            right = right.next
+        while right.next:
+            left = left.next
+            right = right.next
+        left.next = left.next.next
+
+        return dummy.next
+&lt;/code&gt;&lt;/pre&gt;
+</content:encoded></item><item><title>C-REPL</title><link>https://cabbage74.github.io/posts/c-repl/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/c-repl/</guid><description>JYY OS 2026 M4</description><pubDate>Tue, 04 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
 &lt;p&gt;可执行文件到底是什么？&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;┌─────────┐ 高地址
 │  stack  │ &amp;lt;- OS
@@ -345,16 +403,18 @@ add.o
         pre_cur_head = dummy
         while cur:
             cnt += 1
-            tmp = cur
-            cur = cur.next
-            if cnt &amp;gt;= k:
-                tmp.next = None
+            nxt = cur.next
+            if cnt &amp;gt;= 2:
+                cur.next = None
                 new_head = self.reverse(cur_head)
+                cur_head.next = nxt
                 pre_cur_head.next = new_head
-                cur_head.next = cur
-                cnt = 0
+
                 pre_cur_head = cur_head
-                cur_head = cur
+                cur_head = nxt
+                cnt = 0
+
+            cur = nxt
 
         return dummy.next
 &lt;/code&gt;&lt;/pre&gt;
@@ -3341,20 +3401,8 @@ initCardsAnim();
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;将cards.js改造成模块化版本，新建main.js作为该页面所有js的总开关。可以发现导入顺序问题、全局名称污染问题就解决了。&lt;/p&gt;
 &lt;p&gt;不过引入模块化写法以后，本地打开文件会报跨域错误，浏览器出于安全考虑，规定模块化文件一定要走HTTP或者HTTPS服务。&lt;/p&gt;
-</content:encoded></item><item><title>2026.06.12</title><link>https://cabbage74.github.io/posts/20260612/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/20260612/</guid><description>阶段性总结</description><pubDate>Fri, 12 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;前几天在小红书刷到了别人用Astro搭建的静态网站，让我想起了自己巨久没有维护的博客。&lt;/p&gt;
-&lt;p&gt;还记得大二那天跟着网上的各种教程，用Hexo+Next搭，遇到了很多版本不一致导致的Bug。应该前前后后花了有两到三个下午，那个时候的ChatGPT远没有如今强大。&lt;/p&gt;
-&lt;p&gt;昨天我让Claude Code + DeepSeek用Astro重新搭建一下，几分钟就搞定了。哈哈～&lt;/p&gt;
-&lt;p&gt;感觉Astro确实比之前Hexo那套更美观，性能还更好点。虽然我现在看不懂Typescript，但是感觉这个语言的代码挺规整，还让人怪想学一下的。&lt;/p&gt;
-&lt;p&gt;之前的博客应该是在打完ACM，去华为实习前就停止更新了。忘了为什么不更新了，但是可以肯定的是写博客就像跑步，一停下就很难再开始。&lt;/p&gt;
-&lt;p&gt;仔细想一想我感觉现在的我的水平好像和两年前没什么区别，😭。之前坚持写博客的时候还挺有学习热情，但是大四研一现在回想起来，完全是混过去了。&lt;/p&gt;
-&lt;p&gt;去年这个时候在做MatrixOne，很后悔当时没有做得更深一点，当时的工作以现在Coding Agent的水平来说真的太简单了。&lt;/p&gt;
-&lt;p&gt;研一上应该可以算是完全混过去了😭，脑子里甚至一点记忆都没有。&lt;/p&gt;
-&lt;p&gt;研一下其实也是混过去了，不过好在开学的时候突然很想解决小论文，也顺利地把小论文冲刺出来了。&lt;/p&gt;
-&lt;p&gt;是2026.04.26通知的中稿，中稿完不是幻想中的立刻投身于找实习，而是沉迷海克斯大乱斗，哎😑～（幸亏现在这个版本被设计师改的我不想玩了）。&lt;/p&gt;
-&lt;p&gt;不得不说实验室只有我一个人这件事，有爽的地方也有不爽的地方。没有学习氛围，导致学着学着就看起绝命毒师和风骚律师了（不过真的太好看了，这次看的墨菲解说，想再欣赏一遍原片）。&lt;/p&gt;
-&lt;p&gt;磨洋工了好久好久才开始投简历，这次实习的目标是公司名字要有点Title，大概投了十多家我眼中的中大厂（有的厂竟然连日常实习都要测评！太麻烦了！）。估计是暑期HC快发完了，面试寥寥无几，大厂全都不理。只有两家给了面试，一家Shopee，一家Momenta。Shopee感觉自己答得很好，但是没消息了。Momenta看JD其实更偏之前没用过的技术栈，自我感觉答得一般，竟然还过了。&lt;/p&gt;
-&lt;p&gt;虽然其实只面试了一个礼拜，但是这个过程真的好折磨，就没有再等其他机会了。&lt;/p&gt;
-&lt;p&gt;对我来说，写博客其实是一个很好的自我监督环节，上班其实是一个很好的作息调整机会（不上班反而作息更容易猝死了😭）。&lt;/p&gt;
-&lt;p&gt;乐观地说，在研一下解决掉小论文、找到一段日常实习，已经超过去年对自己的要求了。悲观地说，AI进化的速度也远超去年我的预想...&lt;/p&gt;
-&lt;p&gt;希望找下一段实习的时候能更从容一点。&lt;/p&gt;
+</content:encoded></item><item><title>2026.06.12</title><link>https://cabbage74.github.io/posts/20260612/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/20260612/</guid><description>迁移</description><pubDate>Fri, 12 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;前几天在小红书刷到了别人用Astro搭建的静态网站，让我想起了自己巨久没有维护的博客。&lt;/p&gt;
+&lt;p&gt;还记得大二那天跟着网上的各种教程，用Hexo+Next搭，遇到了很多版本不一致导致的Bug。应该前前后后花了有两到三个下午才搞成全部满意的样子，那个时候的ChatGPT远没有如今强大。&lt;/p&gt;
+&lt;p&gt;昨天我让Claude Code + DeepSeek用Astro重新搭建一下，几分钟就搞定了...&lt;/p&gt;
+&lt;p&gt;不知道是该开心还是伤心...&lt;/p&gt;
 </content:encoded></item></channel></rss>
