@@ -174,7 +174,108 @@ add.o
 
 静态链接会把代码都打包进一个文件里，但是`libc`这种库如果让每个C程序都完整持有一份，显然不合理。
 
+动态链接让磁盘甚至内存里都只有一份`libc`的代码。依赖`libc`的进程都链接这一份代码。
 
+动态链接的过程仍然是类似符号解析加重定位的宗旨。
+
+但动态链接发生在运行时。
+
+``` txt
+main
+
+.text
+    main:
+        xxx
+    add:
+        xxx
+
+.dynamic
+    动态库链接需要什么东西（需要什么动态库，动态符号表在哪，重定位表在哪等等）
+
+.plt
+    printf跳板
+
+.got
+    保存printf真实地址
+
+```
+
+静态链接的`add`最终就会在`ELF`里，所以重定位的时候很方便拿到一个相对地址填到`main`里全是`0`的地方。
+
+但是`printf`的代码段不会进`ELF`。这里会填`call printf@plt`。
+
+`execve`加载一个ELF的时候，如果发现需要动态链接，会先启动动态链接器`ld.so`再跳到`_start`。
+
+动态链接器会看`.dynamic`看需要什么。
+
+`plt(Procedure Linkage Table)`可以理解为一个中转站，会去查`got(Global Offset Table)`。
+
+`got`是一个简单的表，可能就长下面这样。
+
+```
+GOT:
++----------------+
+| printf地址     |
++----------------+
+| malloc地址     |
++----------------+
+| xxx地址        |
++----------------+
+```
+
+但一开始`got`里面的地址是通向`ld.so`的。
+
+`printf@plt`里的代码会跳到`got`表，然后如果是第一次，通向`ld.so`，由它找到真的`printf`，填到`got`里，后续就不需要再走`ld.so`了。
+
+`got`在这里有点像缓存，之所以不让`ld.so`一次性全部查完，而是有需要的时候一个一个查，是因为有些函数不一定需要查，这样更合理。
+
+其实这里也解释了为什么程序运行的时候不要手动移动动态库位置了，因为`got`里的地址就失效了。除非重启进程。
+
+:::tip
+我其实没太理解`plt`有什么用，感觉直接`call printf@got`也可以。
+GPT说其实也可以，`plt`的存在有历史原因，有些系统没有`plt`。
+:::
 
 ## 实验
 
+这是一个Python REPL。
+
+``` bash
+# cabbage @ cabbage-Mac in ~/blog on git:main x [19:44:36] C:127
+$ python3        
+Python 3.13.2 (main, Feb  4 2025, 14:51:09) [Clang 16.0.0 (clang-1600.0.26.6)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+Cmd click to launch VS Code Native REPL
+>>> 1 + 1
+2
+>>> 
+```
+
+本次实验实现一个有约束的简易C-REPL。
+
+只支持两个功能：能算表达式，能定义一行返回值为`int`，参数类型都为`int`的函数。
+
+我之前一直以为Python这种解释型语言才能这样，长见识ing...
+
+做法是把每一行输入都放进一个临时的`c`文件，编译成共享库加载执行。
+
+如果是表达式就把它包装成函数（直接返回那种函数），同样编译成共享库加载执行。
+
+本质就是运用`dlopen, dlsym, dlclose`这几个函数。
+
+``` bash
+ubuntu@VM-0-9-ubuntu:~/os2026/crepl$ ./crepl 
+C REPL - 输入表达式或函数定义
+
+> 1 + 1
+2
+
+> int gcd(int a, int b) { return b ? gcd(b, a % b) : a; }
+OK: gcd() defined.
+
+> gcd(2, 4)
+2
+
+> f()
+compile error
+```
