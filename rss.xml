@@ -56,6 +56,122 @@
 
         return dummy.next
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;28&lt;/h2&gt;
+&lt;p&gt;两数相加。&lt;/p&gt;
+&lt;p&gt;简单模拟。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -&amp;gt; Optional[ListNode]:
+        dummy = ListNode(0, None)
+        
+        carry = 0
+        cur = dummy
+        while l1 or l2:
+            val = carry
+            val += l1.val if l1 else 0
+            val += l2.val if l2 else 0
+            new_node = ListNode(val % 10, None)
+            cur.next = new_node
+            carry = val // 10
+            
+            cur = cur.next
+            l1 = l1.next if l1 else l1
+            l2 = l2.next if l2 else l2
+
+        if carry:
+            new_node = ListNode(carry, None)
+            cur.next = new_node
+        
+        return dummy.next
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;27&lt;/h2&gt;
+&lt;p&gt;合并两个有序链表。&lt;/p&gt;
+&lt;p&gt;之前合并K个也做过了。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -&amp;gt; Optional[ListNode]:
+        dummy = ListNode(0, None)
+
+        cur = dummy
+        while list1 and list2:
+            if list1.val &amp;lt; list2.val:
+                cur.next = ListNode(list1.val, None)
+                list1 = list1.next
+            else:
+                cur.next = ListNode(list2.val, None)
+                list2 = list2.next
+            cur = cur.next
+        
+        if list1:
+            cur.next = list1
+        else:
+            cur.next = list2
+        
+        return dummy.next
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;26&lt;/h2&gt;
+&lt;p&gt;环形链表II。&lt;/p&gt;
+&lt;p&gt;找环的第一个节点。题解太诡异了，完全不如直接哈希。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def detectCycle(self, head: Optional[ListNode]) -&amp;gt; Optional[ListNode]:
+        mp = {}
+
+        while head:
+            if mp.get(head):
+                return head
+            mp[head] = True
+            head = head.next
+
+        return None
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;25&lt;/h2&gt;
+&lt;p&gt;环形链表。&lt;/p&gt;
+&lt;p&gt;快慢指针看是否相遇以判环。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -&amp;gt; bool:
+        slow = head
+        fast = head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                return True
+        return False   
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;24&lt;/h2&gt;
+&lt;p&gt;回文链表。&lt;/p&gt;
+&lt;p&gt;把后半段翻转，逐位比对。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def middle(self, head: Optional[ListNode]) -&amp;gt; Optional[ListNode]:
+        slow = head
+        fast = head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        return slow
+    
+    def reverse(self, head: Optional[ListNode]) -&amp;gt; Optional[ListNode]:
+        cur = head
+        pre = None
+
+        while cur:
+            nxt = cur.next
+            cur.next = pre
+            pre = cur
+            cur = nxt
+        
+        return pre
+
+
+    def isPalindrome(self, head: Optional[ListNode]) -&amp;gt; bool:
+        if head.next is None:
+            return True
+        head2 = self.reverse(self.middle(head))
+        while head and head2:
+            if head.val != head2.val:
+                return False
+            head = head.next
+            head2 = head2.next
+        return True
+&lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>C-REPL</title><link>https://cabbage74.github.io/posts/c-repl/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/c-repl/</guid><description>JYY OS 2026 M4</description><pubDate>Tue, 04 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
 &lt;p&gt;可执行文件到底是什么？&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;┌─────────┐ 高地址
@@ -184,7 +300,82 @@ add.o
 &lt;p&gt;有了这个地址，链接器再填回&lt;code&gt;.rela.*&lt;/code&gt;里告诉链接器需要填的地方。&lt;/p&gt;
 &lt;p&gt;总结步骤，链接器看各个&lt;code&gt;.o&lt;/code&gt;文件的&lt;code&gt;.symtab&lt;/code&gt;符号表，解析应该怎么依赖。合并符号表，最终布局决定以后，去把&lt;code&gt;.rela.text&lt;/code&gt;里的需要填的地址填好。符号解析+重定位地址，这就是静态链接。&lt;/p&gt;
 &lt;p&gt;静态链接会把代码都打包进一个文件里，但是&lt;code&gt;libc&lt;/code&gt;这种库如果让每个C程序都完整持有一份，显然不合理。&lt;/p&gt;
+&lt;p&gt;动态链接让磁盘甚至内存里都只有一份&lt;code&gt;libc&lt;/code&gt;的代码。依赖&lt;code&gt;libc&lt;/code&gt;的进程都链接这一份代码。&lt;/p&gt;
+&lt;p&gt;动态链接的过程仍然是类似符号解析加重定位的宗旨。&lt;/p&gt;
+&lt;p&gt;但动态链接发生在运行时。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;main
+
+.text
+    main:
+        xxx
+    add:
+        xxx
+
+.dynamic
+    动态库链接需要什么东西（需要什么动态库，动态符号表在哪，重定位表在哪等等）
+
+.plt
+    printf跳板
+
+.got
+    保存printf真实地址
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;静态链接的&lt;code&gt;add&lt;/code&gt;最终就会在&lt;code&gt;ELF&lt;/code&gt;里，所以重定位的时候很方便拿到一个相对地址填到&lt;code&gt;main&lt;/code&gt;里全是&lt;code&gt;0&lt;/code&gt;的地方。&lt;/p&gt;
+&lt;p&gt;但是&lt;code&gt;printf&lt;/code&gt;的代码段不会进&lt;code&gt;ELF&lt;/code&gt;。这里会填&lt;code&gt;call printf@plt&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;execve&lt;/code&gt;加载一个ELF的时候，如果发现需要动态链接，会先启动动态链接器&lt;code&gt;ld.so&lt;/code&gt;再跳到&lt;code&gt;_start&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;动态链接器会看&lt;code&gt;.dynamic&lt;/code&gt;看需要什么。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;plt(Procedure Linkage Table)&lt;/code&gt;可以理解为一个中转站，会去查&lt;code&gt;got(Global Offset Table)&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;got&lt;/code&gt;是一个简单的表，可能就长下面这样。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;GOT:
++----------------+
+| printf地址     |
++----------------+
+| malloc地址     |
++----------------+
+| xxx地址        |
++----------------+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;但一开始&lt;code&gt;got&lt;/code&gt;里面的地址是通向&lt;code&gt;ld.so&lt;/code&gt;的。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;printf@plt&lt;/code&gt;里的代码会跳到&lt;code&gt;got&lt;/code&gt;表，然后如果是第一次，通向&lt;code&gt;ld.so&lt;/code&gt;，由它找到真的&lt;code&gt;printf&lt;/code&gt;，填到&lt;code&gt;got&lt;/code&gt;里，后续就不需要再走&lt;code&gt;ld.so&lt;/code&gt;了。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;got&lt;/code&gt;在这里有点像缓存，之所以不让&lt;code&gt;ld.so&lt;/code&gt;一次性全部查完，而是有需要的时候一个一个查，是因为有些函数不一定需要查，这样更合理。&lt;/p&gt;
+&lt;p&gt;其实这里也解释了为什么程序运行的时候不要手动移动动态库位置了，因为&lt;code&gt;got&lt;/code&gt;里的地址就失效了。除非重启进程。&lt;/p&gt;
+&lt;p&gt;:::tip
+我其实没太理解&lt;code&gt;plt&lt;/code&gt;有什么用，感觉直接&lt;code&gt;call printf@got&lt;/code&gt;也可以。
+GPT说其实也可以，&lt;code&gt;plt&lt;/code&gt;的存在有历史原因，有些系统没有&lt;code&gt;plt&lt;/code&gt;。
+:::&lt;/p&gt;
 &lt;h2&gt;实验&lt;/h2&gt;
+&lt;p&gt;这是一个Python REPL。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# cabbage @ cabbage-Mac in ~/blog on git:main x [19:44:36] C:127
+$ python3        
+Python 3.13.2 (main, Feb  4 2025, 14:51:09) [Clang 16.0.0 (clang-1600.0.26.6)] on darwin
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+Cmd click to launch VS Code Native REPL
+&amp;gt;&amp;gt;&amp;gt; 1 + 1
+2
+&amp;gt;&amp;gt;&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;本次实验实现一个有约束的简易C-REPL。&lt;/p&gt;
+&lt;p&gt;只支持两个功能：能算表达式，能定义一行返回值为&lt;code&gt;int&lt;/code&gt;，参数类型都为&lt;code&gt;int&lt;/code&gt;的函数。&lt;/p&gt;
+&lt;p&gt;我之前一直以为Python这种解释型语言才能这样，长见识ing...&lt;/p&gt;
+&lt;p&gt;做法是把每一行输入都放进一个临时的&lt;code&gt;c&lt;/code&gt;文件，编译成共享库加载执行。&lt;/p&gt;
+&lt;p&gt;如果是表达式就把它包装成函数（直接返回那种函数），同样编译成共享库加载执行。&lt;/p&gt;
+&lt;p&gt;本质就是运用&lt;code&gt;dlopen, dlsym, dlclose&lt;/code&gt;这几个函数。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ubuntu@VM-0-9-ubuntu:~/os2026/crepl$ ./crepl 
+C REPL - 输入表达式或函数定义
+
+&amp;gt; 1 + 1
+2
+
+&amp;gt; int gcd(int a, int b) { return b ? gcd(b, a % b) : a; }
+OK: gcd() defined.
+
+&amp;gt; gcd(2, 4)
+2
+
+&amp;gt; f()
+compile error
+&lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>日拱两卒（七）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%83/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E4%B8%83/</guid><description>31 - 40</description><pubDate>Sun, 02 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;40&lt;/h2&gt;
 &lt;p&gt;二叉树的直径。&lt;/p&gt;
 &lt;p&gt;这里的坑是长度是按边计算的，不是节点数。&lt;/p&gt;
