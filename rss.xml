@@ -172,6 +172,50 @@
             head2 = head2.next
         return True
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;23&lt;/h2&gt;
+&lt;p&gt;反转链表。&lt;/p&gt;
+&lt;p&gt;因为倒着做，前面用过很多次了。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def reverseList(self, head: Optional[ListNode]) -&amp;gt; Optional[ListNode]:
+        pre = None
+        cur = head
+        while cur:
+            nxt = cur.next
+            cur.next = pre
+            pre = cur
+            cur = nxt        
+        return pre
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;22&lt;/h2&gt;
+&lt;p&gt;相交链表。&lt;/p&gt;
+&lt;p&gt;没想到题解这种思路，相当于两条路都走两遍的话肯定能找到。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -&amp;gt; Optional[ListNode]:
+        p = headA
+        q = headB
+        while p is not q:
+            p = p.next if p else headB
+            q = q.next if q else headA
+        return p 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;21&lt;/h2&gt;
+&lt;p&gt;搜索二维矩阵II。&lt;/p&gt;
+&lt;p&gt;矩阵满足每行递增，每列递增，搜有无目标值。&lt;/p&gt;
+&lt;p&gt;每次看右上角能杀掉一行或一列。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -&amp;gt; bool:
+        n, m = len(matrix), len(matrix[0])
+        i, j = 0, m - 1
+        while i &amp;lt;= n - 1 and j &amp;gt;= 0:
+            if matrix[i][j] == target:
+                return True
+            if matrix[i][j] &amp;gt; target:
+                j -= 1
+            if matrix[i][j] &amp;lt; target:
+                i += 1
+
+        return False
+&lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>C-REPL</title><link>https://cabbage74.github.io/posts/c-repl/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/c-repl/</guid><description>JYY OS 2026 M4</description><pubDate>Tue, 04 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
 &lt;p&gt;可执行文件到底是什么？&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;┌─────────┐ 高地址
