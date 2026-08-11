@@ -472,7 +472,7 @@ add.o
 &lt;p&gt;静态链接会把代码都打包进一个文件里，但是&lt;code&gt;libc&lt;/code&gt;这种库如果让每个C程序都完整持有一份，显然不合理。&lt;/p&gt;
 &lt;p&gt;动态链接让磁盘甚至内存里都只有一份&lt;code&gt;libc&lt;/code&gt;的代码。依赖&lt;code&gt;libc&lt;/code&gt;的进程都链接这一份代码。&lt;/p&gt;
 &lt;p&gt;动态链接的过程仍然是类似符号解析加重定位的宗旨。&lt;/p&gt;
-&lt;p&gt;但动态链接发生在运行时。&lt;/p&gt;
+&lt;p&gt;但动态链接的定位发生在运行时。不过进程启动时会根据ELF把相关动态库放在&lt;code&gt;mmap&lt;/code&gt;区域（动态库的物理页在系统里还是只有一份），PC在程序运行中会跳到&lt;code&gt;mmap&lt;/code&gt;区域。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;main
 
 .text
