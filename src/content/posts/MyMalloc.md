@@ -54,7 +54,7 @@ IPC（进程间通信）是麻烦的。如果操作系统能提供天然的共�
 └─────────────────┘ 低地址
 ```
 
-线程就是这样的概念，有独立的栈和寄存器（CPU寄存器的快照方便进行线程切换）。
+线程就是这样的概念，只有独立的栈（但还是在一个地址空间，意味着另一个线程只要真的有地址，还是能访问的）和寄存器（CPU寄存器的快照以方便进行线程切换）。
 
 新增一个线程就是新增一个状态机，状态迁移由执行一条指令变成选择一个状态机然后执行一条指令。
 
@@ -123,9 +123,9 @@ sum = 200000000
 
 开启`-O1`时，编译器会把`load`和`store`提到循环外面，循环里只做`add`。因为两个线程都只在开头读，结尾写，很容易开头读到零，然后加完以后写成一亿。
 
-开启`-O2`时，编译器直接常量折叠，把循环优化成一条`add`，相当于`sum += N`。
+开启`-O2`时，编译器直接把循环优化成一条`add`，相当于`sum += N`。
 
-`-O2`这种歪打正着的“正确行为”可能在并发程序调试时带来更大的困难。
+`-O2`这种歪打正着的看似“正确行为”可能在并发程序调试时带来更大的困难。
 
 除了编译器，现代CPU的复杂行为也会影响并发编程。
 
@@ -158,7 +158,7 @@ void *T_2(void *arg)
 
 但确实很可能输出`0 0`。
 
-这是因为现代CPU为了速度（性能就是金钱），并不会每次`store`都立马写回内存（指所有CPU都能看到的内存，甚至可能不是RAM）再进行下一条指令。
+这是因为现代CPU为了速度（性能就是金钱），并不会每次`store`都立马写回内存（在简化的心智模型里CPU都是写进内存，比如冯诺依曼架构，内存对所有CPU可见）再进行下一条指令。
 
 ``` txt
                     RAM / Cache Coherence
@@ -174,22 +174,193 @@ void *T_2(void *arg)
               T1                     T2
 ```
 
-CPU可以写进自己的`store buffer`就继续下一条指令，所以另一个CPU可能看不到。
-
-这里只保证所有CPU最后能看到一样的（最终一致性），但什么时候才能并没有保证。
+CPU可以写进自己的`store buffer`就继续下一条指令，所以另一个CPU可能无法立即看到。
 
 C/C++11的内存模型针对现代CPU的这些复杂现象，定义了一些语义，程序员应该基于这些语义去推理，写出好的并发程序。
 
-比如`memory_order`，C/C++语言规定“无论CPU内部怎么实现，最终允许程序观察到哪些结果”。
+或者说C/C++11给一个抽象的并发语义契约；编译器负责在各种具有`store buffer`、乱序执行等机制的 CPU 上实现这个契约。
 
-把`memory_order_relaxed`换成`memory_order_seq_cst`，能解决`0 0`的问题。具体有哪些内存序，以及它们的工作原理，这里先不展开。
+比如`memory_order`，是C/C++语言用来规定原子操作的同步强度。
+
+`memory_order_relaxed`就是不做什么干预，允许CPU以这种宽松的内存序处理程序。
+
+把`memory_order_relaxed`换成`memory_order_seq_cst`，就能解决`0 0`的问题。
+
+下面是GPT SOL概括的四个内存序。
+
+``` txt
+relaxed   ：只保证这个原子变量本身不会读写撕裂，不帮你建立顺序
+release   ：我之前做的事情，不能跑到这个 release 后面
+acquire   ：我之后做的事情，不能跑到这个 acquire 前面
+seq_cst   ：acquire + release + 所有 seq_cst 操作还有一个全局统一顺序
+```
+
+并发编程很困难，应对的方法就是退回到“不并发”。
+
+``` c
+lock()
+...
+unlock()
+```
+
+互斥能让一片区域只有一个线程处理。
+
+下面讨论互斥锁的实现。
+
+先讨论最小问题：我在自己的用户态程序里，怎么凭空做出一把“同时只能一个线程进去”的锁？
+
+``` c
+locked = 0
+
+void lock() {
+    while (locked == 1)
+        ;
+
+    locked = 1;
+}
+
+void unlock() {
+    locked = 0;
+}
+```
+
+由于`load store`是两个动作，这里存在`data race`。
+
+硬件提供一些原子操作，比如`atomic exchange`。
+
+:::tip
+对于远古时代没有原子操作的硬件呢？
+一些经典算法，比如Peterson算法，但基于足够强的内存序，以及`load store`本身的原子。
+更远古只有单核的机器只要关中断就只有一个执行流能运行，也相当于互斥了。
+:::
+
+``` c
+int exchange(int *p, int new) {
+    // 原子地：
+    old = *p;
+    *p = new;
+    return old;
+}
+
+void lock() {
+    while (exchange(&locked, 1) == 1)
+        ;
+}
+```
+
+利用这些原子API能简单地实现互斥锁。
+
+下面是一个真的C11程序。
+
+``` c
+#include <stdio.h>
+#include <pthread.h>
+#include <stdatomic.h>
+
+#define N 1000000
+
+atomic_int locked = 0;
+long sum = 0;
+
+void my_lock() {
+    while (atomic_exchange_explicit(
+        &locked,
+        1,
+        memory_order_acquire)) {
+    }
+}
+
+void my_unlock() {
+    atomic_store_explicit(
+        &locked,
+        0,
+        memory_order_release);
+}
+
+void *worker(void *arg) {
+    for (int i = 0; i < N; i++) {
+        my_lock();
+        sum++;
+        my_unlock();
+    }
+
+    return NULL;
+}
+
+int main() {
+    pthread_t t1, t2;
+
+    pthread_create(&t1, NULL, worker, NULL);
+    pthread_create(&t2, NULL, worker, NULL);
+
+    pthread_join(t1, NULL);
+    pthread_join(t2, NULL);
+
+    printf("sum = %ld\n", sum);
+    printf("expected = %d\n", 2 * N);
+}
+```
+
+为什么这里需要`acquire`与`release`呢？
+
+``` c
+my_lock();
+
+x = 666;
+
+my_unlock();
+```
+
+因为需要保证`x = 666`一定不被`lock`之前看到，一定被`unlock`之后看到。
+
+如果`unlock`了，锁中间这个线程做的修改还在`store buffer`里不对所有CPU可见那就不符合我们想要的了。
+
+总结一下目前为止的，实现一把互斥锁：原子操作 + `acquire/release`。
+
+但这样的自旋锁浪费时间片，等待的线程拿到时间片以后什么都干不了。
+
+理想情况是没抢到就睡觉去，回家等通知。
+
+``` txt
+Thread A
+lock
+进入临界区
 
 
+Thread B
+lock
+发现失败
+    ↓
+告诉 OS：
+“我暂时不用 CPU 了”
+    ↓
+sleep 
+```
 
+由OS的调度器把B从Runnable队列移走，等A解锁了再唤醒B。
 
+这就是`mutex`和`spinlock`的区别。
 
-
-
-
+``` txt
+pthread_mutex_lock()   由 glibc 的 pthread 库在用户态实现
+        │
+        ▼
+先在用户态用原子指令 CAS 抢锁
+        │
+   ┌────┴────┐
+   │         │
+ 成功       失败
+   │         │
+直接返回   竞争严重
+             │
+             ▼
+        futex syscall
+             │
+             ▼
+         Linux 内核
+        把线程睡眠
+```
 
 ## 实验
+
+有点像CSAPP那个Malloc Lab。
