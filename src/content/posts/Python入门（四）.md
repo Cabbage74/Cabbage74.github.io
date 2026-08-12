@@ -199,5 +199,9 @@ gen.send("hello")  # 收到: hello
 gen.send("world")  # 收到: world
 ```
 
-`yield`出现在等式右边时也可以接收值。这是简单协程的写法，现代Python基本没人用了。
+`yield`出现在等式右边时也可以接收值，一开始PC在函数开头，Python规定需要先`send(None)`一次把PC移到yield位置。
+
+后续`hello`会作为`received`的接受值然后继续运行直到下一个`yield`。
+
+当然这是简单协程的写法，现代Python基本没人用了。
 
