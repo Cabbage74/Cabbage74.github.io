@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>Httpd</title><link>https://cabbage74.github.io/posts/httpd/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/httpd/</guid><description>JYY OS 2026 M7</description><pubDate>Wed, 12 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
-&lt;p&gt;线程虽然能并发，但线程的创建与切换本身也有代价（8MB的栈，上下文切换），创建线程的代价有可能比函数调用还要大。&lt;/p&gt;
+&lt;p&gt;线程虽然能并发，但线程的创建与切换本身也有代价（8MB的栈，上下文切换），创建和切换线程的代价有可能比函数调用还要大。&lt;/p&gt;
 &lt;p&gt;问题是：线程虽然比进程轻，但还是太重，怎么更轻，还能支持大量并发任务？&lt;/p&gt;
 &lt;p&gt;对于这种情况，一种思路是设计出更轻量的线程，一种思路是事件驱动异步编程模型。&lt;/p&gt;
 &lt;p&gt;先看第一种思路。&lt;/p&gt;
@@ -52,7 +52,7 @@ taskB:
 
 go worker()
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Go就是这样的语言，这看起来完全是同步阻塞代码，但Go的运行时不会让这个goroutine在&lt;code&gt;read&lt;/code&gt;处阻塞，而是让它睡去，等有消息了再唤醒，背后和&lt;code&gt;epoll&lt;/code&gt;那套是一样的。&lt;/p&gt;
+&lt;p&gt;这看起来完全是同步阻塞代码，但Go的运行时不会让这个goroutine在&lt;code&gt;read&lt;/code&gt;处阻塞，而是让它睡去，等有消息了再唤醒，背后和&lt;code&gt;epoll&lt;/code&gt;那套是一样的。&lt;/p&gt;
 &lt;p&gt;并且Go的运行时会维护若干内核线程与若干goroutine之间的映射，实现物理上的并行。&lt;/p&gt;
 &lt;p&gt;Go隐藏了用户线程调度的细节，隐藏了异步I/O的实现机制，但程序员还是需要处理很多并行流，此时就需要用上互斥与同步。&lt;/p&gt;
 &lt;p&gt;再看第二种事件驱动的异步编程模型思路。&lt;/p&gt;
@@ -264,6 +264,13 @@ asyncio.run(main())
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Python asyncio的几个语义。&lt;/p&gt;
 &lt;h2&gt;实验&lt;/h2&gt;
+&lt;p&gt;根据骨架代码实现一个http服务器，支持并发。&lt;/p&gt;
+&lt;p&gt;CGI协议是做这个实验才知道的，Common Gateway Interface（通用网关接口），规定HTTP服务器怎么调用外部程序。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;GET /cgi-bin/hello.py?name=wang HTTP/1.1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;如果url以&lt;code&gt;cgi-bin&lt;/code&gt;开头，服务器应该启动对应的程序，并把参数通过环境变量和标准输入传进去。程序的输出再包装成http response返回。&lt;/p&gt;
+&lt;p&gt;本质是每个请求fork一个新进程：&lt;code&gt;请求进来 → fork + exec 一个解释器跑脚本 → 脚本 stdout 变成响应 → 进程销毁&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;不过CGI已经过时了，现代的开发方法至少是像Go net/http包那样，服务器和应用程序是同一个进程，或者像Nginx那样转发请求，而不是fork新进程。&lt;/p&gt;
 </content:encoded></item><item><title>GPT.c</title><link>https://cabbage74.github.io/posts/gptc/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/gptc/</guid><description>JYY OS 2026 M6</description><pubDate>Mon, 10 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
 &lt;p&gt;互斥只解决了“谁做无所谓，但不能同时做”。&lt;/p&gt;
 &lt;p&gt;但有些并发问题对谁来做的先后顺序有要求，比如生产者-消费者问题。&lt;/p&gt;
@@ -470,6 +477,73 @@ pthread_cond_signal(&amp;amp;cond);
         for i in range(1, n + 1):
             ans = max(ans, s[i] - pre_min[i - 1])
             pre_min[i] = min(pre_min[i - 1], s[i])
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;12&lt;/h2&gt;
+&lt;p&gt;最小覆盖子串。&lt;/p&gt;
+&lt;p&gt;返回最短的子串，包含目标串的所有字母。&lt;/p&gt;
+&lt;p&gt;滑动窗口维护每个字母的出现次数，右端点固定了以后左端点就可以贪心往右走。&lt;/p&gt;
+&lt;p&gt;Python要求字典里的Key得初始化才能用，很麻烦。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;for i in range(26):
+    cnt[i] = 0
+for i in range(32, 32 + 26):
+    cnt[i] = 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;如果直接用&lt;code&gt;cnt = {}&lt;/code&gt;需要写这种初始化代码，用&lt;code&gt;defaultdict(int)&lt;/code&gt;会默认有初始值&lt;code&gt;0&lt;/code&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def minWindow(self, s: str, t: str) -&amp;gt; str:
+        ans = &quot;&quot;
+        n = len(s)
+        m = len(t)
+
+        target = defaultdict(int)
+        for i in range(m):
+            target[ord(t[i]) - ord(&apos;A&apos;)] += 1
+        
+        # [l, r)
+        l, r = 0, 0 
+        cnt = defaultdict(int)
+
+        def check() -&amp;gt; bool:
+            for c in target:
+                if target[c] &amp;gt; cnt[c]:
+                    return False
+            return True
+
+        while True:
+            if r &amp;lt;= n - 1:
+                r += 1
+                cnt[ord(s[r - 1]) - ord(&apos;A&apos;)] += 1
+            while check():
+                if r - l &amp;lt; len(ans) or ans == &quot;&quot;:
+                    ans = s[l:r]
+                cnt[ord(s[l]) - ord(&apos;A&apos;)] -= 1
+                l += 1
+            if r == n:
+                break
+        
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;11&lt;/h2&gt;
+&lt;p&gt;滑动窗口最大值。&lt;/p&gt;
+&lt;p&gt;单调队列。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -&amp;gt; List[int]:
+        n = len(nums)
+
+        ans = []
+        q = deque()
+        for r in range(n):
+            l = r - k + 1
+            while q and q[0] &amp;lt; l:
+                q.popleft()
+            while q and nums[q[-1]] &amp;lt;= nums[r]:
+                q.pop()
+            q.append(r)
+
+            if l &amp;gt;= 0:
+                ans.append(nums[q[0]])
+        
         return ans
 &lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>日拱两卒（八）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%85%AB/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%85%AB/</guid><description>21 - 30</description><pubDate>Thu, 06 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;30&lt;/h2&gt;
@@ -1132,7 +1206,7 @@ compile error
 &lt;p&gt;它包含但不限于以下方面：调用函数时参数放哪里？结构体内存布局如何Padding？函数名如何修饰？&lt;/p&gt;
 &lt;p&gt;类似CSAPP的书在教学的时候一般都是这样的心智模型：调用函数时，参数、局部变量、返回地址都扔到栈上。&lt;/p&gt;
 &lt;p&gt;这其实就是一种具体的ABI。&lt;/p&gt;
-&lt;p&gt;在x86的系统上其实是另一种规范，第一个参数会放到rdi上，第二个参数会放到rsi上...&lt;/p&gt;
+&lt;p&gt;在x86-64的系统上其实是另一种规范，第一个参数会放到rdi上，第二个参数会放到rsi上...&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;int add(int a, int b);
 
 int main()
@@ -1154,7 +1228,7 @@ int main()
 &lt;h2&gt;实验&lt;/h2&gt;
 &lt;p&gt;实现一个命令行工具，能启动另一个程序，然后统计这个程序里每个系统调用的时间。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;strace -T&lt;/code&gt;其实有这个功能。JYY给的方法是父进程启动子进程跑&lt;code&gt;strace&lt;/code&gt;，用管道拿到以后直接解析。&lt;/p&gt;
-&lt;p&gt;Linux还提供了&lt;code&gt;ptrace&lt;/code&gt;这个系统调用，允许一个进程观察和控制另一个进程的执行。&lt;code&gt;strace, gdb, perf&lt;/code&gt;这些都基于这个。&lt;/p&gt;
+&lt;p&gt;Linux还提供了&lt;code&gt;ptrace&lt;/code&gt;这个系统调用，允许一个进程观察和控制另一个进程的执行。&lt;code&gt;strace, gdb&lt;/code&gt;这些都基于这个。&lt;/p&gt;
 </content:encoded></item><item><title>日拱两卒（六）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%85%AD/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%85%AD/</guid><description>41 - 50</description><pubDate>Tue, 28 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;50&lt;/h2&gt;
 &lt;p&gt;二叉树中的最大路径和。&lt;/p&gt;
 &lt;p&gt;维护每个节点的左右两条链。&lt;/p&gt;
@@ -3140,7 +3214,7 @@ export function useRoute() {
 &lt;p&gt;二是要请求的文件太多，需要排队。虽然拆分代码方便程序员调试维护，但不方便浏览器请求。&lt;/p&gt;
 &lt;p&gt;三是浏览器会缓存旧文件，比如这里的anime库走的是memory cache。刷新页面可能不会很及时地体现背后代码的变动。一个笨方法是每次改完代码就把文件名也手动修改一下，让浏览器不走缓存，但显然不方便。&lt;/p&gt;
 &lt;p&gt;构建工具可以帮助解决这三个问题，Vite是现在最流行的一个。&lt;/p&gt;
-&lt;p&gt;Vite是用Node.js写的，Node.js是一套让js能在浏览器外面跑的环境。&lt;/p&gt;
+&lt;p&gt;Vite是用TypeScript写跑在Node.js上的，Node.js是一套让js能在浏览器外面跑的环境。&lt;/p&gt;
 &lt;p&gt;npm是Node.js的包管理器，类似Cargo之于Rust。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;npm init -y
 &lt;/code&gt;&lt;/pre&gt;
