@@ -45,7 +45,7 @@ lang: ''
 
 构建工具可以帮助解决这三个问题，Vite是现在最流行的一个。
 
-Vite是用Node\.js写的，Node\.js是一套让js能在浏览器外面跑的环境。
+Vite是用TypeScript写跑在Node\.js上的，Node\.js是一套让js能在浏览器外面跑的环境。
 
 npm是Node\.js的包管理器，类似Cargo之于Rust。
 
