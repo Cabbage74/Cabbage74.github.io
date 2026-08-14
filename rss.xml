@@ -1,4 +1,232 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>Httpd</title><link>https://cabbage74.github.io/posts/httpd/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/httpd/</guid><description>JYY OS 2026 M7</description><pubDate>Wed, 12 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>日拱两卒（十）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%8D%81/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%8D%81/</guid><description>1 - 10</description><pubDate>Fri, 14 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;10&lt;/h2&gt;
+&lt;p&gt;和为K的子数组。&lt;/p&gt;
+&lt;p&gt;枚举左端点，维护潜在目标右端点的数量。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def subarraySum(self, nums: List[int], k: int) -&amp;gt; int:
+        n = len(nums)
+        s = [0 for _ in range(n + 1)]
+        cnt = defaultdict(int)
+        for i in range(n):
+            s[i + 1] = s[i] + nums[i]
+            cnt[s[i + 1]] += 1
+        
+        ans = 0
+        for l in range(1, n + 1):
+            ans += cnt[s[l - 1] + k]
+            cnt[s[l]] -= 1
+        
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;9&lt;/h2&gt;
+&lt;p&gt;找到字符串中所有字母异位词。&lt;/p&gt;
+&lt;p&gt;字母的种类和个数一样，顺序不要求一样就是异位词。维护定长滑动窗口里的字母种类和个数。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def findAnagrams(self, s: str, p: str) -&amp;gt; List[int]:
+        n, m = len(s), len(p)
+        
+        target = defaultdict(int)
+        for i in range(m):
+            target[p[i]] += 1
+        
+        cnt = defaultdict(int)
+        l = 0
+        ans = []
+
+        def check() -&amp;gt; bool:
+            for c in cnt:
+                if target[c] != cnt[c]:
+                    return False
+            return True
+
+        for r in range(n):
+            cnt[s[r]] += 1
+            if r - l + 1 &amp;gt; m:
+                cnt[s[l]] -= 1
+                l += 1
+            if r - l + 1 == m and check():
+                ans.append(l)
+        
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;8&lt;/h2&gt;
+&lt;p&gt;无重复字符的最长子串。&lt;/p&gt;
+&lt;p&gt;还是滑动窗口。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def lengthOfLongestSubstring(self, s: str) -&amp;gt; int:
+        n = len(s)
+        cnt = defaultdict(int)
+
+        ans = 0
+        l = 0
+        for r in range(n):
+            cnt[s[r]] += 1
+            
+            for c in cnt:
+                while cnt[c] &amp;gt; 1:
+                    cnt[s[l]] -= 1
+                    l += 1
+            
+            ans = max(ans, r - l + 1)
+
+        return ans
+            
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;7&lt;/h2&gt;
+&lt;p&gt;接雨水。&lt;/p&gt;
+&lt;p&gt;每一个位置的贡献是&lt;code&gt;min(左侧最高木板，右侧最高木板) - 该位置模板高度&lt;/code&gt;。维护前后缀最大值很容易算。&lt;/p&gt;
+&lt;p&gt;题解的优化是把空间降到&lt;code&gt;O(1)&lt;/code&gt;，相向双指针，原理是木板短的那一侧都能确定贡献，所以能移动这一侧的指针。不预计算数组而是动态维护两个变量。&lt;/p&gt;
+&lt;p&gt;没啥必要。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def trap(self, height: List[int]) -&amp;gt; int:
+        n = len(height)
+        pre_max = [-1 for _ in range(n)]
+        suf_max = [-1 for _ in range(n)]
+
+        pre_max[0] = height[0]
+        for i in range(1, n):
+            pre_max[i] = max(pre_max[i - 1], height[i])
+
+        suf_max[n - 1] = height[n - 1]
+        for i in range(n - 2, 0, -1):
+            suf_max[i] = max(suf_max[i + 1], height[i])
+
+        ans = 0
+        for i in range(1, n - 1):
+            ans += max(0, min(pre_max[i - 1], suf_max[i + 1]) - height[i])
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;6&lt;/h2&gt;
+&lt;p&gt;三数之和。&lt;/p&gt;
+&lt;p&gt;固定一位，剩下两位靠排序带来的单调性做双指针。&lt;/p&gt;
+&lt;p&gt;如果不用&lt;code&gt;set()&lt;/code&gt;去重的话要跳过重复元素。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def threeSum(self, nums: list[int]) -&amp;gt; list[list[int]]:
+        ans = []
+        n = len(nums)
+        nums.sort()
+
+        for i in range(n):
+            if i &amp;gt; 0 and nums[i] == nums[i - 1]:
+                continue
+
+            l, r = i + 1, n - 1
+
+            while l &amp;lt; r:
+                s = nums[i] + nums[l] + nums[r]
+
+                if s == 0:
+                    ans.append([nums[i], nums[l], nums[r]])
+
+                    while l &amp;lt; r and nums[l + 1] == nums[l]:
+                        l += 1
+
+                    while l &amp;lt; r and nums[r - 1] == nums[r]:
+                        r -= 1
+
+                    l += 1
+                    r -= 1
+
+                elif s &amp;gt; 0:
+                    r -= 1
+
+                else:
+                    l += 1
+
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;5&lt;/h2&gt;
+&lt;p&gt;盛最多水的容器。&lt;/p&gt;
+&lt;p&gt;相向双指针，动长的那根木板一定没收益，所以每次动短的那根木板。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def maxArea(self, height: List[int]) -&amp;gt; int:
+        n = len(height)
+        l, r = 0, n - 1
+        ans = (n - 1) * min(height[0], height[n - 1])
+
+        while l &amp;lt; r:
+            if height[l] &amp;lt; height[r]:
+                l += 1
+            else:
+                r -= 1
+            ans = max(ans, (r - l) * min(height[l], height[r]))
+        
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;4&lt;/h2&gt;
+&lt;p&gt;移动零。&lt;/p&gt;
+&lt;p&gt;维护不变量，把非零元素都换到前面来。&lt;/p&gt;
+&lt;p&gt;写成把零元素都换到后面去的逻辑会导致非零元素的原本顺序被打乱。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def moveZeroes(self, nums: List[int]) -&amp;gt; None:
+        end = 0
+        n = len(nums)
+
+        for i in range(n):
+            if nums[i] != 0:
+                nums[end], nums[i] = nums[i], nums[end]
+                end += 1
+        
+        return
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;3&lt;/h2&gt;
+&lt;p&gt;最长连续序列。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;101 5 1 2 3 9 4&lt;/code&gt;的最长连续序列指&lt;code&gt;1 2 3 4 5&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;维护个数，记忆化，每个元素最多被遍历一次。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def longestConsecutive(self, nums: List[int]) -&amp;gt; int:
+        n = len(nums)
+        cnt = defaultdict(int)
+
+        for i in range(n):
+            cnt[nums[i]] += 1
+
+        @cache
+        def dfs(u) -&amp;gt; int:
+            if not cnt.get(u - 1):
+                return 1
+            return 1 + dfs(u - 1)
+
+        ans = 0
+        for c in cnt:
+            ans = max(ans, dfs(c))
+        
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;2&lt;/h2&gt;
+&lt;p&gt;字母异位词分组。&lt;/p&gt;
+&lt;p&gt;把字符串按照字符种类和个数分类。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def groupAnagrams(self, strs: List[str]) -&amp;gt; List[List[str]]:
+        ans = []
+        tot = 0
+        mp = {}
+
+        for s in strs:
+            key = &apos;&apos;.join(sorted(s))
+            if key not in mp:
+                ans.append([s])
+                mp[key] = tot
+                tot += 1
+            else:
+                ans[mp[key]].append(s)
+        
+        return ans
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;1&lt;/h2&gt;
+&lt;p&gt;两数之和。&lt;/p&gt;
+&lt;p&gt;注意要求了一个数不能用两次。&lt;/p&gt;
+&lt;p&gt;终于！结束了！&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution:
+    def twoSum(self, nums: List[int], target: int) -&amp;gt; List[int]:
+        n = len(nums)
+        mp = {}
+
+        for i in range(n):
+            if target - nums[i] in mp:
+                return [i, mp[target - nums[i]]]
+            mp[nums[i]] = i
+&lt;/code&gt;&lt;/pre&gt;
+</content:encoded></item><item><title>Httpd</title><link>https://cabbage74.github.io/posts/httpd/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/httpd/</guid><description>JYY OS 2026 M7</description><pubDate>Wed, 12 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
 &lt;p&gt;线程虽然能并发，但线程的创建与切换本身也有代价（8MB的栈，上下文切换），创建和切换线程的代价有可能比函数调用还要大。&lt;/p&gt;
 &lt;p&gt;问题是：线程虽然比进程轻，但还是太重，怎么更轻，还能支持大量并发任务？&lt;/p&gt;
 &lt;p&gt;对于这种情况，一种思路是设计出更轻量的线程，一种思路是事件驱动异步编程模型。&lt;/p&gt;
@@ -263,6 +491,22 @@ asyncio.run(main())
     → 创建/运行 event loop，从 main 开始跑
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Python asyncio的几个语义。&lt;/p&gt;
+&lt;p&gt;此时有一种每个语言的并发模型区别很大的感觉，学得会有点累。&lt;/p&gt;
+&lt;p&gt;着重点要关注四点，所有并发模型都在回答这四个问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;并发单元是什么——线程?协程?进程?回调?&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;谁来调度——内核?用户态运行时?事件循环?&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;它们怎么通信——共享内存+锁?消息传递?异步返回值?&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;等待时谁被阻塞——阻塞整个内核线程?还是只挂起一个轻量单元?&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2&gt;实验&lt;/h2&gt;
 &lt;p&gt;根据骨架代码实现一个http服务器，支持并发。&lt;/p&gt;
 &lt;p&gt;CGI协议是做这个实验才知道的，Common Gateway Interface（通用网关接口），规定HTTP服务器怎么调用外部程序。&lt;/p&gt;
