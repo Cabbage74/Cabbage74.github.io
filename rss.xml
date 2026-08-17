@@ -1,4 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>日拱两卒（十）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%8D%81/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%8D%81/</guid><description>1 - 10</description><pubDate>Fri, 14 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;10&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>LibKVDB</title><link>https://cabbage74.github.io/posts/libkvdb/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/libkvdb/</guid><description>JYY OS 2026 M9</description><pubDate>Sun, 16 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
+&lt;p&gt;最后两节JYY广度优先地讲了计算机安全和虚拟化的一些东西。&lt;/p&gt;
+&lt;p&gt;让“一套服务感觉自己在独占机器”有两条路线。&lt;/p&gt;
+&lt;p&gt;一条是SOSP1997论文Disco为起点，VMWare为代表的思路。&lt;/p&gt;
+&lt;p&gt;一条是利用Linux自带的Namespace和Cgroup做隔离，Docker把这套做成了一个标准化又易用的产品。&lt;/p&gt;
+&lt;h2&gt;实验&lt;/h2&gt;
+&lt;p&gt;实现一个Crash Safe的简易KV DB。&lt;/p&gt;
+&lt;p&gt;不要求性能，一把大锁加Write Ahead Log即可。&lt;/p&gt;
+</content:encoded></item><item><title>日拱两卒（十）</title><link>https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%8D%81/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E6%97%A5%E6%8B%B1%E4%B8%A4%E5%8D%92%E5%8D%81/</guid><description>1 - 10</description><pubDate>Fri, 14 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;10&lt;/h2&gt;
 &lt;p&gt;和为K的子数组。&lt;/p&gt;
 &lt;p&gt;枚举左端点，维护潜在目标右端点的数量。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;class Solution:
