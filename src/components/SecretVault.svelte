@@ -231,9 +231,6 @@
       <div class="text-2xl font-bold mb-2 text-black/90 dark:text-white/90">
         Secret
       </div>
-      <p class="text-sm text-black/50 dark:text-white/50 mb-6">
-        私密文章已加密，输入密码解锁。
-      </p>
       <form on:submit|preventDefault={onSubmit}>
         <input
           type="password"
