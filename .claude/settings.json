@@ -6,7 +6,9 @@
       "Bash(grep -n '```' /Users/cabbage/blog/src/content/posts/Python入门（二）.md)",
       "Bash(pnpm astro *)",
       "Bash(git checkout *)",
-      "Bash(pnpm install *)"
+      "Bash(pnpm install *)",
+      "WebSearch",
+      "WebFetch(domain:jyywiki.cn)"
     ]
   }
 }
