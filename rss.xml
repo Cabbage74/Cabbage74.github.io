@@ -234,6 +234,80 @@
                 return [i, mp[target - nums[i]]]
             mp[nums[i]] = i
 &lt;/code&gt;&lt;/pre&gt;
+</content:encoded></item><item><title>FSRecov</title><link>https://cabbage74.github.io/posts/fsrecov/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/fsrecov/</guid><description>JYY OS 2026 M8</description><pubDate>Thu, 13 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
+&lt;p&gt;文件系统本质是将块设备按照某种方法（如ext4）维护成数据结构（目录树）。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;mount&lt;/code&gt;这个syscall可以把一个块设备挂载（解析块设备）到指定目录。比如插U盘这个例子，桌面上或者某个文件夹里会多一个U盘文件夹。&lt;/p&gt;
+&lt;p&gt;目录树这个数据结构在Linux表现为每个节点是&lt;code&gt;inode&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;把文件名想象成边，硬链接&lt;code&gt;ln a.txt b.txt&lt;/code&gt;表现为从目录节点新建一条边指向&lt;code&gt;a.txt&lt;/code&gt;那条边指向的节点。所以&lt;code&gt;rm&lt;/code&gt;这个操作本质调的syscall是&lt;code&gt;unlink&lt;/code&gt;，引用计数减一，不管是&lt;code&gt;rm a.txt&lt;/code&gt;或是&lt;code&gt;rm b.txt&lt;/code&gt;都不会删这个节点。&lt;/p&gt;
+&lt;p&gt;软链接/符号链接&lt;code&gt;ln -s a.txt b.txt&lt;/code&gt;表现为从目录节点新建一条边指向一个新节点，这个新节点可以看作什么都没有就是个路径字符串&lt;code&gt;a.txt&lt;/code&gt;。内核解析时看到了会跳到目标路径的文件。&lt;/p&gt;
+&lt;p&gt;文件有很多属性。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;-rw-rw-r--   1   ubuntu   ubuntu   44   Aug 5 19:09   add.c
+│            │     │        │      │        │          │
+│            │     │        │      │        │          └─ 文件名
+│            │     │        │      │        └─ 最后修改时间 mtime
+│            │     │        │      └─ 文件大小，单位字节
+│            │     │        └─ 所属组 group
+│            │     └─ 所有者 owner
+│            └─ 硬链接数量
+└─ 文件类型 + 权限
+
+-   rw-   rw-   r--
+│    │     │     │
+│    │     │     └─ others：其他用户
+│    │     └─ group：同组用户
+│    └─ user：文件所有者
+└─ 文件类型
+
+-    普通文件
+d    directory，目录
+l    symbolic link，符号链接
+c    character device，字符设备
+b    block device，块设备
+p    pipe/FIFO
+s    socket
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;除了这些自带的，文件可以通过&lt;code&gt;xattr&lt;/code&gt;添加任何想要的属性。比如&lt;code&gt;embedding&lt;/code&gt;（VectorFS）。&lt;/p&gt;
+&lt;p&gt;文件系统还提供了很多强力的功能。&lt;/p&gt;
+&lt;p&gt;如果有监控文件改变的需求（比如写Web的时候热更新，Vscode监控文件变化），Linux提供&lt;code&gt;inotify&lt;/code&gt;这组syscall。通过注册文件描述符，关心的事件（比如修改），就能和&lt;code&gt;epoll&lt;/code&gt;这种机制联动了。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;inotify&lt;/code&gt;本质是内核提供给了我们一套hook机制，修改&lt;code&gt;inode&lt;/code&gt;的时候发现正好有人watch它时就通知。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;eBPF&lt;/code&gt;是一个更强的机制，正好也能做这件事。&lt;code&gt;eBPF&lt;/code&gt;是一个Linux提供的机制，允许把用户态代码注入到内核提供的特定hook里（当然Linux会检查必须是安全的代码）。那其实可以自己实现更丰富的监控逻辑。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;eBPF&lt;/code&gt;还能做很多事。&lt;code&gt;BPF(Berkeley Packet Filter)&lt;/code&gt;原本是一种针对网络包的技术，如果想过滤一些网络包，比如来自某个IP的网络包，那过滤的逻辑得写在用户态代码里，然后才能丢掉。但是如果过滤代码能在内核运行可以快很多，省去很多上下文切换和数据拷贝。这个技术从只针对网络包到针对所有，变成了&lt;code&gt;extended BPF&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;除了监控还有个&lt;code&gt;overlay&lt;/code&gt;的机制很有趣。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;mount&lt;/code&gt;除了挂载，可以把两个目录拼凑成一个虚拟的目录。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;          upper/
+             +
+          lower/
+             │
+             ▼
+         merged/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这个目录满足：所有的写入都写进upper（如果是删除lower里有的，在upper打tombstone，如果是修改，从lower里拷贝一份到upper再修改），对于重名文件优先看到upper里的。&lt;/p&gt;
+&lt;p&gt;这个功能能让我们实现“网吧管理”这种功能，给每个顾客一个upper就行了，下一个顾客来就换一个upper。&lt;/p&gt;
+&lt;p&gt;Docker大量用了这个。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;FROM ubuntu
+RUN apt install python3
+COPY app /app
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;一开始，lower是ubuntu镜像，然后在upper里装python环境。然后把这当成一个整体lower，在upper里拷贝宿主机的目录。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;┌────────────────────────┐
+│ container writable     │ ← upper
+├────────────────────────┤
+│ app layer              │ ← 这里以及下面都是镜像层（lower）
+├────────────────────────┤
+│ python layer           │
+├────────────────────────┤
+│ ubuntu base            │
+└────────────────────────┘
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;最后再加一层容器可写层，一个Docker容器就可以跑了。&lt;/p&gt;
+&lt;p&gt;如果在容器里&lt;code&gt;echo hello &amp;gt;&amp;gt; /app/main.py&lt;/code&gt;并不会写镜像层的&lt;code&gt;main.py&lt;/code&gt;，而是把这个文件拷贝一份到可写层。所以容器的写入不会影响镜像层，而同一个镜像的多个容器能共享这个镜像，节省空间。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;./images/GPTSOL.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;当我问GPT SOL这个机制背后的原理时...&lt;/p&gt;
+&lt;h2&gt;实验&lt;/h2&gt;
+&lt;p&gt;实验目标是写一个命令行工具&lt;code&gt;fsrecov&lt;/code&gt;尽可能多地从被快速格式化的FAT32镜像里恢复出BMP图像。&lt;/p&gt;
+&lt;p&gt;FAT32文件系统的格式化不会真的把块设备里的数据全部清空，而是会清空FAT32里的一个File Allocation Table。相当于只是擦掉了定位真实数据的指针的信息。&lt;/p&gt;
+&lt;p&gt;既然数据区没被破坏，只是元数据区被破坏了，那就有一定的办法恢复出一些文件。&lt;/p&gt;
+&lt;p&gt;比如实验给的文件都是BMP文件，根据这些文件的特征可以硬编码一些规则。&lt;/p&gt;
 </content:encoded></item><item><title>Httpd</title><link>https://cabbage74.github.io/posts/httpd/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/httpd/</guid><description>JYY OS 2026 M7</description><pubDate>Wed, 12 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
 &lt;p&gt;线程虽然能并发，但线程的创建与切换本身也有代价（8MB的栈，上下文切换），创建和切换线程的代价有可能比函数调用还要大。&lt;/p&gt;
 &lt;p&gt;问题是：线程虽然比进程轻，但还是太重，怎么更轻，还能支持大量并发任务？&lt;/p&gt;
