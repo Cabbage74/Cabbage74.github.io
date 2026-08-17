@@ -52,6 +52,10 @@ export const navBarConfig: NavBarConfig = {
 		LinkPreset.Home,
 		LinkPreset.Archive,
 		LinkPreset.About,
+		{
+			name: "Secret",
+			url: "/secret/",
+		},
 		// {
 		//	 name: "GitHub",
 		//	 url: "https://github.com/saicaca/fuwari", // Internal links should not include the base path, as it is automatically added

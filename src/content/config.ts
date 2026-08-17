@@ -21,7 +21,20 @@ const postsCollection = defineCollection({
 const specCollection = defineCollection({
 	schema: z.object({}),
 });
+
+// Secret articles: rendered through the same markdown pipeline as posts,
+// then encrypted before being committed. Plaintext is gitignored.
+const secretsCollection = defineCollection({
+	schema: z.object({
+		title: z.string(),
+		published: z.date(),
+		description: z.string().optional().default(""),
+		tags: z.array(z.string()).optional().default([]),
+	}),
+});
+
 export const collections = {
 	posts: postsCollection,
 	spec: specCollection,
+	secrets: secretsCollection,
 };
