@@ -241,7 +241,13 @@ async function main() {
 			) || [])[1] ?? "",
 		);
 
-		const html = inlineAssets(body);
+		// Title/date are rendered by the vault UI from the fields above; strip
+		// them from the encrypted HTML so they aren't duplicated and unstyled.
+		const html = inlineAssets(
+			body
+				.replace(/<h1 class="secret-title"[^>]*>[\s\S]*?<\/h1>/, "")
+				.replace(/<div class="secret-published"[^>]*>[\s\S]*?<\/div>/, ""),
+		);
 
 		const { iv, ciphertext } = encrypt(
 			JSON.stringify({ title, published, html }),

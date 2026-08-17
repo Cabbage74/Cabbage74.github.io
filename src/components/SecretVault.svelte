@@ -193,6 +193,12 @@
         >
           ← 返回列表
         </button>
+        <div class="text-3xl font-bold mb-2 text-black/90 dark:text-white/90">
+          {selected.title}
+        </div>
+        <div class="text-sm text-black/50 dark:text-white/50 mb-4">
+          {selected.published}
+        </div>
         <div class="markdown-content">
           {@html selected.html}
         </div>
