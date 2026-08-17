@@ -69,7 +69,7 @@
       },
       keyMaterial,
       { name: "AES-GCM", length: 256 },
-      false,
+      true,
       ["decrypt"],
     );
   }
