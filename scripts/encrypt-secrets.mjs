@@ -243,14 +243,19 @@ async function main() {
 
 		const html = inlineAssets(body);
 
-		const bundleName =
-			createHash("sha256").update(d.name).digest("hex").slice(0, 16) +
-			".json";
 		const { iv, ciphertext } = encrypt(
 			JSON.stringify({ title, published, html }),
 			password,
 			salt,
 		);
+
+		// Content-address the bundle so re-encrypting (new password/IV) produces
+		// a new filename, avoiding stale CDN/browser cache mismatches.
+		const bundleName =
+			createHash("sha256")
+				.update(d.name + ":" + ciphertext)
+				.digest("hex")
+				.slice(0, 16) + ".json";
 		writeFileSync(
 			join(OUT_DIR, bundleName),
 			JSON.stringify({ v: 1, iv, ciphertext }, null, 2),

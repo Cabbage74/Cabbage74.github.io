@@ -130,7 +130,7 @@
     error = "";
     try {
       const index = (await (
-        await fetch(`${BASE}secrets/index.json`)
+        await fetch(`${BASE}secrets/index.json`, { cache: "no-store" })
       ).json()) as Index;
 
       let key = await loadStoredKey();
@@ -147,7 +147,7 @@
       const decrypted = await Promise.all(
         index.files.map(async (file) => {
           const bundle = (await (
-            await fetch(`${BASE}secrets/${file}`)
+            await fetch(`${BASE}secrets/${file}`, { cache: "no-store" })
           ).json()) as Bundle;
           const plain = await decryptBundle(bundle, key!);
           return { slug: file, ...(JSON.parse(plain) as Article) };
