@@ -3,7 +3,7 @@ title: Python入门（一）
 published: 2026-06-20
 description: '包与虚拟环境'
 image: ''
-tags: [阅读, Python]
+tags: [Python]
 draft: false
 lang: ''
 ---

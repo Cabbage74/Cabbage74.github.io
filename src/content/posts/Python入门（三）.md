@@ -3,7 +3,7 @@ title: Python入门（三）
 published: 2026-06-28
 description: 'Python独特语法'
 image: ''
-tags: [阅读, Python]
+tags: [Python]
 draft: false
 lang: ''
 ---
