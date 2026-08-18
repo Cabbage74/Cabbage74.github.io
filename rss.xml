@@ -3513,119 +3513,6 @@ export function useRoute() {
 └── vite.config.js
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;这是加入site.js和useRoute.js以后的React项目结构。&lt;/p&gt;
-</content:encoded></item><item><title>NPM与构建工具</title><link>https://cabbage74.github.io/posts/npm%E4%B8%8E%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/npm%E4%B8%8E%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/</guid><description>了解Node、NPM、Vite</description><pubDate>Tue, 30 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;上节的模块化只解决了前端开发中一小部分问题。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;!doctype html&amp;gt;
-&amp;lt;html lang=&quot;zh-CN&quot;&amp;gt;
-  &amp;lt;head&amp;gt;
-    ...
-    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/reset.css&quot; /&amp;gt;
-    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/variables.css&quot; /&amp;gt;
-    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/layout.css&quot; /&amp;gt;
-    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/hero.css&quot; /&amp;gt;
-    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/nav.css&quot; /&amp;gt;
-    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/cards.css&quot; /&amp;gt;
-    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/lab.css&quot; /&amp;gt;
-    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/responsive.css&quot; /&amp;gt;
-  &amp;lt;/head&amp;gt;
-  &amp;lt;body&amp;gt;
-    ...
-    &amp;lt;script type=&quot;module&quot; src=&quot;js/main.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-  &amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;延续上一节模块化改造完的index.html代码。&lt;/p&gt;
-&lt;p&gt;目前还有几个可以进一步优化的问题：&lt;/p&gt;
-&lt;p&gt;一是引入模块化写法以后一定要走HTTP、HTTPS，调试起来不方便。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;./images/NPM1.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;二是要请求的文件太多，需要排队。虽然拆分代码方便程序员调试维护，但不方便浏览器请求。&lt;/p&gt;
-&lt;p&gt;三是浏览器会缓存旧文件，比如这里的anime库走的是memory cache。刷新页面可能不会很及时地体现背后代码的变动。一个笨方法是每次改完代码就把文件名也手动修改一下，让浏览器不走缓存，但显然不方便。&lt;/p&gt;
-&lt;p&gt;构建工具可以帮助解决这三个问题，Vite是现在最流行的一个。&lt;/p&gt;
-&lt;p&gt;Vite是用TypeScript写跑在Node.js上的，Node.js是一套让js能在浏览器外面跑的环境。&lt;/p&gt;
-&lt;p&gt;npm是Node.js的包管理器，类似Cargo之于Rust。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;npm init -y
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;用npm初始化项目，-y是告诉npm全部走默认，跳过交互式的提问&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;{
-  &quot;name&quot;: &quot;zero-to-tech-4-1&quot;,
-  &quot;version&quot;: &quot;1.0.0&quot;,
-  &quot;scripts&quot;: {
-    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;初始化完会多一个package.json，有很多其实没什么用的字段，这里都手动删掉了。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;npm install -D vite
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;-D代表装的是开发依赖，不进最终的网站。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;{
-  &quot;name&quot;: &quot;zero-to-tech-4-1&quot;,
-  &quot;version&quot;: &quot;1.0.0&quot;,
-  &quot;scripts&quot;: {
-    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;
-  },
-  &quot;devDependencies&quot;: {
-    &quot;vite&quot;: &quot;^8.1.0&quot;
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;package.json多了一条依赖。&lt;/p&gt;
-&lt;p&gt;而且装完以后多了一个node_modules文件夹，里面有Vite和Vite自身依赖的其他包的源代码，.bin文件夹里有可执行文件。&lt;/p&gt;
-&lt;p&gt;还多一个package-lock.json，里面有每一个包的具体版本，是为了锁死更深层的依赖。&lt;/p&gt;
-&lt;p&gt;和Cargo.toml、Cargo.lock的设计是一样的。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;./node_modules/.bin/vite
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;此时执行Vite的可执行文件，Vite就能起一个服务器用于开发预览，而且是热更新不用自己刷新的。解决了文章开头提到的第一个问题。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;./node_modules/.bin/vite build
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&quot;./images/NPM2.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;执行build构建命令，多了一个dist文件夹，里面就是构建产物。这个产物是实际放在服务器的代码。&lt;/p&gt;
-&lt;p&gt;Vite构建的核心就是保持代码语义，但把代码打包成最适合浏览器使用的形态。可以看到css和js都各自被合成了一个文件，解决了文章开头提到的第二个问题。文件名最后有一串哈希指纹，解决了文章开头提到的第三个问题。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;./node_modules/.bin/vite preview
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;这个命令会起一个服务器，可以预览dist产物。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;{
-  &quot;name&quot;: &quot;zero-to-tech-4-1&quot;,
-  &quot;version&quot;: &quot;1.0.0&quot;,
-  &quot;scripts&quot;: {
-    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;,
-    &quot;dev&quot;: &quot;vite&quot;,             // npm run dev*
-    &quot;build&quot;: &quot;vite build&quot;,     // npm run build*
-    &quot;preview&quot;: &quot;vite preview&quot;  // npm run preview*
-  },
-  &quot;devDependencies&quot;: {
-    &quot;vite&quot;: &quot;^8.1.0&quot;
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;前面使用Vite的命令都不是很方便，普遍做法是在package.json自定义命令。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;import { animate, stagger } from &quot;https://cdn.jsdelivr.net/npm/animejs@4/+esm&quot;;
-...
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;现在对于anime第三方库的import依然是走cdn服务，为了可靠还是应该让npm把它装成本地依赖。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;npm install animejs
-&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;import { animate, stagger } from &quot;animejs&quot;;
-...
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Vite会将animejs指向node_modules下的animejs。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;{
-  &quot;name&quot;: &quot;zero-to-tech-4-1&quot;,
-  &quot;version&quot;: &quot;1.0.0&quot;,
-  &quot;scripts&quot;: {
-    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;,
-    &quot;dev&quot;: &quot;vite&quot;,
-    &quot;build&quot;: &quot;vite build&quot;,
-    &quot;preview&quot;: &quot;vite preview&quot;
-  },
-  &quot;devDependencies&quot;: {
-    &quot;vite&quot;: &quot;^8.1.0&quot;
-  },
-  &quot;dependencies&quot;: {
-    &quot;animejs&quot;: &quot;^4.5.0&quot;
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;顺便package.json确实能看出来-D install和普通install的区别。&lt;/p&gt;
 </content:encoded></item><item><title>React组件化</title><link>https://cabbage74.github.io/posts/react%E7%BB%84%E4%BB%B6%E5%8C%96/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/react%E7%BB%84%E4%BB%B6%E5%8C%96/</guid><description>React的组件化思想</description><pubDate>Tue, 30 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;上一节里，构建工具承担了“翻译官”的角色。将开发者写起来舒服的代码“翻译”成浏览器看起来舒服的代码。&lt;/p&gt;
 &lt;p&gt;构建工具可以“翻译”，意味着我们可以写出规则更加不同的代码，只要最后让构建工具“翻译”成浏览器看得懂的html/css/js就行了。&lt;/p&gt;
 &lt;p&gt;React是最火的前端框架，核心思想是把复杂页面拆成可复用的组件，通过数据驱动组件更新。&lt;/p&gt;
@@ -4026,6 +3913,119 @@ MemStore   HFile   MemStore   HFile ...
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
+</content:encoded></item><item><title>NPM与构建工具</title><link>https://cabbage74.github.io/posts/npm%E4%B8%8E%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/npm%E4%B8%8E%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/</guid><description>了解Node、NPM、Vite</description><pubDate>Mon, 29 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;上节的模块化只解决了前端开发中一小部分问题。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;!doctype html&amp;gt;
+&amp;lt;html lang=&quot;zh-CN&quot;&amp;gt;
+  &amp;lt;head&amp;gt;
+    ...
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/reset.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/variables.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/layout.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/hero.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/nav.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/cards.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/lab.css&quot; /&amp;gt;
+    &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/responsive.css&quot; /&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    ...
+    &amp;lt;script type=&quot;module&quot; src=&quot;js/main.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+  &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;延续上一节模块化改造完的index.html代码。&lt;/p&gt;
+&lt;p&gt;目前还有几个可以进一步优化的问题：&lt;/p&gt;
+&lt;p&gt;一是引入模块化写法以后一定要走HTTP、HTTPS，调试起来不方便。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;./images/NPM1.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;二是要请求的文件太多，需要排队。虽然拆分代码方便程序员调试维护，但不方便浏览器请求。&lt;/p&gt;
+&lt;p&gt;三是浏览器会缓存旧文件，比如这里的anime库走的是memory cache。刷新页面可能不会很及时地体现背后代码的变动。一个笨方法是每次改完代码就把文件名也手动修改一下，让浏览器不走缓存，但显然不方便。&lt;/p&gt;
+&lt;p&gt;构建工具可以帮助解决这三个问题，Vite是现在最流行的一个。&lt;/p&gt;
+&lt;p&gt;Vite是用TypeScript写跑在Node.js上的，Node.js是一套让js能在浏览器外面跑的环境。&lt;/p&gt;
+&lt;p&gt;npm是Node.js的包管理器，类似Cargo之于Rust。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm init -y
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;用npm初始化项目，-y是告诉npm全部走默认，跳过交互式的提问&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  &quot;name&quot;: &quot;zero-to-tech-4-1&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;scripts&quot;: {
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;初始化完会多一个package.json，有很多其实没什么用的字段，这里都手动删掉了。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm install -D vite
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;-D代表装的是开发依赖，不进最终的网站。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  &quot;name&quot;: &quot;zero-to-tech-4-1&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;scripts&quot;: {
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;vite&quot;: &quot;^8.1.0&quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;package.json多了一条依赖。&lt;/p&gt;
+&lt;p&gt;而且装完以后多了一个node_modules文件夹，里面有Vite和Vite自身依赖的其他包的源代码，.bin文件夹里有可执行文件。&lt;/p&gt;
+&lt;p&gt;还多一个package-lock.json，里面有每一个包的具体版本，是为了锁死更深层的依赖。&lt;/p&gt;
+&lt;p&gt;和Cargo.toml、Cargo.lock的设计是一样的。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;./node_modules/.bin/vite
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;此时执行Vite的可执行文件，Vite就能起一个服务器用于开发预览，而且是热更新不用自己刷新的。解决了文章开头提到的第一个问题。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;./node_modules/.bin/vite build
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;./images/NPM2.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;执行build构建命令，多了一个dist文件夹，里面就是构建产物。这个产物是实际放在服务器的代码。&lt;/p&gt;
+&lt;p&gt;Vite构建的核心就是保持代码语义，但把代码打包成最适合浏览器使用的形态。可以看到css和js都各自被合成了一个文件，解决了文章开头提到的第二个问题。文件名最后有一串哈希指纹，解决了文章开头提到的第三个问题。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;./node_modules/.bin/vite preview
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这个命令会起一个服务器，可以预览dist产物。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  &quot;name&quot;: &quot;zero-to-tech-4-1&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;scripts&quot;: {
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;,
+    &quot;dev&quot;: &quot;vite&quot;,             // npm run dev*
+    &quot;build&quot;: &quot;vite build&quot;,     // npm run build*
+    &quot;preview&quot;: &quot;vite preview&quot;  // npm run preview*
+  },
+  &quot;devDependencies&quot;: {
+    &quot;vite&quot;: &quot;^8.1.0&quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;前面使用Vite的命令都不是很方便，普遍做法是在package.json自定义命令。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import { animate, stagger } from &quot;https://cdn.jsdelivr.net/npm/animejs@4/+esm&quot;;
+...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;现在对于anime第三方库的import依然是走cdn服务，为了可靠还是应该让npm把它装成本地依赖。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm install animejs
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;import { animate, stagger } from &quot;animejs&quot;;
+...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Vite会将animejs指向node_modules下的animejs。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  &quot;name&quot;: &quot;zero-to-tech-4-1&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;scripts&quot;: {
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;,
+    &quot;dev&quot;: &quot;vite&quot;,
+    &quot;build&quot;: &quot;vite build&quot;,
+    &quot;preview&quot;: &quot;vite preview&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;vite&quot;: &quot;^8.1.0&quot;
+  },
+  &quot;dependencies&quot;: {
+    &quot;animejs&quot;: &quot;^4.5.0&quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;顺便package.json确实能看出来-D install和普通install的区别。&lt;/p&gt;
 </content:encoded></item><item><title>Python入门（三）</title><link>https://cabbage74.github.io/posts/python%E5%85%A5%E9%97%A8%E4%B8%89/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/python%E5%85%A5%E9%97%A8%E4%B8%89/</guid><description>Python独特语法</description><pubDate>Sun, 28 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;类&lt;/h2&gt;
 &lt;pre&gt;&lt;code&gt;class A:
     def __new__(cls, *args, **kwargs):
