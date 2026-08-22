@@ -25,14 +25,14 @@ const isPostsRoute = Astro.url.pathname.startsWith(url("/posts/"));
     </div>
     <div id="sidebar-sticky" class="transition-all duration-700 flex flex-col w-full gap-4 top-4 sticky top-4">
         <Tag class="onload-animation" style="animation-delay: 150ms"></Tag>
-        {siteConfig.toc.enable && (isPostsRoute ? (
-            <WidgetLayout name={i18n(I18nKey.toc)} id="toc" class="onload-animation" style="animation-delay: 200ms">
-                <div id="toc-inner-wrapper" class="relative max-h-[calc(100vh-16rem)] overflow-y-auto overflow-x-hidden hide-scrollbar">
-                    <TOC headings={headings}></TOC>
-                </div>
-            </WidgetLayout>
-        ) : (
-            <div id="toc" class="hidden"></div>
-        ))}
+        <div id="toc-container" class="transition-swup-fade">
+            {siteConfig.toc.enable && isPostsRoute && (
+                <WidgetLayout name={i18n(I18nKey.toc)} id="toc" class="" isCollapsed={false} style="">
+                    <div id="toc-inner-wrapper" class="relative max-h-[calc(100vh-16rem)] overflow-y-auto overflow-x-hidden hide-scrollbar">
+                        <TOC headings={headings}></TOC>
+                    </div>
+                </WidgetLayout>
+            )}
+        </div>
     </div>
 </div>
