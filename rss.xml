@@ -1,4 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>LibKVDB</title><link>https://cabbage74.github.io/posts/libkvdb/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/libkvdb/</guid><description>JYY OS 2026 M9</description><pubDate>Sun, 16 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>Decoder-Only Transformer</title><link>https://cabbage74.github.io/posts/decoder-only-transformer/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/decoder-only-transformer/</guid><pubDate>Sat, 22 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;目标&lt;/h2&gt;
+&lt;p&gt;实现一个Mini的Decoder-Only Transformer复习一下大致架构。&lt;/p&gt;
+&lt;p&gt;不会使用BPE，Rope，AdamW等，理解网络结构为主。&lt;/p&gt;
+&lt;p&gt;将Pytorch视为一个自动算梯度的库。&lt;/p&gt;
+&lt;h2&gt;网络&lt;/h2&gt;
+</content:encoded></item><item><title>LibKVDB</title><link>https://cabbage74.github.io/posts/libkvdb/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/libkvdb/</guid><description>JYY OS 2026 M9</description><pubDate>Sun, 16 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理论&lt;/h2&gt;
 &lt;p&gt;最后两节JYY广度优先地讲了计算机安全和虚拟化的一些东西。&lt;/p&gt;
 &lt;p&gt;让“一套服务感觉自己在独占机器”有两条路线。&lt;/p&gt;
 &lt;p&gt;一条是SOSP1997论文Disco为起点，VMWare为代表的思路。&lt;/p&gt;
