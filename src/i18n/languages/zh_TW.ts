@@ -9,6 +9,7 @@ export const zh_TW: Translation = {
 
 	[Key.tags]: "標籤",
 	[Key.recentPosts]: "最新文章",
+	[Key.toc]: "目錄",
 
 	[Key.comments]: "評論",
 

@@ -9,6 +9,7 @@ export const en: Translation = {
 
 	[Key.tags]: "Tags",
 	[Key.recentPosts]: "Recent Posts",
+	[Key.toc]: "Contents",
 
 	[Key.comments]: "Comments",
 

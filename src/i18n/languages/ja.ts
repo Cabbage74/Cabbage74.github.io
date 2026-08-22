@@ -9,6 +9,7 @@ export const ja: Translation = {
 
 	[Key.tags]: "タグ",
 	[Key.recentPosts]: "最近の投稿",
+	[Key.toc]: "目次",
 
 	[Key.comments]: "コメント",
 

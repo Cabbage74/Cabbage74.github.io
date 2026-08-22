@@ -1,7 +1,13 @@
 ---
 import type { MarkdownHeading } from "astro";
+import I18nKey from "../../i18n/i18nKey";
+import { i18n } from "../../i18n/translation";
+import { siteConfig } from "../../config";
+import { url } from "../../utils/url-utils";
 import Profile from "./Profile.astro";
 import Tag from "./Tags.astro";
+import TOC from "./TOC.astro";
+import WidgetLayout from "./WidgetLayout.astro";
 
 interface Props {
 	class?: string;
@@ -9,6 +15,9 @@ interface Props {
 }
 
 const className = Astro.props.class;
+const { headings = [] } = Astro.props;
+
+const isPostsRoute = Astro.url.pathname.startsWith(url("/posts/"));
 ---
 <div id="sidebar" class:list={[className, "w-full"]}>
     <div class="flex flex-col w-full gap-4 mb-4">
@@ -16,5 +25,14 @@ const className = Astro.props.class;
     </div>
     <div id="sidebar-sticky" class="transition-all duration-700 flex flex-col w-full gap-4 top-4 sticky top-4">
         <Tag class="onload-animation" style="animation-delay: 150ms"></Tag>
+        {siteConfig.toc.enable && (isPostsRoute ? (
+            <WidgetLayout name={i18n(I18nKey.toc)} id="toc" class="onload-animation" style="animation-delay: 200ms">
+                <div id="toc-inner-wrapper" class="relative max-h-[calc(100vh-16rem)] overflow-y-auto overflow-x-hidden hide-scrollbar">
+                    <TOC headings={headings}></TOC>
+                </div>
+            </WidgetLayout>
+        ) : (
+            <div id="toc" class="hidden"></div>
+        ))}
     </div>
 </div>

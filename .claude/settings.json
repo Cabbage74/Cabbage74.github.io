@@ -12,7 +12,8 @@
       "WebFetch(domain:docs.matrixorigin.cn)",
       "WebFetch(domain:website.matrixone.tech)",
       "Bash(echo \"---EXIT: $?---\")",
-      "Bash(SECRET_PASSWORD=040703 pnpm encrypt)"
+      "Bash(SECRET_PASSWORD=040703 pnpm encrypt)",
+      "Bash(python3 -)"
     ]
   }
 }

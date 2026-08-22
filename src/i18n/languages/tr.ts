@@ -9,6 +9,7 @@ export const tr: Translation = {
 
 	[Key.tags]: "Taglar",
 	[Key.recentPosts]: "Son Paylaşımlar",
+	[Key.toc]: "İçindekiler",
 
 	[Key.comments]: "Yorumlar",
 
