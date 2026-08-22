@@ -16,9 +16,14 @@ lang: ''
 
 将Pytorch视为一个“支持自动求导的矩阵库”来使用。
 
+当输入是`hello wo`时，希望该迷你网络能输出下一个字符为`r`。
+
 ## 网络
 
 ### Tokenizer
+
+
+
 
 ### Token Embedding + Position Embedding
 
