@@ -350,6 +350,20 @@ x = residual + mlp_out
                 x
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;这就是一个Transformer Block的全貌了。&lt;/p&gt;
+&lt;h4&gt;为什么MLP可以加工出高维信息？&lt;/h4&gt;
+&lt;p&gt;距离第一次看李宏毅的机器学习课有点久远了，对这里稍微有点遗忘。顺便复习一下。&lt;/p&gt;
+&lt;p&gt;第一个是特征激活视角。&lt;/p&gt;
+&lt;p&gt;把 $\sigma(W_1x+b_1)$ 看作针对一个高维特征的检测器。&lt;/p&gt;
+&lt;p&gt;$W_1x+b_1$ 计算输入&lt;code&gt;x&lt;/code&gt;在某个方向上的投影。&lt;/p&gt;
+&lt;p&gt;$\sigma$ 把这个投影转换成激活强度（比如 ReLU 会保留正值，丢弃负值）。&lt;/p&gt;
+&lt;p&gt;然后再把这些激活强度按线性组合起来。&lt;/p&gt;
+&lt;p&gt;第二个是函数拟合视角。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;./images/%E5%87%BD%E6%95%B0%E6%8B%9F%E5%90%88.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;线性函数只能刻画一条线，刻画不出红色折线，更刻画不出曲线。&lt;/p&gt;
+&lt;p&gt;但是红色折线可以由若干个Hard Sigmoid叠加得到。&lt;/p&gt;
+&lt;p&gt;可以近似Hard Sigmoid的函数有很多，比如Sigmoid，RELU等。&lt;/p&gt;
+&lt;p&gt;进一步发现只要有无限个Sigmoid，并通过改变&lt;code&gt;c, w, b&lt;/code&gt;平移缩放，就能刻画任意非线性函数。&lt;/p&gt;
+&lt;p&gt;Transformer的MLP有Hidden size个激活函数。&lt;/p&gt;
 &lt;h3&gt;Block&lt;/h3&gt;
 &lt;p&gt;先讲直觉上为什么要堆叠多层Block。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;The animal didn&apos;t cross the street because it was too tired.
