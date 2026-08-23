@@ -160,7 +160,7 @@ print(x.shape) # torch.Size([4, 8, 32])
 The cat ate the fish because it was hungry
 ```
 
-Attention模块实现这一点的方法是进一步通过三个可学习矩阵$W_q, W_k, W_v$把每个Token分成Q，K，V向量。
+Attention模块实现这一点的方法是通过三个可学习矩阵$W_q, W_k, W_v$把每个Token分成Q，K，V向量。
 
 Q，K，V可以大概理解成：
 
@@ -183,7 +183,7 @@ Value：
 
 最终真正取回的是`V(cat), V(fish)`。
 
-实际上也不需要`for 每一个token: 分别去乘$W_q$, $W_k$, $W_v$`得到Q，K，V。
+实际上也不需要`for 每一个token: 分别去乘Wq, Wk, Wv`得到Q，K，V。
 
 这就是一个矩阵乘法。
 
@@ -202,13 +202,13 @@ k = x @ Wk
 v = x @ Wv
 ```
 
-算完每一个Token的Q，K，V向量以后，继续要做的是，对于每一个Token，计算它的Q和所有Token的K的点积，来做相似度判断。
+算完每一个Token的Q，K，V向量以后，继续要做的是，对于每一个Token，计算它的Q和所有Token的K的点积，来做相关性打分。
 
 这件事也是矩阵乘法。但由于形状需要转置一下K。
 
 然后就能得到注意力分数矩阵$S = QK^T$。
 
-`S[i, j]`就代表了`第 i 个 query 与第 j 个 key 的相似度`。
+`S[i, j]`就代表了`第 i 个 query 与第 j 个 key 的相关性`。
 
 ``` python
 scores = q @ k.transpose(-2, -1) # [B, T, H] @ [B, H, T] = [B, T, T]
@@ -250,7 +250,7 @@ $Var(s_{i, j}) = \sum_{r=1}^{H}{Var(q_{ir})\cdot Var(k_{jr})} = H$
 
 论文里那个$d_k$在这里的含义就是$H$。
 
-至于为什么要用`softmax`，没有从GPT获得满意的答案。
+至于为什么要进一步用`softmax`而不直接用相关性矩阵，没有从GPT获得满意的答案，总之也是更好训。
 
 还有一个问题是目前的注意力矩阵每个位置都可以互相看。
 
@@ -262,7 +262,7 @@ $Var(s_{i, j}) = \sum_{r=1}^{H}{Var(q_{ir})\cdot Var(k_{jr})} = H$
 
 所以Self-Attention这一层可以理解为**每一个 Token 都根据当前内容，从之前 Token 的 Value 中重新混合出一个新的表示**。
  
-### Multi-Head Attention
+### Multi-Head Causal Attention
 
 Transformer一般会用多头的注意力。
 
@@ -270,7 +270,7 @@ Transformer一般会用多头的注意力。
 
 比如某个头训练完成后可能更关注指代关系，某个头更关注邻近Token。
 
-但是代码上不会创建`Wq_h0`，`Wq_h1`，`Wq_h2`，`Wq_h3`四个矩阵这样写，还是先当一个矩阵算，然后把最后一维拆成四组。
+但是代码上不会像创建`Wq_h0`，`Wq_h1`，`Wq_h2`，`Wq_h3`四个矩阵这样写，还是会先当一个矩阵算，然后把最后一维拆成四组。
 
 代码上和单头注意力高度相似。
 
@@ -708,6 +708,40 @@ loss = -torch.log(correct_probs).mean()
 ### Train
 
 ``` python
+def forward(idx, targets=None): # 推理也能复用这个函数，所以targets可以是None
+    B, T = idx.shape
+
+    tok_emb = token_embedding_table[idx]
+    positions = torch.arange(T)
+    pos_emb = position_embedding_table[positions]
+
+    x = tok_emb + pos_emb
+
+    for block in blocks:
+        x = block.forward(x)
+
+    x = layer_norm(x, ln_f_gamma, ln_f_beta)
+
+    logits = x @ W_lm + b_lm
+
+    if targets is None:
+        loss = None
+    else:
+        shifted_logits = logits - logits.max(dim=-1, keepdim=True).values
+        exp_logits = torch.exp(shifted_logits)
+        probs = exp_logits / exp_logits.sum(dim=-1, keepdim=True)
+
+        correct_probs = []
+        for b in range(B):
+            for t in range(T):
+                target_id = targets[b, t]
+                correct_probs.append(probs[b, t, target_id])
+        correct_probs = torch.stack(correct_probs)
+
+        loss = -torch.log(correct_probs).mean()
+
+    return logits, loss
+
 learning_rate = 1e-1
 
 for step in range(10000):
