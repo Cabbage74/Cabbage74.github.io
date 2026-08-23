@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>Decoder-Only Transformer</title><link>https://cabbage74.github.io/posts/decoder-only-transformer/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/decoder-only-transformer/</guid><description>丐中丐GPT</description><pubDate>Sat, 22 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;目标&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>KV Cache, Prefill, Decode</title><link>https://cabbage74.github.io/posts/kv-cache-prefill-decode/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/kv-cache-prefill-decode/</guid><description>对丐中丐GPT做一些改造</description><pubDate>Sun, 23 Aug 2026 00:00:00 GMT</pubDate><content:encoded/></item><item><title>Decoder-Only Transformer</title><link>https://cabbage74.github.io/posts/decoder-only-transformer/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/decoder-only-transformer/</guid><description>丐中丐GPT</description><pubDate>Sat, 22 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;目标&lt;/h2&gt;
 &lt;p&gt;实现一个Mini的Decoder-Only Transformer复习一下大致架构。&lt;/p&gt;
 &lt;p&gt;不会使用BPE，Rope，AdamW等等。理解网络结构，建立直觉为主。&lt;/p&gt;
 &lt;p&gt;只会将Pytorch视为一个“支持自动求导的矩阵库”来使用。&lt;/p&gt;
@@ -97,7 +97,7 @@ print(x.shape) # torch.Size([4, 8, 32])
 &lt;p&gt;现在希望进一步让往这个向量里混入上下文的信息。比如&lt;code&gt;it&lt;/code&gt;这个词显然很需要上下文。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;The cat ate the fish because it was hungry
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Attention模块实现这一点的方法是进一步通过三个可学习矩阵$W_q, W_k, W_v$把每个Token分成Q，K，V向量。&lt;/p&gt;
+&lt;p&gt;Attention模块实现这一点的方法是通过三个可学习矩阵$W_q, W_k, W_v$把每个Token分成Q，K，V向量。&lt;/p&gt;
 &lt;p&gt;Q，K，V可以大概理解成：&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;Query：
 “我现在在找什么信息？”
@@ -112,7 +112,7 @@ Value：
 &lt;p&gt;&lt;code&gt;Key(cat)&lt;/code&gt;，&lt;code&gt;Key(fish)&lt;/code&gt;可能表示“我作为一个实体，和查询有多匹配？”。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;Q(it) · K(cat)&lt;/code&gt;，&lt;code&gt;Q(it) · K(fish)&lt;/code&gt;算向量点积（几何意义反映了方向一致程度），决定&lt;code&gt;it&lt;/code&gt;应该取回什么信息。&lt;/p&gt;
 &lt;p&gt;最终真正取回的是&lt;code&gt;V(cat), V(fish)&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;实际上也不需要&lt;code&gt;for 每一个token: 分别去乘$W_q$, $W_k$, $W_v$&lt;/code&gt;得到Q，K，V。&lt;/p&gt;
+&lt;p&gt;实际上也不需要&lt;code&gt;for 每一个token: 分别去乘Wq, Wk, Wv&lt;/code&gt;得到Q，K，V。&lt;/p&gt;
 &lt;p&gt;这就是一个矩阵乘法。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;head_size = 32 # 单头注意力一般 H 就设成 C
 
@@ -127,10 +127,10 @@ q = x @ Wq # [B, T, C] @ [C, H] = [B, T, H]，Pytorch会处理 B 这一维
 k = x @ Wk
 v = x @ Wv
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;算完每一个Token的Q，K，V向量以后，继续要做的是，对于每一个Token，计算它的Q和所有Token的K的点积，来做相似度判断。&lt;/p&gt;
+&lt;p&gt;算完每一个Token的Q，K，V向量以后，继续要做的是，对于每一个Token，计算它的Q和所有Token的K的点积，来做相关性打分。&lt;/p&gt;
 &lt;p&gt;这件事也是矩阵乘法。但由于形状需要转置一下K。&lt;/p&gt;
 &lt;p&gt;然后就能得到注意力分数矩阵$S = QK^T$。&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;S[i, j]&lt;/code&gt;就代表了&lt;code&gt;第 i 个 query 与第 j 个 key 的相似度&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;S[i, j]&lt;/code&gt;就代表了&lt;code&gt;第 i 个 query 与第 j 个 key 的相关性&lt;/code&gt;。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;scores = q @ k.transpose(-2, -1) # [B, T, H] @ [B, H, T] = [B, T, T]
 
 scores = scores / (head_size ** 0.5)
@@ -159,17 +159,17 @@ out = weights @ v # [B, T, T] @ [B, T, H] = [B, T, H]
 &lt;p&gt;我们希望方差是1。&lt;/p&gt;
 &lt;p&gt;所以$Var(\frac{s_{i, j}}{\sqrt{H}}) = \frac{Var(s_{i, j})}{H} = 1$。&lt;/p&gt;
 &lt;p&gt;论文里那个$d_k$在这里的含义就是$H$。&lt;/p&gt;
-&lt;p&gt;至于为什么要用&lt;code&gt;softmax&lt;/code&gt;，没有从GPT获得满意的答案。&lt;/p&gt;
+&lt;p&gt;至于为什么要进一步用&lt;code&gt;softmax&lt;/code&gt;而不直接用相关性矩阵，没有从GPT获得满意的答案，总之也是更好训。&lt;/p&gt;
 &lt;p&gt;还有一个问题是目前的注意力矩阵每个位置都可以互相看。&lt;/p&gt;
 &lt;p&gt;如果训练的时候&lt;code&gt;h&lt;/code&gt;的&lt;code&gt;Q&lt;/code&gt;直接看到&lt;code&gt;e&lt;/code&gt;的&lt;code&gt;K&lt;/code&gt;，注意到&lt;code&gt;e&lt;/code&gt;的V，那就相当于作弊了，所以需要一个掩码矩阵。&lt;/p&gt;
 &lt;p&gt;把看不见的地方置成&lt;code&gt;-inf&lt;/code&gt;，进到&lt;code&gt;softmax&lt;/code&gt;以后就自然变成概率趋近于零。&lt;/p&gt;
 &lt;p&gt;最后一步&lt;code&gt;weights @ V&lt;/code&gt;就很自然地能理解成根据注意力分数表，把别人的Value信息取回来并加权汇总。&lt;/p&gt;
 &lt;p&gt;所以Self-Attention这一层可以理解为&lt;strong&gt;每一个 Token 都根据当前内容，从之前 Token 的 Value 中重新混合出一个新的表示&lt;/strong&gt;。&lt;/p&gt;
-&lt;h3&gt;Multi-Head Attention&lt;/h3&gt;
+&lt;h3&gt;Multi-Head Causal Attention&lt;/h3&gt;
 &lt;p&gt;Transformer一般会用多头的注意力。&lt;/p&gt;
 &lt;p&gt;从直觉上，多头注意力可以理解成让模型同时从多个不同的“表示子空间”里观察 Token 之间的关系。&lt;/p&gt;
 &lt;p&gt;比如某个头训练完成后可能更关注指代关系，某个头更关注邻近Token。&lt;/p&gt;
-&lt;p&gt;但是代码上不会创建&lt;code&gt;Wq_h0&lt;/code&gt;，&lt;code&gt;Wq_h1&lt;/code&gt;，&lt;code&gt;Wq_h2&lt;/code&gt;，&lt;code&gt;Wq_h3&lt;/code&gt;四个矩阵这样写，还是先当一个矩阵算，然后把最后一维拆成四组。&lt;/p&gt;
+&lt;p&gt;但是代码上不会像创建&lt;code&gt;Wq_h0&lt;/code&gt;，&lt;code&gt;Wq_h1&lt;/code&gt;，&lt;code&gt;Wq_h2&lt;/code&gt;，&lt;code&gt;Wq_h3&lt;/code&gt;四个矩阵这样写，还是会先当一个矩阵算，然后把最后一维拆成四组。&lt;/p&gt;
 &lt;p&gt;代码上和单头注意力高度相似。&lt;/p&gt;
 &lt;p&gt;把多个头拼到一起，以作为下一层的输入之前，还得多学一个矩阵&lt;code&gt;Wo&lt;/code&gt;，可以直觉理解为多个头各自拿回来一部分信息，拼起来后，再让模型学习如何把这些头的结果重新混合。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;n_head = 4
@@ -496,7 +496,41 @@ loss = -torch.log(correct_probs).mean()
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;code&gt;loss&lt;/code&gt;实践里也一般取一个Batch的平均损失。&lt;/p&gt;
 &lt;h3&gt;Train&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;learning_rate = 1e-1
+&lt;pre&gt;&lt;code&gt;def forward(idx, targets=None): # 推理也能复用这个函数，所以targets可以是None
+    B, T = idx.shape
+
+    tok_emb = token_embedding_table[idx]
+    positions = torch.arange(T)
+    pos_emb = position_embedding_table[positions]
+
+    x = tok_emb + pos_emb
+
+    for block in blocks:
+        x = block.forward(x)
+
+    x = layer_norm(x, ln_f_gamma, ln_f_beta)
+
+    logits = x @ W_lm + b_lm
+
+    if targets is None:
+        loss = None
+    else:
+        shifted_logits = logits - logits.max(dim=-1, keepdim=True).values
+        exp_logits = torch.exp(shifted_logits)
+        probs = exp_logits / exp_logits.sum(dim=-1, keepdim=True)
+
+        correct_probs = []
+        for b in range(B):
+            for t in range(T):
+                target_id = targets[b, t]
+                correct_probs.append(probs[b, t, target_id])
+        correct_probs = torch.stack(correct_probs)
+
+        loss = -torch.log(correct_probs).mean()
+
+    return logits, loss
+
+learning_rate = 1e-1
 
 for step in range(10000):
     for p in params:
