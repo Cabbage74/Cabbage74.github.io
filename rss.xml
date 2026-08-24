@@ -1,4 +1,153 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>Sampling, KV Cache, Prefill, Decode</title><link>https://cabbage74.github.io/posts/sampling-kv-cache-prefill-decode/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/sampling-kv-cache-prefill-decode/</guid><description>对丐中丐GPT做一些改造</description><pubDate>Sun, 23 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;Sampling&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cabbage74</title><description>Yo!</description><link>https://cabbage74.github.io/</link><language>en</language><item><title>认识GPU</title><link>https://cabbage74.github.io/posts/%E8%AE%A4%E8%AF%86gpu/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/%E8%AE%A4%E8%AF%86gpu/</guid><description>尝试从完全不懂到假装能懂...</description><pubDate>Mon, 24 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;理解CPU如何指挥GPU工作&lt;/h2&gt;
+&lt;p&gt;CPU就像一个全能博士，能&lt;strong&gt;低延迟&lt;/strong&gt;地做复杂运算，但是数量少，多核CPU有几十个核就顶天了。&lt;/p&gt;
+&lt;p&gt;GPU内部有很多小学生，虽然只能做类似加减乘除这类简单的运算，但是人多力量大，&lt;strong&gt;吞吐高&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;我的Python代码不会直接在GPU上执行，而是：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Python 在 CPU 上运行
+        ↓
+PyTorch 看见输入 tensor 位于 CUDA
+        ↓
+PyTorch 调用已经编译好的 CUDA/C++ 实现
+        ↓
+CPU 向 GPU 提交一个 kernel
+        ↓
+GPU 从显存读取 tensor 并进行计算
+        ↓
+结果写回显存
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;kernel&lt;/code&gt;可以暂时理解成一个已经编译好、可以由大量 GPU 线程并行执行的函数。&lt;/p&gt;
+&lt;p&gt;显存是显卡上焊接上的内存芯片，供GPU读写，可以理解为GPU的专用高速内存。&lt;/p&gt;
+&lt;p&gt;就像CPU读主板上的内存条一样。&lt;/p&gt;
+&lt;p&gt;如果显存不够，就会OOM报错，或者GPU得通过PCIe去借用系统内存，性能就会跌。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;x = torch.tensor([1, 2])
+print(x.device) # cpu
+
+x_gpu = x.to(&quot;cuda&quot;)
+print(x_gpu.device) # cuda:0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Tensor默认不会在GPU里，可以显式地移动到GPU上，如果机器上插了两张卡，那就还可以指定到&lt;code&gt;cuda:1&lt;/code&gt;去。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;.to()&lt;/code&gt;这个API真的会把数据从系统内存经过PCIe拿去显存，所以是一个比较昂贵的操作。如果数据不在同一个设备，计算会报错。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;x = torch.randn(
+    1024,
+    1024,
+    device=&quot;cuda&quot;,
+)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;创建张量的时候可以指定&lt;code&gt;device&lt;/code&gt;，会直接在显存中分配存储空间。&lt;/p&gt;
+&lt;p&gt;相比于在CPU创建然后移动省了一次传输。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;c = a @ b
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Pytorch的一个职责是设备判断与算子调度。它会看&lt;code&gt;a&lt;/code&gt;和&lt;code&gt;b&lt;/code&gt;两个Tensor位于哪个设备，如果在CPU就会调用CPU的实现，如果在GPU就会调用GPU的实现。&lt;/p&gt;
+&lt;p&gt;如果两个Tensor在GPU，这里执行的逻辑不是同步的：CPU通知GPU做然后停下 → GPU做完返回Success → CPU收到返回值再继续。&lt;/p&gt;
+&lt;p&gt;而是异步的：CPU通知GPU做 → 各做各的。&lt;/p&gt;
+&lt;p&gt;CPU执行这段Python代码，进到CUDA驱动，驱动里的逻辑是去写命令缓冲区（内存里一块区域），再写GPU的一个“门铃”寄存器（相当于两者的通信协议），GPU上有一个小的命令处理器看到“门铃”信号以后会去读命令缓冲区，然后执行。&lt;/p&gt;
+&lt;p&gt;这个命令缓冲区相当于一个工作队列，被称为&lt;code&gt;stream&lt;/code&gt;。默认情况下，&lt;code&gt;stream&lt;/code&gt;内的任务会保持顺序执行。&lt;/p&gt;
+&lt;p&gt;既然是异步的肯定有同步机制，&lt;code&gt;torch.cuda.synchronize()&lt;/code&gt;会让CPU等到之前提交的任务全部完成。&lt;/p&gt;
+&lt;p&gt;这引出了几种计时的不同：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;start = time.perf_counter()
+c = a @ b
+end = time.perf_counter()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;torch.cuda.synchronize()
+start = time.perf_counter()
+c = a @ b
+torch.cuda.synchronize()
+end = time.perf_counter()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;start_event = torch.cuda.Event(enable_timing=True) # CUDA Event 是插入 GPU 工作队列里的时间标记，比用 CPU 时钟测 GPU 工作更合适
+end_event = torch.cuda.Event(enable_timing=True)
+start_event.record()
+c = a @ b
+end_event.record()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;显存容量、显存带宽、算力&lt;/h2&gt;
+&lt;p&gt;显存容量：显存一共能放多少数据，比如RTX3090有24GB。&lt;/p&gt;
+&lt;p&gt;显存带宽：每秒能从显存搬多少数据，比如RTX3090的峰值是936GB/s。&lt;/p&gt;
+&lt;p&gt;GPU算力：每秒能做多少数学运算，比如RTX3090 FP32理论峰值约 35.6TFLOPS（35.6万亿次浮点数计算每秒）。&lt;/p&gt;
+&lt;p&gt;如果显存小了，会OOM。如果带宽小了，GPU计算单元就得等数据，有力使不出。&lt;/p&gt;
+&lt;p&gt;这引出两种瓶颈。&lt;/p&gt;
+&lt;p&gt;花在搬数据上的时间更多：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;读取 ███████████████
+计算 ██
+写回 █████
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;花在计算上的时间更多：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;读取 ██
+计算 ███████████████
+写回 █
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;下面探讨应该如何分析一个任务会面临什么瓶颈。&lt;/p&gt;
+&lt;p&gt;考虑一个简单的加法：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;y = x + 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;假设&lt;code&gt;x&lt;/code&gt;是FP32，大小四字节。&lt;/p&gt;
+&lt;p&gt;那么这个过程涉及：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;读取 x：4 字节
+执行加法：1 次浮点运算
+写入 y：4 字节
+
+合计：1FLOP，8字节
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;然后可以算一个值叫算术强度Arithmetic Intensity表示“每从显存搬一个字节，能做多少次运算”。&lt;/p&gt;
+&lt;p&gt;$\frac{1\text{ FLOP}}{8\text{ bytes}}=0.125\text{ FLOP/byte}$&lt;/p&gt;
+&lt;p&gt;0.125很低，说明大规模的逐元素加法会是一个Memory-bound的场景。&lt;/p&gt;
+&lt;p&gt;接下来考虑矩阵乘法：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;C = A @ B # [4096, 4096] @ [4096, 4096] = [4096, 4096]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;C&lt;/code&gt;中每个元素都来自向量点积，涉及4096次乘法和4095次加法，不妨约等于8192次FLOPS。&lt;/p&gt;
+&lt;p&gt;一共有$4096^2$这么多的元素，那就是&lt;code&gt;2\times 4096^3&lt;/code&gt;这么多的FLOPS，约1374亿。&lt;/p&gt;
+&lt;p&gt;所以矩阵乘法会是Compute-bound的场景，算术强度约大几百。&lt;/p&gt;
+&lt;p&gt;Roofline模型：$实际性能 \le min(GPU峰值算力，显存带宽\times 算术强度)$&lt;/p&gt;
+&lt;p&gt;能解释逐元素加法为什么喂不饱计算单元：$936\text{ GB/s}\times0.125\text{ FLOP/byte}\approx117\text{ GFLOPS}$&lt;/p&gt;
+&lt;h2&gt;为什么Decode阶段Batch-Scaling能提升计算利用率&lt;/h2&gt;
+&lt;p&gt;Transformer中存在很多Linear：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;q = x @ Wq
+k = x @ Wk
+v = x @ Wv
+h = x @ W1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;在Decode阶段时，&lt;code&gt;x&lt;/code&gt;的&lt;code&gt;shape&lt;/code&gt;是&lt;code&gt;[B, 1, C]&lt;/code&gt;，B是为了复用训练时用的Forward函数包装的一维，也是1。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;y = x @ W
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;虽然看着是矩阵乘法，但左边其实是一条向量，本质接近“向量乘矩阵”，称作GEMV(General Matrix Vector)。&lt;/p&gt;
+&lt;p&gt;假设同时处理8个序列，&lt;code&gt;x&lt;/code&gt;的&lt;code&gt;shape&lt;/code&gt;变成&lt;code&gt;[B, 8, C]&lt;/code&gt;，变成更正规的矩阵乘矩阵，称作GEMM(General Matrix-Matrix)。&lt;/p&gt;
+&lt;p&gt;:::tip
+为什么Deocde阶段要同时处理8个序列？
+看到了一篇论文SimpleTool，大概是一篇加速端侧小模型生成工具调用的文章。
+其中一部分Idea就是不要用JSON Schema来生成工具调用，用论文自定义的格式。
+比如：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;fn&amp;gt;
+&amp;lt;name&amp;gt;
+&amp;lt;arg1&amp;gt;
+&amp;lt;arg2&amp;gt;
+...
+&amp;lt;/fn&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;论文的一个想法是前文相同的情况下，模型应该能并行地预测工具名、第一个参数、第二个参数...只要函数API设计的好，每一个参数是正交的，应该就是可行的。
+:::&lt;/p&gt;
+&lt;p&gt;8个序列共用一个模型，所以使用同一个&lt;code&gt;W&lt;/code&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;x0 ─┐
+x1 ─┤
+x2 ─┤
+... │ @ 同一个 W
+x7 ─┘
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;每个输入都要与 W 相乘，但把它们合成一次大运算后，GPU 可以更好地复用权重数据，并使用更多并行计算单元。&lt;/p&gt;
+&lt;p&gt;用算术强度推导：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;x: [B, batch_size, C] // 这个batch_size指的是并行地推理，和训练时那个batch_size不是一个意思
+W: [C, C]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;那么计算量为$2batch_size\times C^2$。&lt;/p&gt;
+&lt;p&gt;如果&lt;code&gt;W&lt;/code&gt;是主要数据量，每个数是FP32，那至少要读取 $4C^2$ Bytes。&lt;/p&gt;
+&lt;p&gt;那么近似的算术强度是$\frac{2batch_sizeC^2}{4C^2}=\frac{batch_size}{2}\text{ FLOP/byte}$&lt;/p&gt;
+&lt;p&gt;这意味着同一份权重搬进来后，batch越大，计算利用率就越高。&lt;/p&gt;
+&lt;p&gt;这是RTX3090的Roofline模型的ridge point：&lt;/p&gt;
+&lt;p&gt;$\frac{35.6\text{ TFLOPS}}{936\text{ GB/s}}\approx38\text{ FLOP/byte}$&lt;/p&gt;
+&lt;p&gt;低于这个值，就是Memory-bound，反之就是Compute-bound。&lt;/p&gt;
+&lt;p&gt;Prefill阶段其实就像是一次batch_size比较大的Decode，这就解释了为什么它是Compute-bound的。&lt;/p&gt;
+&lt;p&gt;对应Decode阶段，batch_size是1，它是Memory-bound的。&lt;/p&gt;
+&lt;h2&gt;FP32、FP16、BF16 和 Tensor Core&lt;/h2&gt;
+&lt;h2&gt;kernel、thread、warp、thread block 和 SM&lt;/h2&gt;
+</content:encoded></item><item><title>Sampling, KV Cache, Prefill, Decode</title><link>https://cabbage74.github.io/posts/sampling-kv-cache-prefill-decode/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/sampling-kv-cache-prefill-decode/</guid><description>对丐中丐GPT做一些改造</description><pubDate>Sun, 23 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;Sampling&lt;/h2&gt;
 &lt;p&gt;上一节最后的朴素推理逻辑是每次都一定选最大概率的下一个Token。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;def generate(idx, max_new_tokens):
     for _ in range(max_new_tokens):
