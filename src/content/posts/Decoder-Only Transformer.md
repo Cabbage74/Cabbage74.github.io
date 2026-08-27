@@ -12,7 +12,7 @@ lang: ''
 
 实现一个Mini的Decoder-Only Transformer复习一下大致架构。
 
-不会使用BPE，Rope，AdamW等等。理解网络结构，建立直觉为主。
+不会使用BPE，RoPE，AdamW等等。理解网络结构，建立直觉为主。
 
 只会将Pytorch视为一个“支持自动求导的矩阵库”来使用。
 
