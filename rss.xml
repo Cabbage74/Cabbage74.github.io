@@ -389,7 +389,7 @@ def generate_with_kv_cache(idx, max_new_tokens, temperature=1.0, top_k=None):
 &lt;p&gt;这是一个只追加、不淘汰的简单 KV Cache。Cache 长度随生成线性增长，直到达到这个丐版实现的 block_size，超过后直接报错。&lt;/p&gt;
 </content:encoded></item><item><title>Decoder-Only Transformer</title><link>https://cabbage74.github.io/posts/decoder-only-transformer/</link><guid isPermaLink="true">https://cabbage74.github.io/posts/decoder-only-transformer/</guid><description>丐中丐GPT</description><pubDate>Sat, 22 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;目标&lt;/h2&gt;
 &lt;p&gt;实现一个Mini的Decoder-Only Transformer复习一下大致架构。&lt;/p&gt;
-&lt;p&gt;不会使用BPE，Rope，AdamW等等。理解网络结构，建立直觉为主。&lt;/p&gt;
+&lt;p&gt;不会使用BPE，RoPE，AdamW等等。理解网络结构，建立直觉为主。&lt;/p&gt;
 &lt;p&gt;只会将Pytorch视为一个“支持自动求导的矩阵库”来使用。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;text = &quot;&quot;&quot;hello world
 hello transformer
