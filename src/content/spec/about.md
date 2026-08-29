@@ -14,13 +14,13 @@ I have been playing Clash of Clans for a really long time.
 
 # Experience
 
-ByteDance, R&D Intern, 2026. Contributed to the development in Fanqie department
+ByteDance, R&D Intern, 2026. Worked on backend systems for Tomato Novel and Hongguo Short Drama.
 
-Momenta, R&D Intern, 2026. Contributed to the development in Data Infra department
+Momenta, R&D Intern, 2026. Worked on Data Infrastructure.
 
-MatrixOrigin, R&D Intern, 2025. Contributed to the development of the open-source database MatrixOne
+MatrixOrigin, R&D Intern, 2025. Worked on MatrixOne, an open-source distributed database.
 
-Huawei, R&D Intern, 2024. Contributed to the development in LTE & 5G Solutions department
+Huawei, R&D Intern, 2024. Worked on LTE and 5G solutions.
 
 # Selected Awards
 
