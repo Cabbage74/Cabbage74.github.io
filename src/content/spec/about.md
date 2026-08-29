@@ -14,6 +14,8 @@ I have been playing Clash of Clans for a really long time.
 
 # Experience
 
+ByteDance, R&D Intern, 2026. Contributed to the development in Fanqie department
+
 Momenta, R&D Intern, 2026. Contributed to the development in Data Infra department
 
 MatrixOrigin, R&D Intern, 2025. Contributed to the development of the open-source database MatrixOne
