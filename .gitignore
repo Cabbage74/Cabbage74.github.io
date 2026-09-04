@@ -17,9 +17,6 @@ pnpm-debug.log*
 .env
 .env.production
 
-# secret articles (plaintext source; rendered + encrypted to public/secrets locally)
-src/content/secrets/
-
 # macOS-specific files
 .DS_Store
 
@@ -35,7 +32,3 @@ yarn.lock
 
 # claude
 .claude/settings.local.json
-
-# local publish scripts (secret script contains the password)
-publish.sh
-publish-secret.sh

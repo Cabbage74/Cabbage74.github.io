@@ -1,0 +1,5 @@
+# git-crypt: encrypt private files at rest (contents only, filenames stay visible)
+# Plaintext stays in the working tree; only the committed blobs are encrypted.
+src/content/secrets/** filter=git-crypt diff=git-crypt
+publish.sh filter=git-crypt diff=git-crypt
+publish-secret.sh filter=git-crypt diff=git-crypt
