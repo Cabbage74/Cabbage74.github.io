@@ -96,8 +96,8 @@ end_event.record()
 &lt;p&gt;&lt;code&gt;C&lt;/code&gt;中每个元素都来自向量点积，涉及4096次乘法和4095次加法，不妨约等于8192次FLOPS。&lt;/p&gt;
 &lt;p&gt;一共有$4096^2$这么多的元素，那就是 $2\times 4096^3$ 这么多的FLOPS，约1374亿。&lt;/p&gt;
 &lt;p&gt;所以矩阵乘法会是Compute-bound的场景，算术强度约大几百。&lt;/p&gt;
-&lt;p&gt;Roofline模型：$实际性能 \le min(GPU峰值算力，显存带宽\times 算术强度)$&lt;/p&gt;
-&lt;p&gt;能解释逐元素加法为什么喂不饱计算单元：$936\text{ GB/s}\times0.125\text{ FLOP/byte}\approx117\text{ GFLOPS}$&lt;/p&gt;
+&lt;p&gt;Roofline模型：$实际性能 \le min(GPU峰值算力，显存带宽\times 算术强度)$ 。&lt;/p&gt;
+&lt;p&gt;能解释逐元素加法为什么喂不饱计算单元：$936\text{ GB/s}\times0.125\text{ FLOP/byte}\approx117\text{ GFLOPS}$。&lt;/p&gt;
 &lt;h2&gt;为什么Decode阶段Batch-Scaling能提升计算利用率&lt;/h2&gt;
 &lt;p&gt;Transformer中存在很多Linear：&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;q = x @ Wq
@@ -138,7 +138,7 @@ W: [C, C]
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;那么计算量为$2batch_size\times C^2$。&lt;/p&gt;
 &lt;p&gt;如果&lt;code&gt;W&lt;/code&gt;是主要数据量，每个数是FP32，那至少要读取 $4C^2$ Bytes。&lt;/p&gt;
-&lt;p&gt;那么近似的算术强度是$\frac{2batch_sizeC^2}{4C^2}=\frac{batch_size}{2}\text{ FLOP/byte}$&lt;/p&gt;
+&lt;p&gt;那么近似的算术强度是$\frac{2batch_sizeC^2}{4C^2}=\frac{batch_size}{2}\text{ FLOP/byte}$。&lt;/p&gt;
 &lt;p&gt;这意味着同一份权重搬进来后，batch越大，计算利用率就越高。&lt;/p&gt;
 &lt;p&gt;这是RTX3090的Roofline模型的ridge point：&lt;/p&gt;
 &lt;p&gt;$\frac{35.6\text{ TFLOPS}}{936\text{ GB/s}}\approx38\text{ FLOP/byte}$&lt;/p&gt;
