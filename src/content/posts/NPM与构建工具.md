@@ -3,7 +3,7 @@ title: NPM与构建工具
 published: 2026-06-29
 description: '了解Node、NPM、Vite'
 image: ''
-tags: [全栈]
+tags: [Frontend]
 draft: false
 lang: ''
 ---
