@@ -168,9 +168,9 @@ C = A @ B # [4096, 4096] @ [4096, 4096] = [4096, 4096]
 
 所以矩阵乘法会是Compute-bound的场景，算术强度约大几百。
 
-Roofline模型：$实际性能 \le min(GPU峰值算力，显存带宽\times 算术强度)$ 
+Roofline模型：$实际性能 \le min(GPU峰值算力，显存带宽\times 算术强度)$ 。
 
-能解释逐元素加法为什么喂不饱计算单元：$936\text{ GB/s}\times0.125\text{ FLOP/byte}\approx117\text{ GFLOPS}$
+能解释逐元素加法为什么喂不饱计算单元：$936\text{ GB/s}\times0.125\text{ FLOP/byte}\approx117\text{ GFLOPS}$。
 
 ## 为什么Decode阶段Batch-Scaling能提升计算利用率
 
@@ -232,7 +232,7 @@ W: [C, C]
 
 如果`W`是主要数据量，每个数是FP32，那至少要读取 $4C^2$ Bytes。
 
-那么近似的算术强度是$\frac{2batch\_sizeC^2}{4C^2}=\frac{batch\_size}{2}\text{ FLOP/byte}$
+那么近似的算术强度是$\frac{2batch\_sizeC^2}{4C^2}=\frac{batch\_size}{2}\text{ FLOP/byte}$。
 
 这意味着同一份权重搬进来后，batch越大，计算利用率就越高。
 
