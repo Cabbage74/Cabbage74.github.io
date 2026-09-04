@@ -1,5 +1,8 @@
 # git-crypt: encrypt private files at rest (contents only, filenames stay visible)
 # Plaintext stays in the working tree; only the committed blobs are encrypted.
-src/content/secrets/** filter=git-crypt diff=git-crypt
+# NOTE: plaintext lives in secret-src/ and is only copied into src/content/secrets
+# during the local encrypt build (see scripts/encrypt-secrets.mjs), so the
+# build never globs these files in CI.
+secret-src/** filter=git-crypt diff=git-crypt
 publish.sh filter=git-crypt diff=git-crypt
 publish-secret.sh filter=git-crypt diff=git-crypt

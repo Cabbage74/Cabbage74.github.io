@@ -1,6 +1,9 @@
 # build output
 dist/
 
+# plaintext secret articles (copied here only during the encrypt build)
+src/content/secrets/
+
 # generated types
 .astro/
 

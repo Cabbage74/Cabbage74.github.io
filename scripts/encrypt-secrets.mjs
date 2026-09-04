@@ -10,7 +10,8 @@
  * 3. Writes the encrypted bundles to public/secrets/ (committed) and deletes
  *    the plaintext pages from dist/.
  *
- * Plaintext markdown lives in src/content/secrets/ (gitignored — never committed).
+ * Plaintext markdown lives in secret-src/ (committed encrypted via git-crypt).
+ * It is staged into src/content/secrets/ only for the build, then removed.
  *
  * Usage:
  *   pnpm encrypt                     # prompts for a password (masked)
@@ -24,6 +25,7 @@ import {
 	randomBytes,
 } from "node:crypto";
 import {
+	cpSync,
 	existsSync,
 	mkdirSync,
 	readdirSync,
@@ -38,6 +40,20 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const DIST_SECRETS = join(ROOT, "dist", "secrets");
 const OUT_DIR = join(ROOT, "public", "secrets");
+// Plaintext lives outside src/content (encrypted at rest by git-crypt in
+// secret-src/), so normal/CI builds never glob it. It is staged into the
+// content collection only for this encrypt build, then removed again.
+const SECRETS_SRC = join(ROOT, "secret-src");
+const CONTENT_SECRETS = join(ROOT, "src", "content", "secrets");
+
+function stagePlaintext() {
+	if (!existsSync(SECRETS_SRC)) {
+		console.error(`Plaintext secrets not found at ${SECRETS_SRC}.`);
+		process.exit(1);
+	}
+	rmSync(CONTENT_SECRETS, { recursive: true, force: true });
+	cpSync(SECRETS_SRC, CONTENT_SECRETS, { recursive: true });
+}
 
 const ITERATIONS = 210_000;
 const KEY_LENGTH = 32; // 256-bit AES key
@@ -194,8 +210,17 @@ async function main() {
 	}
 
 	// 1. Build — renders the secret articles because SECRET_PASSWORD is set.
-	runBuild(password);
+	stagePlaintext();
+	try {
+		runBuild(password);
+		await encryptRendered(password);
+	} finally {
+		// Never leave plaintext in the working tree after a build.
+		rmSync(CONTENT_SECRETS, { recursive: true, force: true });
+	}
+}
 
+async function encryptRendered(password) {
 	if (!existsSync(DIST_SECRETS)) {
 		console.error("No dist/secrets found. The build did not render secrets.");
 		process.exit(1);
