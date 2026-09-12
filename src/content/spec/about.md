@@ -4,7 +4,7 @@ I am a postgrad at the Department of Software Engineering, East China Normal Uni
 
 Previously, I received my B.Eng. degree from East China Normal University in 2025.
 
-My research interests currently lie in Databases and Agents.
+My research interests currently lie in Databases and AI Agents.
 
 # Fun Facts
 
@@ -14,7 +14,7 @@ I have been playing Clash of Clans for a really long time.
 
 # Experience
 
-ByteDance, R&D Intern, 2026. Worked on backend systems for Hongguo Short Drama.
+ByteDance, R&D Intern, 2026. Worked on backend systems for the Playlet Center of short dramas.
 
 Momenta, R&D Intern, 2026. Worked on Data Infrastructure.
 
@@ -32,7 +32,7 @@ Huawei, R&D Intern, 2024. Worked on LTE and 5G solutions.
 
 # Publications
 
-Gamba-SR: Efficient Content-Aware Super-Resolution with Clustered Sequence Mamba(ICIC 2026 Oral)
+Gamba-SR: Efficient Content-Aware Super-Resolution with Clustered Sequence Mamba (ICIC 2026 Oral)
 
 # Certificates
 
