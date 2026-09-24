@@ -14,7 +14,7 @@ I have been playing Clash of Clans for a really long time.
 
 # Experience
 
-ByteDance, R&D Intern, 2026. Worked on backend systems for the Playlet Center of short dramas.
+ByteDance, R&D Intern, 2026. Worked on backend systems for the playlet center of hongguo short dramas.
 
 Momenta, R&D Intern, 2026. Worked on Data Infrastructure.
 
